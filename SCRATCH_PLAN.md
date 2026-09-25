@@ -114,8 +114,9 @@ Each scenario gets:
 We don't export production data. We look at the *shape* of production data (aggregate statistics only) and generate our own "lorem ipsum" corpus with the same shape, on demand.
 
 ### Principles
-- **Deterministic.** The same `(spec, seed, size)` always gives byte-identical output. PIDs are `uuid5(ns, seed-path)`, so there are no random UUIDs.
-- **Prefix-stable scaling.** Root document *i* draws from its own sub-seed `hash(seed, i)`, and the generator keeps drawing roots until the page budget is met. A 100k-page corpus therefore *contains* the 10k-page corpus. Benchmarks at 10k and at 100k with the same spec should look alike in shape, and any difference then comes from scale, not from different data.
+- **Deterministic.** The same `(spec, seed, size)` always gives byte-identical output. PIDs are `uuid5(ns, spec-digest/seed/node-path)`, so there are no random UUIDs and two specs never share pids. All draws go through `random.Random.random()` only, whose stream CPython guarantees, so output also survives Python and library upgrades.
+- **Prefix-stable scaling.** The corpus is a stream of *units*: a monograph, or the next **issue** of a periodical title (one open title and volume per profile). Each root draws from its own keyed stream, and the generator emits units until the page budget is met, so a 100k-page corpus *contains* the 10k-page corpus. Only the volumes and titles still open at the budget differ, because their FOXML lists fewer children; `corpus.json` names them as `truncated`. Benchmarks at 10k and 100k with the same spec should look alike in shape, and any difference then comes from scale, not from different data.
+- **Page-share quota, not random draws, picks the mix.** Each next unit goes to the model and profile furthest below its target *share of pages* (`mix.py`). Drawing by title count left a 10k corpus with no periodicals: they are 1.8% of roots but 21% of pages. A single daily volume (~2–4k pages) was also still too coarse a unit, which is why periodicals are scheduled by issue.
 - **1–3 knobs per distribution.** All knobs live in a YAML *spec* (`specs/mzk-like.yaml`, `specs/tiny.yaml`, …): the model mix, the profiles per model, and their knobs. Size is a separate CLI argument, never part of the spec.
 - **Cheap vs faithful payloads.** Every heavy payload (images, PDF) has a `mode: pool | render`:
   - `pool`: reuse K pre-made files, which is fast.
@@ -139,8 +140,8 @@ root model ──(model mix)──► profile ──(profile mix)──► title
                                                         pages/issue
 ```
 
-- **Model mix:** root-model weights, counted **by root** (not by page).
-- **Profile mix per model:** weights over that model's profiles.
+- **Model mix:** `page_share` per root model, e.g. monograph 0.79 and periodical 0.21 of pages. Title counts per profile are emergent and serve as a validation target.
+- **Profile mix per model:** `page_share` over that model's profiles.
 - **A profile** is a small bundle of distributions, each with 1–3 knobs. A shared pattern covers most of them, a **two-level lognormal on a lattice**:
   - `title_median ~ LogNormal(median, σ_between)`
   - `unit ~ LogNormal(title_median, σ_within)`
@@ -300,6 +301,11 @@ The evaluator compares fingerprints. If the baseline and the candidate come from
 - A determinism test (same seed gives the same bytes) and a prefix-stability test (10k ⊂ 100k).
 - Import the output with `import` and confirm that Kramerius renders it.
 - Later: maps and graphics, collections, rendered images, PDFs, the `akubra` emitter, and `qg calibrate`.
+
+**P0.5 status (2026-09-25):** `qg gen` works for monographs (single, leaflet, multipart) and periodicals (9 frequency profiles, supplements, articles, volumes owning pages). It is deterministic and prefix-stable (tested), mixes by page share, runs at ~5 ms/page, and produces ALTO close to production size (median 40 KB vs 49 KB, ~140 vs ~160 B/word). Monograph structure matches production at 10k and at 100k. Open items:
+- **Per-profile validation (`qg gen --validate`):** compare many generated titles per profile with the fitted tables (issues per volume, pages per issue, supplements). Corpus-level issue statistics can't do this at 10k–100k, because such corpora hold only a few titles per profile (a 100k corpus has ~1–2 daily titles). Corpus-level issue pages are currently median 4 vs production 8.
+- **Disk:** a full 100k corpus is ~15 GB and doesn't fit in `/tmp` (tmpfs, 7.5 GB) or in the free space on `/home`. Large corpora need a dedicated volume, or the `akubra` emitter with compression.
+- Not built yet: the other root models, collections, virtual pages / PDF, inline (`M`) images, the `akubra` emitter, the noise layer (`mzk-legacy`), and `qg calibrate`.
 
 **P1 — First measurement (2 wk)**
 - OTel javaagent in, 100% sampling, ClickHouse receiving spans, Akubra method spans added.
