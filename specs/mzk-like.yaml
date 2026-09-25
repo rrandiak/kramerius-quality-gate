@@ -1,0 +1,186 @@
+# MZK-like corpus: structure fitted to MZK production data (calibration/findings.md).
+# Only valid Kramerius data: production mistakes are not reproduced here (SCRATCH_PLAN.md §5).
+# Mixes are page shares (what fraction of pages each model/profile gets), not title counts.
+# Lattice p4/p2 are solved from the observed even and divisible-by-4 shares: p2- and unsnapped
+# counts also land on multiples of 4 some of the time, so p4 is below the observed mod-4 share.
+name: mzk-like
+
+models:
+  monograph:
+    page_share: 0.79  # 60.0M of 75.9M monograph + periodical pages
+    licenses:  # license sets on the root (single) or on each unit (multipart)
+      dnnto+onsite: 0.585
+      onsite: 0.282
+      public: 0.126
+      dnntt+onsite: 0.004
+      mzk_public-contract: 0.002
+    profiles:
+      single:
+        kind: single
+        page_share: 0.925  # 55.6M of 60.0M monograph pages, minus leaflets
+        pages: {dist: lattice_lognormal, median: 178, sigma: 0.75, p4: 0.34, p2: 0.46, minimum: 2}
+      leaflet:  # the low tail a single lognormal misses: ~3% of monographs have 5-16 pages
+        kind: single
+        page_share: 0.002
+        pages: {dist: lattice_lognormal, median: 8, sigma: 0.35, p4: 0.6, p2: 0.3, minimum: 2}
+      multipart:
+        kind: multipart
+        page_share: 0.073  # 4.4M pages in monograph units
+        units: {dist: table, weights: {1: 0.15, 2: 0.55, 3: 0.16, 4: 0.065, 5: 0.028, 6: 0.015, 7: 0.006, 8: 0.006, 10: 0.004}}
+        unit_pages: {dist: lattice_lognormal, median: 292, sigma: 0.82, p4: 0.38, p2: 0.42, minimum: 2}
+  periodical:
+    page_share: 0.21  # 15.9M pages
+    p_mixed_licenses: 0.2  # title switches license set once (older volumes first)
+    licenses:  # license sets on each volume
+      dnnto+onsite: 0.55
+      public: 0.2
+      onsite: 0.13
+      dnntt+onsite: 0.12
+    profiles:  # frequency classes by median issues per volume; share of periodical pages
+      annual:
+        page_share: 0.237
+        volumes: {dist: lognormal, median: 3, sigma: 1.55}
+        issues_per_volume: {nominal: 1, sigma: 0.1, p_incomplete: 0.0}
+        pages_per_issue: {median: 100, sigma_between: 1.12, sigma_within: 0.51, p4: 0.48, p2: 0.4}
+        p_volume_pages: 0.016
+        volume_pages: {dist: lattice_lognormal, median: 6, sigma: 2.0, p4: 0.48, p2: 0.28}
+        supplements_per_volume: {dist: poisson, mean: 0.0}
+        supplements_per_issue: {dist: poisson, mean: 0.001}
+        supplement_pages: {dist: lattice_lognormal, median: 24, sigma: 0.88, p4: 0.49, p2: 0.27}
+        articles_per_issue: {dist: poisson, mean: 0.059}
+        article_pages: {dist: lattice_lognormal, median: 4, sigma: 0.8, p4: 0.5, p2: 0.3}
+      semiannual:
+        page_share: 0.069
+        volumes: {dist: lognormal, median: 3, sigma: 1.67}
+        issues_per_volume: {nominal: 2, sigma: 0.3, p_incomplete: 0.1}
+        pages_per_issue: {median: 100, sigma_between: 1.19, sigma_within: 0.92, p4: 0.47, p2: 0.35}
+        p_volume_pages: 0.016
+        volume_pages: {dist: lattice_lognormal, median: 6, sigma: 2.0, p4: 0.48, p2: 0.28}
+        supplements_per_volume: {dist: poisson, mean: 0.12}
+        supplements_per_issue: {dist: poisson, mean: 0.002}
+        supplement_pages: {dist: lattice_lognormal, median: 8, sigma: 0.88, p4: 0.49, p2: 0.27}
+        articles_per_issue: {dist: poisson, mean: 0.35}
+        article_pages: {dist: lattice_lognormal, median: 4, sigma: 0.8, p4: 0.5, p2: 0.3}
+      quarterly:
+        page_share: 0.043
+        volumes: {dist: lognormal, median: 4, sigma: 1.6}
+        issues_per_volume: {nominal: 4, sigma: 0.15, p_incomplete: 0.1}
+        pages_per_issue: {median: 50, sigma_between: 0.93, sigma_within: 0.64, p4: 0.65, p2: 0.25}
+        p_volume_pages: 0.016
+        volume_pages: {dist: lattice_lognormal, median: 6, sigma: 2.0, p4: 0.48, p2: 0.28}
+        supplements_per_volume: {dist: poisson, mean: 0.33}
+        supplements_per_issue: {dist: poisson, mean: 0.012}
+        supplement_pages: {dist: lattice_lognormal, median: 4, sigma: 0.88, p4: 0.49, p2: 0.27}
+        articles_per_issue: {dist: poisson, mean: 0.026}
+        article_pages: {dist: lattice_lognormal, median: 4, sigma: 0.8, p4: 0.5, p2: 0.3}
+      bimonthly:
+        page_share: 0.069
+        volumes: {dist: lognormal, median: 3, sigma: 1.83}
+        issues_per_volume: {nominal: 6, sigma: 0.3, p_incomplete: 0.1}
+        pages_per_issue: {median: 36, sigma_between: 0.85, sigma_within: 0.62, p4: 0.71, p2: 0.19}
+        p_volume_pages: 0.016
+        volume_pages: {dist: lattice_lognormal, median: 6, sigma: 2.0, p4: 0.48, p2: 0.28}
+        supplements_per_volume: {dist: poisson, mean: 0.25}
+        supplements_per_issue: {dist: poisson, mean: 0.034}
+        supplement_pages: {dist: lattice_lognormal, median: 8, sigma: 0.88, p4: 0.49, p2: 0.27}
+        articles_per_issue: {dist: poisson, mean: 0.324}
+        article_pages: {dist: lattice_lognormal, median: 4, sigma: 0.8, p4: 0.5, p2: 0.3}
+      monthly:
+        page_share: 0.167
+        volumes: {dist: lognormal, median: 6, sigma: 1.48}
+        issues_per_volume: {nominal: 12, sigma: 0.1, p_incomplete: 0.1}
+        pages_per_issue: {median: 32, sigma_between: 0.83, sigma_within: 0.5, p4: 0.72, p2: 0.16}
+        p_volume_pages: 0.016
+        volume_pages: {dist: lattice_lognormal, median: 6, sigma: 2.0, p4: 0.48, p2: 0.28}
+        supplements_per_volume: {dist: poisson, mean: 0.41}
+        supplements_per_issue: {dist: poisson, mean: 0.035}
+        supplement_pages: {dist: lattice_lognormal, median: 8, sigma: 0.88, p4: 0.49, p2: 0.27}
+        articles_per_issue: {dist: poisson, mean: 0.017}
+        article_pages: {dist: lattice_lognormal, median: 4, sigma: 0.8, p4: 0.5, p2: 0.3}
+      biweekly:
+        page_share: 0.046
+        volumes: {dist: lognormal, median: 3, sigma: 1.65}
+        issues_per_volume: {nominal: 24, sigma: 0.1, p_incomplete: 0.1}
+        pages_per_issue: {median: 16, sigma_between: 0.75, sigma_within: 0.36, p4: 0.67, p2: 0.19}
+        p_volume_pages: 0.016
+        volume_pages: {dist: lattice_lognormal, median: 6, sigma: 2.0, p4: 0.48, p2: 0.28}
+        supplements_per_volume: {dist: poisson, mean: 0.79}
+        supplements_per_issue: {dist: poisson, mean: 0.028}
+        supplement_pages: {dist: lattice_lognormal, median: 4, sigma: 0.88, p4: 0.49, p2: 0.27}
+        articles_per_issue: {dist: poisson, mean: 0.0}
+        article_pages: {dist: lattice_lognormal, median: 4, sigma: 0.8, p4: 0.5, p2: 0.3}
+      weekly:
+        page_share: 0.145
+        volumes: {dist: lognormal, median: 4, sigma: 1.61}
+        issues_per_volume: {nominal: 51, sigma: 0.1, p_incomplete: 0.1}
+        pages_per_issue: {median: 12, sigma_between: 0.75, sigma_within: 0.39, p4: 0.66, p2: 0.26}
+        p_volume_pages: 0.016
+        volume_pages: {dist: lattice_lognormal, median: 6, sigma: 2.0, p4: 0.48, p2: 0.28}
+        supplements_per_volume: {dist: poisson, mean: 0.82}
+        supplements_per_issue: {dist: poisson, mean: 0.019}
+        supplement_pages: {dist: lattice_lognormal, median: 4, sigma: 0.88, p4: 0.49, p2: 0.27}
+        articles_per_issue: {dist: poisson, mean: 0.0}
+        article_pages: {dist: lattice_lognormal, median: 4, sigma: 0.8, p4: 0.5, p2: 0.3}
+      several_per_week:
+        page_share: 0.036
+        volumes: {dist: lognormal, median: 3, sigma: 1.76}
+        issues_per_volume: {nominal: 104, sigma: 0.4, p_incomplete: 0.1}
+        pages_per_issue: {median: 6, sigma_between: 0.58, sigma_within: 0.46, p4: 0.43, p2: 0.55}
+        p_volume_pages: 0.016
+        volume_pages: {dist: lattice_lognormal, median: 6, sigma: 2.0, p4: 0.48, p2: 0.28}
+        supplements_per_volume: {dist: poisson, mean: 11.6}
+        supplements_per_issue: {dist: poisson, mean: 0.01}
+        supplement_pages: {dist: lattice_lognormal, median: 8, sigma: 0.88, p4: 0.49, p2: 0.27}
+        articles_per_issue: {dist: poisson, mean: 0.0}
+        article_pages: {dist: lattice_lognormal, median: 4, sigma: 0.8, p4: 0.5, p2: 0.3}
+      daily:
+        page_share: 0.182
+        volumes: {dist: lognormal, median: 15, sigma: 1.06}
+        issues_per_volume: {nominal: 302, sigma: 0.15, p_incomplete: 0.1}
+        pages_per_issue: {median: 6, sigma_between: 0.56, sigma_within: 0.44, p4: 0.45, p2: 0.53}
+        p_volume_pages: 0.016
+        volume_pages: {dist: lattice_lognormal, median: 6, sigma: 2.0, p4: 0.48, p2: 0.28}
+        supplements_per_volume: {dist: poisson, mean: 40.6}
+        supplements_per_issue: {dist: poisson, mean: 0.05}
+        supplement_pages: {dist: lattice_lognormal, median: 4, sigma: 0.88, p4: 0.49, p2: 0.27}
+        articles_per_issue: {dist: poisson, mean: 0.0}
+        article_pages: {dist: lattice_lognormal, median: 4, sigma: 0.8, p4: 0.5, p2: 0.3}
+
+pages:
+  # ALTO page size median 1692x2429 px ~ A5 at 300 dpi; p90 3448x4792 ~ A3 at 300 / A4 at 400
+  paper_sizes: {A6: 0.05, A5: 0.5, B5: 0.1, A4: 0.2, A3: 0.15}
+  dpi: {300: 0.75, 400: 0.2, 600: 0.05}
+  p_blank: 0.003
+  p_covers: 0.3
+  lines: {dist: lognormal, median: 47, sigma: 1.36}
+  words_per_line: {dist: lognormal, median: 5.6, sigma: 0.43}
+  lines_per_block: {dist: lognormal, median: 9, sigma: 0.96}
+  alto_versions: {v2: 0.88, v3: 0.02, v4: 0.10}
+  p_word_confidence: 0.24
+  alto_producers:  # periodical.alto-software.txt, pages with a known producer
+    - {creator: "ABBYY", name: "ABBYY Recognition Server", version: "4.0", weight: 11076588}
+    - {creator: "ABBYY", name: "ABBYY FineReader Server", version: "14.0", weight: 2244286}
+    - {creator: "tuzkaocr", name: "dec-B-v2", version: "rec-E-v5", weight: 985804}
+    - {creator: "ABBYY", name: "ABBYY Recognition Server", version: "3.0", weight: 163094}
+    - {creator: "ABBYY Software Ltd.", name: "ABBYY FineReader", version: "8.0.1.1643", weight: 133269}
+    - {creator: "Project PERO", name: "modern_universal_printed", version: "2024-09-22", weight: 51199}
+    - {creator: "ABBYY Software Ltd.", name: "ABBYY FineReader Engine 10", version: "10.0.10.72", weight: 23857}
+    - {creator: "ABBYY Software Ltd.", name: "ABBYY FineReader", version: "8.0.1.1386", weight: 15086}
+    - {creator: "I2S", name: "Limb", version: "4.2.0.0", weight: 3136}
+    - {creator: "I2S", name: "Limb", version: "4.3.0.0", weight: 2623}
+
+text:
+  vocabulary_size: 100000
+  zipf_exponent: 1.07
+
+metadata:
+  authors: 50000
+  publishers: 3000
+  places: 800
+  zipf_exponent: 1.0
+  languages: {cze: 0.85, ger: 0.08, eng: 0.03, lat: 0.02, slo: 0.02}
+  monograph_years: [1800, 2020]
+  periodical_start_years: [1850, 2000]
+
+images:
+  base_url: http://imageserver.qg.local/qg

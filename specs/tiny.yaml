@@ -1,0 +1,64 @@
+# Tiny corpus for tests and smoke runs: every structure feature, small numbers.
+name: tiny
+
+models:
+  monograph:
+    page_share: 0.6
+    licenses: {dnnto+onsite: 0.6, public: 0.4}
+    profiles:
+      single:
+        kind: single
+        page_share: 0.8
+        pages: {dist: lattice_lognormal, median: 12, sigma: 0.5, p4: 0.6, p2: 0.3, minimum: 2}
+      multipart:
+        kind: multipart
+        page_share: 0.2
+        units: {dist: table, weights: {1: 0.2, 2: 0.6, 3: 0.2}}
+        unit_pages: {dist: lattice_lognormal, median: 8, sigma: 0.4, p4: 0.6, p2: 0.3, minimum: 2}
+  periodical:
+    page_share: 0.4
+    p_mixed_licenses: 0.5
+    licenses: {dnnto+onsite: 0.5, public: 0.3, onsite: 0.2}
+    profiles:
+      monthly:
+        page_share: 1
+        volumes: {dist: lognormal, median: 3, sigma: 0.5}
+        issues_per_volume: {nominal: 4, sigma: 0.1, p_incomplete: 0.2}
+        pages_per_issue: {median: 4, sigma_between: 0.4, sigma_within: 0.3, p4: 0.8, p2: 0.15}
+        p_volume_pages: 0.1
+        volume_pages: {dist: lattice_lognormal, median: 4, sigma: 0.5, p4: 0.5, p2: 0.3}
+        supplements_per_volume: {dist: poisson, mean: 0.5}
+        supplements_per_issue: {dist: poisson, mean: 0.1}
+        supplement_pages: {dist: lattice_lognormal, median: 2, sigma: 0.3, p4: 0.3, p2: 0.5}
+        articles_per_issue: {dist: poisson, mean: 0.2}
+        article_pages: {dist: lattice_lognormal, median: 2, sigma: 0.3, p4: 0.3, p2: 0.5}
+
+pages:
+  paper_sizes: {A5: 0.7, A4: 0.3}
+  dpi: {300: 1.0}
+  p_blank: 0.05
+  p_covers: 0.5
+  lines: {dist: lognormal, median: 12, sigma: 0.5}
+  words_per_line: {dist: lognormal, median: 5, sigma: 0.3}
+  lines_per_block: {dist: lognormal, median: 4, sigma: 0.5}
+  alto_versions: {v2: 0.6, v3: 0.1, v4: 0.3}
+  p_word_confidence: 0.5
+  alto_producers:
+    - {creator: "ABBYY", name: "ABBYY Recognition Server", version: "4.0", weight: 0.8}
+    - {creator: "Project PERO", name: "modern_universal_printed", version: "2024-09-22", weight: 0.2}
+
+text:
+  vocabulary_size: 2000
+  zipf_exponent: 1.07
+
+metadata:
+  authors: 50
+  publishers: 10
+  places: 10
+  zipf_exponent: 1.0
+  languages: {cze: 0.9, ger: 0.1}
+  monograph_years: [1900, 2000]
+  periodical_start_years: [1900, 1990]
+
+images:
+  base_url: http://imageserver.qg.local/qg
