@@ -62,10 +62,18 @@ def fetch_children(host: str, out: Path, parent: str, child: str) -> None:
     with open(target, "w") as f:
         slices = [f"own_parent.pid:uuid\\:{p}*" for p in PREFIXES] + ["-own_parent.pid:uuid\\:*"]
         for fq in slices:
-            data = query(host, [
-                ("q", q), ("fq", fq), ("rows", "0"), ("facet", "true"),
-                ("facet.field", "own_parent.pid"), ("facet.limit", "-1"), ("facet.mincount", "1"),
-            ])
+            data = query(
+                host,
+                [
+                    ("q", q),
+                    ("fq", fq),
+                    ("rows", "0"),
+                    ("facet", "true"),
+                    ("facet.field", "own_parent.pid"),
+                    ("facet.limit", "-1"),
+                    ("facet.mincount", "1"),
+                ],
+            )
             for pid, n in facet_pairs(data, "own_parent.pid"):
                 f.write(f"{pid}\t{n}\n")
                 got += n
@@ -78,10 +86,16 @@ def fetch_cursor(host: str, target: Path, q: str) -> None:
     cursor, n = "*", 0
     with open(target, "w") as f:
         while True:
-            data = query(host, [
-                ("q", q), ("rows", "5000"), ("fl", ",".join(ROOT_FIELDS)),
-                ("sort", "compositeId asc"), ("cursorMark", cursor),
-            ])
+            data = query(
+                host,
+                [
+                    ("q", q),
+                    ("rows", "5000"),
+                    ("fl", ",".join(ROOT_FIELDS)),
+                    ("sort", "compositeId asc"),
+                    ("cursorMark", cursor),
+                ],
+            )
             for d in data["response"]["docs"]:
                 row = [d.get(k, "") for k in ROOT_FIELDS]
                 f.write("\t".join(",".join(v) if isinstance(v, list) else v for v in row) + "\n")
@@ -96,7 +110,13 @@ def fetch_cursor(host: str, target: Path, q: str) -> None:
 
 def fetch_aggregates(host: str, out: Path) -> None:
     def facet(q: str, field: str, fq: str | None = None) -> dict:
-        params = [("q", q), ("rows", "0"), ("facet", "true"), ("facet.field", field), ("facet.limit", "-1")]
+        params = [
+            ("q", q),
+            ("rows", "0"),
+            ("facet", "true"),
+            ("facet.field", field),
+            ("facet.limit", "-1"),
+        ]
         if fq:
             params.append(("fq", fq))
         return dict(facet_pairs(query(host, params), field))

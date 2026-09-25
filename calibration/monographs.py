@@ -20,9 +20,11 @@ def load(path: Path) -> dict[str, int]:
 def describe(name: str, v: np.ndarray) -> None:
     q = np.percentile(v, [1, 5, 10, 25, 50, 75, 90, 95, 99]).round(0).astype(int)
     lv = np.log(v[v > 0])
-    print(f"{name}: n={v.size} mean={v.mean():.1f} p1..p99={q.tolist()} max={v.max()}"
-          f" | lognorm mu={lv.mean():.2f} sigma={lv.std():.2f}"
-          f" | even={np.mean(v % 2 == 0):.2f} mod4={np.mean(v % 4 == 0):.2f}")
+    print(
+        f"{name}: n={v.size} mean={v.mean():.1f} p1..p99={q.tolist()} max={v.max()}"
+        f" | lognorm mu={lv.mean():.2f} sigma={lv.std():.2f}"
+        f" | even={np.mean(v % 2 == 0):.2f} mod4={np.mean(v % 4 == 0):.2f}"
+    )
     print(f"   top={Counter(v.tolist()).most_common(12)}")
     edges = [1, 2, 3, 5, 9, 17, 33, 65, 129, 257, 513, 1025, 1e9]
     h = np.histogram(v, edges)[0]

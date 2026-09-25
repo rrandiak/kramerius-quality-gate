@@ -14,11 +14,19 @@ import re
 import sys
 import xml.etree.ElementTree as ET
 from collections import Counter, defaultdict
+from collections.abc import Iterator
 from pathlib import Path
 from urllib.parse import urlparse
 
 import numpy as np
 from PIL import Image
+
+
+def _lines(path: object) -> Iterator[str]:
+    """Lines of a file, closed when exhausted (dumps are too large to read at once)."""
+    with open(path) as f:  # type: ignore[call-overload]
+        yield from f
+
 
 VOCAB_PREDICATES = {"hasModel", "license", "containsLicense", "licenses", "policy", "model"}
 ALTO_IDS = {"ALTO"}
@@ -60,7 +68,9 @@ def alto_stats(root: ET.Element) -> dict:
     page = next((e for e in root.iter() if local(e.tag) == "Page"), None)
     unit = next((e.text for e in root.iter() if local(e.tag) == "MeasurementUnit"), None)
     sw = " ".join(
-        (e.text or "").strip() for e in root.iter() if local(e.tag) in ("softwareCreator", "softwareName", "softwareVersion")
+        (e.text or "").strip()
+        for e in root.iter()
+        if local(e.tag) in ("softwareCreator", "softwareName", "softwareVersion")
     )
     words = [len(e.get("CONTENT", "")) for e in root.iter() if local(e.tag) == "String"]
     wc = [float(e.get("WC")) for e in root.iter() if local(e.tag) == "String" and e.get("WC")]
@@ -85,23 +95,42 @@ def summarize(v: list[float]) -> dict:
     if a.size == 0:
         return {"n": 0}
     q = np.percentile(a, [10, 50, 90])
-    return {"n": int(a.size), "p10": round(q[0], 1), "p50": round(q[1], 1), "p90": round(q[2], 1), "max": round(a.max(), 1)}
+    return {
+        "n": int(a.size),
+        "p10": round(q[0], 1),
+        "p50": round(q[1], 1),
+        "p90": round(q[2], 1),
+        "max": round(a.max(), 1),
+    }
 
 
 def main() -> None:
     d = Path(sys.argv[1] if len(sys.argv) > 1 else "data/raw/foxml")
     out_json = Path(sys.argv[2]) if len(sys.argv) > 2 else None
     stratum = {}
-    for line in open(d / "sample.tsv"):
+    for line in _lines(d / "sample.tsv"):
         pid, _model, st = line.rstrip("\n").split("\t")
         stratum[pid] = st
 
-    per_model = defaultdict(lambda: {
-        "n": 0, "file_bytes": [], "ds": Counter(), "ds_kind": Counter(), "ds_bytes": defaultdict(list),
-        "ds_versions": defaultdict(list), "rels": Counter(), "rels_vocab": Counter(), "ext_hosts": Counter(),
-        "mods_paths": Counter(), "dc_paths": Counter(), "alto": [], "img": defaultdict(list),
-        "img_mime": Counter(), "rels_counts": defaultdict(list),
-    })
+    per_model = defaultdict(
+        lambda: {
+            "n": 0,
+            "file_bytes": [],
+            "ds": Counter(),
+            "ds_kind": Counter(),
+            "ds_bytes": defaultdict(list),
+            "ds_versions": defaultdict(list),
+            "rels": Counter(),
+            "rels_vocab": Counter(),
+            "ext_hosts": Counter(),
+            "mods_paths": Counter(),
+            "dc_paths": Counter(),
+            "alto": [],
+            "img": defaultdict(list),
+            "img_mime": Counter(),
+            "rels_counts": defaultdict(list),
+        }
+    )
     skipped = Counter()
     for f in sorted(d.glob("*.xml")):
         raw = f.read_bytes()
@@ -120,7 +149,9 @@ def main() -> None:
         if rels_el is not None:
             for e in rels_el.iter():
                 if local(e.tag) == "hasModel":
-                    model = e.get("{http://www.w3.org/1999/02/22-rdf-syntax-ns#}resource", "").rsplit(":", 1)[-1]
+                    model = e.get(
+                        "{http://www.w3.org/1999/02/22-rdf-syntax-ns#}resource", ""
+                    ).rsplit(":", 1)[-1]
         m = per_model[model]
         m["n"] += 1
         m["file_bytes"].append(len(raw))
@@ -167,7 +198,9 @@ def main() -> None:
                     continue
                 per_pred[name] += 1
                 if name in VOCAB_PREDICATES:
-                    val = e.get("{http://www.w3.org/1999/02/22-rdf-syntax-ns#}resource") or (e.text or "")
+                    val = e.get("{http://www.w3.org/1999/02/22-rdf-syntax-ns#}resource") or (
+                        e.text or ""
+                    )
                     m["rels_vocab"][(name, re.sub(r"uuid:[0-9a-f-]+", "uuid:*", val.strip()))] += 1
             m["rels"].update(set(per_pred))
             for name, c in per_pred.items():
@@ -185,17 +218,24 @@ def main() -> None:
                 for k, v in m["ds_kind"].most_common()
             ],
             "datastream_bytes": {k: summarize(v) for k, v in m["ds_bytes"].items()},
-            "datastream_versions": {k: summarize(v) for k, v in m["ds_versions"].items() if max(v) > 1},
+            "datastream_versions": {
+                k: summarize(v) for k, v in m["ds_versions"].items() if max(v) > 1
+            },
             "external_hosts": {f"{k[0]} {k[1]}": v for k, v in m["ext_hosts"].most_common(10)},
             "rels_predicates": {k: round(v / n, 2) for k, v in m["rels"].most_common()},
-            "rels_predicate_counts": {k: summarize(v) for k, v in m["rels_counts"].items() if max(v) > 1},
+            "rels_predicate_counts": {
+                k: summarize(v) for k, v in m["rels_counts"].items() if max(v) > 1
+            },
             "rels_vocab": {f"{k[0]}={k[1]}": v for k, v in m["rels_vocab"].most_common(25)},
             "mods_paths": {k: round(v / n, 2) for k, v in m["mods_paths"].most_common(60)},
             "dc_paths": {k: round(v / n, 2) for k, v in m["dc_paths"].most_common(30)},
             "image_mime": {f"{k[0]} {k[1]} {k[2]}": v for k, v in m["img_mime"].most_common()},
             "images": {
-                k: {"width": summarize([x[0] for x in v]), "height": summarize([x[1] for x in v]),
-                    "bytes": summarize([x[2] for x in v])}
+                k: {
+                    "width": summarize([x[0] for x in v]),
+                    "height": summarize([x[1] for x in v]),
+                    "bytes": summarize([x[2] for x in v]),
+                }
                 for k, v in m["img"].items()
             },
         }
@@ -207,10 +247,25 @@ def main() -> None:
                 "units": dict(Counter(a["unit"] for a in alto)),
                 "software": dict(Counter(a["software"] for a in alto).most_common(8)),
                 "namespace": dict(Counter(a["namespace"] for a in alto)),
-                **{k: summarize([a[k] for a in alto]) for k in
-                   ("width", "height", "blocks", "lines", "strings", "illustrations", "hyp", "mean_word_len")},
-                "lines_per_block": summarize([a["lines"] / a["blocks"] for a in alto if a["blocks"]]),
-                "strings_per_line": summarize([a["strings"] / a["lines"] for a in alto if a["lines"]]),
+                **{
+                    k: summarize([a[k] for a in alto])
+                    for k in (
+                        "width",
+                        "height",
+                        "blocks",
+                        "lines",
+                        "strings",
+                        "illustrations",
+                        "hyp",
+                        "mean_word_len",
+                    )
+                },
+                "lines_per_block": summarize(
+                    [a["lines"] / a["blocks"] for a in alto if a["blocks"]]
+                ),
+                "strings_per_line": summarize(
+                    [a["strings"] / a["lines"] for a in alto if a["lines"]]
+                ),
                 "has_wc": round(float(np.mean([a["has_wc"] for a in alto])), 2) if alto else 0,
             }
         report["models"][model] = r

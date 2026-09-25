@@ -17,14 +17,45 @@ import time
 import urllib.parse
 import urllib.request
 from collections import Counter, defaultdict
+from collections.abc import Iterator
 from pathlib import Path
+
+
+def _lines(path: object) -> Iterator[str]:
+    """Lines of a file, closed when exhausted (dumps are too large to read at once)."""
+    with open(path) as f:  # type: ignore[call-overload]
+        yield from f
+
 
 HOST = "https://api.kramerius.mzk.cz/search/api/client/v7.0/search"
 RAW = Path("data/raw")
-PROFILES = [(1, 2, "annual"), (2, 4, "2-3/yr"), (4, 6, "quarterly"), (6, 10, "bimonthly"), (10, 16, "monthly"),
-            (16, 31, "biweekly"), (31, 61, "weekly"), (61, 251, "several/wk"), (251, 10**9, "daily")]
-PAGE_TYPES = ["NormalPage", "TitlePage", "TableOfContents", "Table", "Index", "FrontEndSheet", "FrontCover",
-              "BackEndSheet", "BackCover", "Jacket", "Blank", "Advertisement", "Map", "sheetmusic"]
+PROFILES = [
+    (1, 2, "annual"),
+    (2, 4, "2-3/yr"),
+    (4, 6, "quarterly"),
+    (6, 10, "bimonthly"),
+    (10, 16, "monthly"),
+    (16, 31, "biweekly"),
+    (31, 61, "weekly"),
+    (61, 251, "several/wk"),
+    (251, 10**9, "daily"),
+]
+PAGE_TYPES = [
+    "NormalPage",
+    "TitlePage",
+    "TableOfContents",
+    "Table",
+    "Index",
+    "FrontEndSheet",
+    "FrontCover",
+    "BackEndSheet",
+    "BackCover",
+    "Jacket",
+    "Blank",
+    "Advertisement",
+    "Map",
+    "sheetmusic",
+]
 
 
 class Sample:
@@ -51,10 +82,15 @@ def solr_pids(q: str, rows: int, fq: str | None = None) -> list[str]:
 
 
 def monographs(s: Sample, rng: random.Random) -> None:
-    pages = dict(line.rstrip().split("\t") for line in open(RAW / "solr/children.monograph.page.tsv"))
-    units = dict(line.rstrip().split("\t") for line in open(RAW / "solr/children.monograph.monographunit.tsv"))
+    pages = dict(
+        line.rstrip().split("\t") for line in _lines(RAW / "solr/children.monograph.page.tsv")
+    )
+    units = dict(
+        line.rstrip().split("\t")
+        for line in _lines(RAW / "solr/children.monograph.monographunit.tsv")
+    )
     lic = {}
-    for line in open(RAW / "solr/roots.tsv"):
+    for line in _lines(RAW / "solr/roots.tsv"):
         pid, model, licenses, *_ = line.rstrip("\n").split("\t")
         if model == "monograph":
             lic[pid] = licenses or "(none)"
@@ -63,7 +99,17 @@ def monographs(s: Sample, rng: random.Random) -> None:
         if pid in units or pid not in lic:
             continue
         n = int(n)
-        size = "<=16" if n <= 16 else "17-100" if n <= 100 else "101-300" if n <= 300 else "301-800" if n <= 800 else ">800"
+        size = (
+            "<=16"
+            if n <= 16
+            else "17-100"
+            if n <= 100
+            else "101-300"
+            if n <= 300
+            else "301-800"
+            if n <= 800
+            else ">800"
+        )
         strata[(size, lic[pid])].append(pid)
     top_lic = [k for k, _ in Counter(lic.values()).most_common(4)]
     for (size, licenses), pids in sorted(strata.items()):
@@ -89,9 +135,11 @@ def monographs(s: Sample, rng: random.Random) -> None:
 
 
 def periodicals(s: Sample, rng: random.Random, per_profile: int) -> None:
-    model = dict(line.rstrip().split(",", 1) for line in open(RAW / "periodical.models.txt"))
-    items: dict[str, dict[str, set]] = defaultdict(lambda: defaultdict(set))  # title -> volume -> items
-    for line in open(RAW / "periodical.paths.txt"):
+    model = dict(line.rstrip().split(",", 1) for line in _lines(RAW / "periodical.models.txt"))
+    items: dict[str, dict[str, set]] = defaultdict(
+        lambda: defaultdict(set)
+    )  # title -> volume -> items
+    for line in _lines(RAW / "periodical.paths.txt"):
         parts = line.split("/", 3)
         if len(parts) >= 4 and model.get(parts[2]) == "periodicalitem":
             items[parts[0]][parts[1]].add(parts[2])
@@ -102,9 +150,13 @@ def periodicals(s: Sample, rng: random.Random, per_profile: int) -> None:
         name = next(n for lo, hi, n in PROFILES if lo <= med < hi)
         profile_titles[name].append(title)
     del items
-    chosen = {t: name for name, ts in profile_titles.items() for t in rng.sample(sorted(ts), min(per_profile, len(ts)))}
+    chosen = {
+        t: name
+        for name, ts in profile_titles.items()
+        for t in rng.sample(sorted(ts), min(per_profile, len(ts)))
+    }
     tree: dict[str, dict] = {t: defaultdict(lambda: defaultdict(list)) for t in chosen}
-    for line in open(RAW / "periodical.paths.txt"):
+    for line in _lines(RAW / "periodical.paths.txt"):
         parts = line.rstrip("\n").split("/")
         if parts[0] in tree and len(parts) >= 3:
             tree[parts[0]][parts[1]]["/".join(parts[2:-1])].append(parts[-1])
@@ -119,7 +171,9 @@ def periodicals(s: Sample, rng: random.Random, per_profile: int) -> None:
             pages = tree[title][vol][sub]
             s.add(rng.choice(sorted(pages)), "page", f"page of {name}")
         # up to 2 supplements and 2 articles anywhere in that volume
-        extra = sorted({n for sub in subs for n in sub.split("/") if model.get(n) in ("supplement", "article")})
+        extra = sorted(
+            {n for sub in subs for n in sub.split("/") if model.get(n) in ("supplement", "article")}
+        )
         for kind in ("supplement", "article"):
             of_kind = [n for n in extra if model[n] == kind]
             for node in rng.sample(of_kind, min(2, len(of_kind))):
@@ -138,7 +192,7 @@ def periodicals(s: Sample, rng: random.Random, per_profile: int) -> None:
 
 def other_roots(s: Sample, rng: random.Random, per_sig: int) -> None:
     nodes_by_root: dict[str, list[tuple[str, str]]] = defaultdict(list)
-    for line in open(RAW / "other.paths-and-models.txt"):
+    for line in _lines(RAW / "other.paths-and-models.txt"):
         line = line.strip()
         if not line:
             continue
@@ -147,7 +201,16 @@ def other_roots(s: Sample, rng: random.Random, per_sig: int) -> None:
     by_sig = defaultdict(list)
     for root, nodes in nodes_by_root.items():
         rm = next((mp for mp, pp in nodes if "/" not in pp), None)
-        if rm is None or rm in ("page", "periodicalitem", "periodicalvolume", "supplement", "internalpart", "article", "track", "monographunit"):
+        if rm is None or rm in (
+            "page",
+            "periodicalitem",
+            "periodicalvolume",
+            "supplement",
+            "internalpart",
+            "article",
+            "track",
+            "monographunit",
+        ):
             continue  # orphans
         sig = "+".join(sorted({"/".join(mp.split("/")[1:]) for mp, _ in nodes if "/" in mp}))
         by_sig[(rm, sig)].append(root)
@@ -163,16 +226,22 @@ def other_roots(s: Sample, rng: random.Random, per_sig: int) -> None:
                 for _mp, pp in rng.sample(sorted(lst), min(2 if m != "page" else 1, len(lst))):
                     s.add(pp.rsplit("/", 1)[-1], m, f"{m} of {rm}")
     # complete small trees: one soundrecording, one convolute, one multi-page map
-    for rm, want in [("soundrecording", "page+soundunit+soundunit/track"), ("convolute", "monograph+monograph/page"),
-                     ("map", "page")]:
-        roots = sorted(by_sig.get((rm, want), []), key=lambda r: (len(nodes_by_root[r]) < 3, len(nodes_by_root[r])))
+    for rm, want in [
+        ("soundrecording", "page+soundunit+soundunit/track"),
+        ("convolute", "monograph+monograph/page"),
+        ("map", "page"),
+    ]:
+        roots = sorted(
+            by_sig.get((rm, want), []),
+            key=lambda r: (len(nodes_by_root[r]) < 3, len(nodes_by_root[r])),
+        )
         if roots:
             for mp, pp in nodes_by_root[roots[0]]:
                 s.add(pp.rsplit("/", 1)[-1], mp.rsplit("/", 1)[-1], f"full tree: {rm}")
 
 
 def collections(s: Sample, rng: random.Random) -> None:
-    rows = [line.rstrip("\n").split("\t") for line in open(RAW / "solr/collections.tsv")]
+    rows = [line.rstrip("\n").split("\t") for line in _lines(RAW / "solr/collections.tsv")]
     parents = {r[0]: [p for p in r[3].split(",") if p] for r in rows}
     top = [c for c, p in parents.items() if not p]
     nested = [c for c, p in parents.items() if p]

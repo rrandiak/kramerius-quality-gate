@@ -86,16 +86,26 @@ def describe(x: np.ndarray) -> dict:
     if var > mean:
         p = mean / var
         r = mean * p / (1 - p)
-        ks_nb = float(np.max(np.abs(
-            np.searchsorted(np.sort(x), np.arange(x.max() + 1), side="right") / x.size
-            - stats.nbinom.cdf(np.arange(x.max() + 1), r, p)
-        )))
+        ks_nb = float(
+            np.max(
+                np.abs(
+                    np.searchsorted(np.sort(x), np.arange(x.max() + 1), side="right") / x.size
+                    - stats.nbinom.cdf(np.arange(x.max() + 1), r, p)
+                )
+            )
+        )
     return {
         "n": int(x.size),
         "mean": round(mean, 2),
         "cv": round(float(np.sqrt(var) / mean), 2),
         "min": int(x.min()),
-        "p": dict(zip(["1", "5", "10", "25", "50", "75", "90", "95", "99"], [float(v) for v in q], strict=False)),
+        "p": dict(
+            zip(
+                ["1", "5", "10", "25", "50", "75", "90", "95", "99"],
+                [float(v) for v in q],
+                strict=False,
+            )
+        ),
         "max": int(x.max()),
         "lognorm_mu": round(mu, 3),
         "lognorm_sigma": round(sigma, 3),
@@ -190,14 +200,32 @@ def main() -> None:
     }
     report["title_median_items_per_volume_hist"] = dict(
         zip(
-            ["1", "2-3", "4-5", "6-9", "10-15", "16-30", "31-60", "61-120", "121-250", "251-400", ">400"],
-            np.histogram(items_med[~np.isnan(items_med)], [1, 2, 4, 6, 10, 16, 31, 61, 121, 251, 401, 1e9])[0].tolist(), strict=False,
+            [
+                "1",
+                "2-3",
+                "4-5",
+                "6-9",
+                "10-15",
+                "16-30",
+                "31-60",
+                "61-120",
+                "121-250",
+                "251-400",
+                ">400",
+            ],
+            np.histogram(
+                items_med[~np.isnan(items_med)], [1, 2, 4, 6, 10, 16, 31, 61, 121, 251, 401, 1e9]
+            )[0].tolist(),
+            strict=False,
         )
     )
     report["title_median_pages_per_item_hist"] = dict(
         zip(
             ["1-2", "3-4", "5-8", "9-12", "13-16", "17-24", "25-40", "41-80", "81-200", ">200"],
-            np.histogram(ppi_med[~np.isnan(ppi_med)], [1, 3, 5, 9, 13, 17, 25, 41, 81, 201, 1e9])[0].tolist(), strict=False,
+            np.histogram(ppi_med[~np.isnan(ppi_med)], [1, 3, 5, 9, 13, 17, 25, 41, 81, 201, 1e9])[
+                0
+            ].tolist(),
+            strict=False,
         )
     )
 
@@ -207,7 +235,9 @@ def main() -> None:
     resid_items = np.log(a["children"][v]) - np.log(items_med[a["title"][v]])
     report["items_per_volume_within_title_sigma"] = round(float(np.std(resid_items)), 3)
     resid_ppi = np.log(a["pages"][iv]) - np.log(ppi_med[a["title"][iv]])
-    report["pages_per_item_within_title_sigma"] = round(float(np.std(resid_ppi[np.isfinite(resid_ppi)])), 3)
+    report["pages_per_item_within_title_sigma"] = round(
+        float(np.std(resid_ppi[np.isfinite(resid_ppi)])), 3
+    )
 
     out = json.dumps(report, indent=1, ensure_ascii=False, default=str)
     if len(sys.argv) > 2:

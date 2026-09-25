@@ -1,6 +1,6 @@
 """Licenses and collection membership from fetch_solr.py roots.tsv / collections.tsv.
 
-    uv run --with numpy calibration/roots.py [data/raw/solr]
+uv run --with numpy calibration/roots.py [data/raw/solr]
 """
 
 import sys
@@ -14,9 +14,13 @@ def rows(path: Path):
     with open(path) as f:
         for line in f:
             pid, model, lic, direct, trans = (line.rstrip("\n").split("\t") + [""] * 5)[:5]
-            yield pid, model, set(filter(None, lic.split(","))), [c for c in direct.split(",") if c], [
-                c for c in trans.split(",") if c
-            ]
+            yield (
+                pid,
+                model,
+                set(filter(None, lic.split(","))),
+                [c for c in direct.split(",") if c],
+                [c for c in trans.split(",") if c],
+            )
 
 
 def pct(v: np.ndarray, qs=(50, 75, 90, 95, 99)) -> str:
@@ -52,8 +56,10 @@ def main() -> None:
         if model == "collection":
             continue
         v = np.array(per_doc[model])
-        print(f"  {model:15} in>=1: {100 * np.mean(v > 0):5.1f}%  of those: mean {v[v > 0].mean() if (v > 0).any() else 0:.2f}"
-              f"  dist {Counter(v[v > 0].tolist()).most_common(5)}")
+        print(
+            f"  {model:15} in>=1: {100 * np.mean(v > 0):5.1f}%  of those: mean {v[v > 0].mean() if (v > 0).any() else 0:.2f}"
+            f"  dist {Counter(v[v > 0].tolist()).most_common(5)}"
+        )
     m = np.array([members.get(c, 0) for c in colls])
     print(f"  root members per collection: {pct(m)}  empty={int(np.sum(m == 0))}/{m.size}")
     lm = np.log(m[m > 0])
@@ -61,13 +67,17 @@ def main() -> None:
 
     print("\n== collection nesting")
     parents = np.array([len(r[3]) for r in colls.values()])
-    print(f"  collections with a parent collection: {np.mean(parents > 0):.2f}, parents dist {Counter(parents.tolist()).most_common(5)}")
+    print(
+        f"  collections with a parent collection: {np.mean(parents > 0):.2f}, parents dist {Counter(parents.tolist()).most_common(5)}"
+    )
     child_colls = Counter(p for r in colls.values() for p in r[3])
     cc = np.array([child_colls.get(c, 0) for c in colls])
     print(f"  sub-collections per collection: non-zero {np.sum(cc > 0)}  {pct(cc)}")
 
     def depth(c: str, seen=()) -> int:
-        ps = [p for p in colls.get(c, (None, None, None, [], []))[3] if p in colls and p not in seen]
+        ps = [
+            p for p in colls.get(c, (None, None, None, [], []))[3] if p in colls and p not in seen
+        ]
         return 0 if not ps else 1 + max(depth(p, seen + (c,)) for p in ps)
 
     print(f"  depth dist {sorted(Counter(depth(c) for c in colls).items())}")
