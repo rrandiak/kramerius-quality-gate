@@ -1,0 +1,4569 @@
+{
+ "skipped": {
+  "not found (json)": 4
+ },
+ "models": {
+  "page": {
+   "n": 307,
+   "file_bytes": {
+    "n": 307,
+    "p10": 8008.0,
+    "p50": 78948.0,
+    "p90": 1177845.6,
+    "max": 1979508.0
+   },
+   "datastreams": {
+    "DC": 1.0,
+    "IMG_THUMB": 1.0,
+    "IMG_FULL": 1.0,
+    "BIBLIO_MODS": 1.0,
+    "RELS-EXT": 1.0,
+    "IMG_PREVIEW": 0.91,
+    "TEXT_OCR": 0.9,
+    "ALTO": 0.89,
+    "AUDIT": 0.76,
+    "POLICY": 0.75,
+    "IMG_FULL_ADM": 0.67,
+    "TEXT_OCR_ADM": 0.65,
+    "IMG_FULL_AMD": 0.07
+   },
+   "datastream_kinds": [
+    {
+     "id": "DC",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 1.0
+    },
+    {
+     "id": "BIBLIO_MODS",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 1.0
+    },
+    {
+     "id": "RELS-EXT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "application/rdf+xml",
+     "share": 0.84
+    },
+    {
+     "id": "IMG_THUMB",
+     "control": "E",
+     "kind": "location",
+     "mime": "image/jpeg",
+     "share": 0.82
+    },
+    {
+     "id": "TEXT_OCR",
+     "control": "M",
+     "kind": "binary",
+     "mime": "text/plain",
+     "share": 0.82
+    },
+    {
+     "id": "IMG_FULL",
+     "control": "E",
+     "kind": "location",
+     "mime": "image/jpeg",
+     "share": 0.8
+    },
+    {
+     "id": "IMG_PREVIEW",
+     "control": "E",
+     "kind": "location",
+     "mime": "image/jpeg",
+     "share": 0.79
+    },
+    {
+     "id": "AUDIT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 0.76
+    },
+    {
+     "id": "POLICY",
+     "control": "E",
+     "kind": "location",
+     "mime": "application/rdf+xml",
+     "share": 0.74
+    },
+    {
+     "id": "IMG_FULL_ADM",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 0.67
+    },
+    {
+     "id": "TEXT_OCR_ADM",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 0.65
+    },
+    {
+     "id": "ALTO",
+     "control": "M",
+     "kind": "binary",
+     "mime": "text/plain",
+     "share": 0.51
+    },
+    {
+     "id": "ALTO",
+     "control": "M",
+     "kind": "binary",
+     "mime": "text/xml",
+     "share": 0.3
+    },
+    {
+     "id": "RELS-EXT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 0.16
+    },
+    {
+     "id": "IMG_FULL",
+     "control": "M",
+     "kind": "binary",
+     "mime": "image/jpeg",
+     "share": 0.1
+    },
+    {
+     "id": "IMG_PREVIEW",
+     "control": "M",
+     "kind": "binary",
+     "mime": "image/jpeg",
+     "share": 0.1
+    },
+    {
+     "id": "IMG_THUMB",
+     "control": "M",
+     "kind": "binary",
+     "mime": "image/jpeg",
+     "share": 0.1
+    },
+    {
+     "id": "TEXT_OCR",
+     "control": "M",
+     "kind": "binary",
+     "mime": "application/octet-stream",
+     "share": 0.08
+    },
+    {
+     "id": "ALTO",
+     "control": "M",
+     "kind": "binary",
+     "mime": "application/octet-stream",
+     "share": 0.08
+    },
+    {
+     "id": "IMG_FULL",
+     "control": "R",
+     "kind": "location",
+     "mime": "image/jpeg",
+     "share": 0.07
+    },
+    {
+     "id": "IMG_THUMB",
+     "control": "R",
+     "kind": "location",
+     "mime": "image/jpeg",
+     "share": 0.07
+    },
+    {
+     "id": "IMG_FULL_AMD",
+     "control": "M",
+     "kind": "binary",
+     "mime": "text/xml",
+     "share": 0.07
+    },
+    {
+     "id": "IMG_FULL",
+     "control": "E",
+     "kind": "location",
+     "mime": "image/jp2",
+     "share": 0.02
+    },
+    {
+     "id": "POLICY",
+     "control": "E",
+     "kind": "location",
+     "mime": "text/xml",
+     "share": 0.01
+    },
+    {
+     "id": "IMG_PREVIEW",
+     "control": "R",
+     "kind": "location",
+     "mime": "image/jpeg",
+     "share": 0.01
+    }
+   ],
+   "datastream_bytes": {
+    "AUDIT": {
+     "n": 232,
+     "p10": 357.0,
+     "p50": 491.0,
+     "p90": 3581.0,
+     "max": 12726.0
+    },
+    "DC": {
+     "n": 307,
+     "p10": 266.0,
+     "p50": 471.0,
+     "p90": 495.0,
+     "max": 498.0
+    },
+    "IMG_FULL_ADM": {
+     "n": 206,
+     "p10": 219.0,
+     "p50": 219.0,
+     "p90": 270.0,
+     "max": 570.0
+    },
+    "TEXT_OCR_ADM": {
+     "n": 200,
+     "p10": 127.0,
+     "p50": 127.0,
+     "p90": 178.0,
+     "max": 178.0
+    },
+    "TEXT_OCR": {
+     "n": 277,
+     "p10": 3.0,
+     "p50": 1981.0,
+     "p90": 13780.4,
+     "max": 54266.0
+    },
+    "ALTO": {
+     "n": 272,
+     "p10": 1726.0,
+     "p50": 48749.5,
+     "p90": 255540.3,
+     "max": 1223062.0
+    },
+    "BIBLIO_MODS": {
+     "n": 307,
+     "p10": 486.6,
+     "p50": 536.0,
+     "p90": 901.0,
+     "max": 991.0
+    },
+    "RELS-EXT": {
+     "n": 307,
+     "p10": 551.0,
+     "p50": 717.0,
+     "p90": 803.0,
+     "max": 900.0
+    },
+    "IMG_FULL_AMD": {
+     "n": 22,
+     "p10": 26419.2,
+     "p50": 29235.0,
+     "p90": 43030.1,
+     "max": 49001.0
+    },
+    "IMG_FULL": {
+     "n": 32,
+     "p10": 847155.9,
+     "p50": 1157574.0,
+     "p90": 1225969.8,
+     "max": 1243044.0
+    },
+    "IMG_PREVIEW": {
+     "n": 32,
+     "p10": 83259.5,
+     "p50": 160647.0,
+     "p90": 172150.9,
+     "max": 174854.0
+    },
+    "IMG_THUMB": {
+     "n": 32,
+     "p10": 1926.6,
+     "p50": 3384.5,
+     "p90": 3609.2,
+     "max": 3707.0
+    }
+   },
+   "datastream_versions": {
+    "DC": {
+     "n": 307,
+     "p10": 1.0,
+     "p50": 1.0,
+     "p90": 1.0,
+     "max": 3.0
+    },
+    "RELS-EXT": {
+     "n": 307,
+     "p10": 1.0,
+     "p50": 1.0,
+     "p90": 1.0,
+     "max": 7.0
+    }
+   },
+   "external_hosts": {
+    "IMG_THUMB imageserver.mzk.cz": 275,
+    "IMG_FULL imageserver.mzk.cz": 275,
+    "IMG_PREVIEW imageserver.mzk.cz": 246,
+    "POLICY local.fedora.server": 230
+   },
+   "rels_predicates": {
+    "hasModel": 1.0,
+    "itemID": 0.99,
+    "tiles-url": 0.9,
+    "policy": 0.81,
+    "file": 0.78,
+    "isMemberOfCollection": 0.25,
+    "license": 0.02,
+    "hasDonator": 0.01,
+    "handle": 0.0
+   },
+   "rels_predicate_counts": {
+    "tiles-url": {
+     "n": 275,
+     "p10": 1.0,
+     "p50": 1.0,
+     "p90": 1.0,
+     "max": 2.0
+    },
+    "isMemberOfCollection": {
+     "n": 76,
+     "p10": 1.0,
+     "p50": 1.0,
+     "p90": 2.0,
+     "max": 2.0
+    }
+   },
+   "rels_vocab": {
+    "hasModel=info:fedora/model:page": 307,
+    "policy=policy:private": 161,
+    "policy=policy:public": 88,
+    "license=public": 5
+   },
+   "mods_paths": {
+    "/modsCollection/mods/part/detail/number": 1.0,
+    "/modsCollection/mods/part/detail/@type": 1.0,
+    "/modsCollection/mods/part/detail": 1.0,
+    "/modsCollection": 1.0,
+    "/modsCollection/mods": 1.0,
+    "/modsCollection/mods/part": 1.0,
+    "/modsCollection/mods/part/@type": 0.96,
+    "/modsCollection/mods/identifier/@type": 0.95,
+    "/modsCollection/mods/identifier": 0.95,
+    "/modsCollection/mods/@version": 0.92,
+    "/modsCollection/mods/typeOfResource": 0.82,
+    "/modsCollection/mods/note": 0.25,
+    "/modsCollection/mods/genre/@type": 0.14,
+    "/modsCollection/mods/genre": 0.14,
+    "/modsCollection/mods/part/extent/@unit": 0.13,
+    "/modsCollection/mods/part/extent": 0.13,
+    "/modsCollection/mods/part/extent/start": 0.13,
+    "/modsCollection/mods/recordInfo/recordCreationDate/@encoding": 0.11,
+    "/modsCollection/mods/recordInfo/recordCreationDate": 0.11,
+    "/modsCollection/mods/recordInfo": 0.11,
+    "/modsCollection/mods/recordInfo/recordChangeDate/@encoding": 0.11,
+    "/modsCollection/mods/recordInfo/recordChangeDate": 0.11,
+    "/modsCollection/@schemaLocation": 0.1,
+    "/modsCollection/mods/location/url": 0.09,
+    "/modsCollection/mods/titleInfo": 0.09,
+    "/modsCollection/mods/location": 0.09,
+    "/modsCollection/mods/titleInfo/title": 0.09,
+    "/modsCollection/mods/@ID": 0.03,
+    "/modsCollection/mods/part/text": 0.0
+   },
+   "dc_paths": {
+    "/dc/type": 1.0,
+    "/dc/identifier": 1.0,
+    "/dc": 1.0,
+    "/dc/title": 0.86,
+    "/dc/rights": 0.81,
+    "/dc/@schemaLocation": 0.8,
+    "/dc/coverage": 0.14
+   },
+   "image_mime": {
+    "IMG_THUMB image/jpeg location": 275,
+    "IMG_FULL image/jpeg location": 269,
+    "IMG_PREVIEW image/jpeg location": 246,
+    "IMG_FULL image/jpeg binary": 32,
+    "IMG_PREVIEW image/jpeg binary": 32,
+    "IMG_THUMB image/jpeg binary": 32,
+    "IMG_FULL image/jp2 location": 6
+   },
+   "images": {
+    "IMG_FULL": {
+     "width": {
+      "n": 32,
+      "p10": 1829.8,
+      "p50": 1878.5,
+      "p90": 1968.9,
+      "max": 1991.0
+     },
+     "height": {
+      "n": 32,
+      "p10": 2549.3,
+      "p50": 2616.0,
+      "p90": 2641.0,
+      "max": 2644.0
+     },
+     "bytes": {
+      "n": 32,
+      "p10": 847155.9,
+      "p50": 1157574.0,
+      "p90": 1225969.8,
+      "max": 1243044.0
+     }
+    },
+    "IMG_PREVIEW": {
+     "width": {
+      "n": 32,
+      "p10": 697.7,
+      "p50": 729.5,
+      "p90": 747.8,
+      "max": 766.0
+     },
+     "height": {
+      "n": 32,
+      "p10": 1000.0,
+      "p50": 1000.0,
+      "p90": 1000.0,
+      "max": 1000.0
+     },
+     "bytes": {
+      "n": 32,
+      "p10": 83259.5,
+      "p50": 160647.0,
+      "p90": 172150.9,
+      "max": 174854.0
+     }
+    },
+    "IMG_THUMB": {
+     "width": {
+      "n": 32,
+      "p10": 89.1,
+      "p50": 93.0,
+      "p90": 95.0,
+      "max": 98.0
+     },
+     "height": {
+      "n": 32,
+      "p10": 128.0,
+      "p50": 128.0,
+      "p90": 128.0,
+      "max": 128.0
+     },
+     "bytes": {
+      "n": 32,
+      "p10": 1926.6,
+      "p50": 3384.5,
+      "p90": 3609.2,
+      "max": 3707.0
+     }
+    }
+   },
+   "alto": {
+    "n": 272,
+    "parse_errors": 4,
+    "units": {
+     "pixel": 248,
+     "null": 20
+    },
+    "software": {
+     "ABBYY ABBYY Recognition Server 4.0": 111,
+     "ABBYY ABBYY FineReader Server 14.0": 41,
+     "Project PERO czech_old_handwritten 2022-": 39,
+     "tuzkaocr dec-B-v2 tuzkaocr rec-E-v5.int8": 21,
+     "": 20,
+     "ABBYY Software Ltd. ABBYY FineReader 8.0": 10,
+     "ABBYY ABBYY Recognition Server 3.0": 7,
+     "Project PERO modern_universal_printed 20": 4
+    },
+    "namespace": {
+     "http://www.loc.gov/standards/alto/ns-v2#": 240,
+     "http://www.loc.gov/standards/alto/ns-v4#": 26,
+     "http://www.loc.gov/standards/alto/ns-v3#": 2
+    },
+    "width": {
+     "n": 268,
+     "p10": 0.0,
+     "p50": 1692.0,
+     "p90": 3448.5,
+     "max": 14023.0
+    },
+    "height": {
+     "n": 268,
+     "p10": 0.0,
+     "p50": 2429.0,
+     "p90": 4792.2,
+     "max": 12040.0
+    },
+    "blocks": {
+     "n": 268,
+     "p10": 0.7,
+     "p50": 4.0,
+     "p90": 38.3,
+     "max": 554.0
+    },
+    "lines": {
+     "n": 268,
+     "p10": 0.0,
+     "p50": 46.5,
+     "p90": 270.0,
+     "max": 1769.0
+    },
+    "strings": {
+     "n": 268,
+     "p10": 0.0,
+     "p50": 306.0,
+     "p90": 1915.9,
+     "max": 8418.0
+    },
+    "illustrations": {
+     "n": 268,
+     "p10": 0.0,
+     "p50": 1.0,
+     "p90": 24.3,
+     "max": 471.0
+    },
+    "hyp": {
+     "n": 268,
+     "p10": 0.0,
+     "p50": 0.0,
+     "p90": 30.3,
+     "max": 181.0
+    },
+    "mean_word_len": {
+     "n": 268,
+     "p10": 0.0,
+     "p50": 5.1,
+     "p90": 6.0,
+     "max": 8.0
+    },
+    "lines_per_block": {
+     "n": 241,
+     "p10": 1.0,
+     "p50": 9.0,
+     "p90": 31.0,
+     "max": 76.7
+    },
+    "strings_per_line": {
+     "n": 238,
+     "p10": 1.9,
+     "p50": 5.6,
+     "p90": 9.7,
+     "max": 16.0
+    },
+    "has_wc": 0.24
+   }
+  },
+  "monograph": {
+   "n": 79,
+   "file_bytes": {
+    "n": 79,
+    "p10": 8827.6,
+    "p50": 21149.0,
+    "p90": 108115.0,
+    "max": 275660.0
+   },
+   "datastreams": {
+    "BIBLIO_MODS": 1.0,
+    "DC": 1.0,
+    "RELS-EXT": 1.0,
+    "AUDIT": 0.82,
+    "POLICY": 0.81,
+    "IMG_FULL": 0.04,
+    "IMG_PREVIEW": 0.04,
+    "IMG_THUMB": 0.04
+   },
+   "datastream_kinds": [
+    {
+     "id": "BIBLIO_MODS",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 1.0
+    },
+    {
+     "id": "DC",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 1.0
+    },
+    {
+     "id": "RELS-EXT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 0.85
+    },
+    {
+     "id": "AUDIT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 0.82
+    },
+    {
+     "id": "POLICY",
+     "control": "E",
+     "kind": "location",
+     "mime": "application/rdf+xml",
+     "share": 0.81
+    },
+    {
+     "id": "RELS-EXT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "application/xml",
+     "share": 0.13
+    },
+    {
+     "id": "IMG_FULL",
+     "control": "E",
+     "kind": "location",
+     "mime": "application/pdf",
+     "share": 0.04
+    },
+    {
+     "id": "IMG_PREVIEW",
+     "control": "E",
+     "kind": "location",
+     "mime": "image/jpeg",
+     "share": 0.04
+    },
+    {
+     "id": "IMG_THUMB",
+     "control": "E",
+     "kind": "location",
+     "mime": "image/jpeg",
+     "share": 0.04
+    },
+    {
+     "id": "RELS-EXT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "application/rdf+xml",
+     "share": 0.03
+    }
+   ],
+   "datastream_bytes": {
+    "AUDIT": {
+     "n": 65,
+     "p10": 357.0,
+     "p50": 357.0,
+     "p90": 3134.4,
+     "max": 8414.0
+    },
+    "BIBLIO_MODS": {
+     "n": 79,
+     "p10": 2323.6,
+     "p50": 3762.0,
+     "p90": 6296.6,
+     "max": 11658.0
+    },
+    "DC": {
+     "n": 79,
+     "p10": 781.8,
+     "p50": 1504.0,
+     "p90": 3115.0,
+     "max": 3955.0
+    },
+    "RELS-EXT": {
+     "n": 79,
+     "p10": 828.8,
+     "p50": 10478.0,
+     "p90": 80827.8,
+     "max": 187377.0
+    }
+   },
+   "datastream_versions": {
+    "BIBLIO_MODS": {
+     "n": 79,
+     "p10": 1.0,
+     "p50": 1.0,
+     "p90": 1.0,
+     "max": 2.0
+    },
+    "RELS-EXT": {
+     "n": 79,
+     "p10": 1.0,
+     "p50": 1.0,
+     "p90": 2.0,
+     "max": 2.0
+    }
+   },
+   "external_hosts": {
+    "POLICY local.fedora.server": 64,
+    "IMG_FULL pdfserver.mzk.cz": 3,
+    "IMG_PREVIEW pdfserver.mzk.cz": 3,
+    "IMG_THUMB pdfserver.mzk.cz": 3
+   },
+   "rels_predicates": {
+    "hasModel": 1.0,
+    "itemID": 1.0,
+    "license": 0.87,
+    "hasPage": 0.86,
+    "policy": 0.82,
+    "contract": 0.56,
+    "handle": 0.56,
+    "hasDonator": 0.11,
+    "containsLicense": 0.1,
+    "hasUnit": 0.1,
+    "isMemberOfCollection": 0.1,
+    "dnnt": 0.01
+   },
+   "rels_predicate_counts": {
+    "hasPage": {
+     "n": 68,
+     "p10": 12.0,
+     "p50": 160.0,
+     "p90": 974.0,
+     "max": 2224.0
+    },
+    "policy": {
+     "n": 65,
+     "p10": 1.0,
+     "p50": 1.0,
+     "p90": 1.0,
+     "max": 2.0
+    },
+    "license": {
+     "n": 69,
+     "p10": 1.0,
+     "p50": 1.0,
+     "p90": 2.0,
+     "max": 3.0
+    },
+    "hasUnit": {
+     "n": 8,
+     "p10": 1.7,
+     "p50": 2.5,
+     "p90": 5.1,
+     "max": 10.0
+    },
+    "containsLicense": {
+     "n": 8,
+     "p10": 1.0,
+     "p50": 1.5,
+     "p90": 2.0,
+     "max": 2.0
+    }
+   },
+   "rels_vocab": {
+    "hasModel=info:fedora/model:monograph": 79,
+    "policy=policy:private": 46,
+    "license=onsite": 45,
+    "license=dnnto": 31,
+    "license=public": 24,
+    "policy=policy:public": 20,
+    "containsLicense=onsite": 6,
+    "containsLicense=dnnto": 4,
+    "containsLicense=public": 2
+   },
+   "mods_paths": {
+    "/modsCollection/mods/titleInfo/title": 1.0,
+    "/modsCollection/mods/identifier/@type": 1.0,
+    "/modsCollection/mods/genre": 1.0,
+    "/modsCollection/mods/titleInfo": 1.0,
+    "/modsCollection": 1.0,
+    "/modsCollection/mods": 1.0,
+    "/modsCollection/mods/originInfo": 1.0,
+    "/modsCollection/mods/identifier": 1.0,
+    "/modsCollection/mods/language/languageTerm/@type": 0.91,
+    "/modsCollection/mods/recordInfo/recordCreationDate/@encoding": 0.91,
+    "/modsCollection/mods/language": 0.91,
+    "/modsCollection/mods/language/languageTerm/@authority": 0.91,
+    "/modsCollection/mods/recordInfo/recordContentSource": 0.91,
+    "/modsCollection/mods/recordInfo/recordIdentifier": 0.91,
+    "/modsCollection/mods/recordInfo/languageOfCataloging/languageTerm": 0.91,
+    "/modsCollection/mods/recordInfo/languageOfCataloging/languageTerm/@type": 0.91,
+    "/modsCollection/mods/recordInfo/recordCreationDate": 0.91,
+    "/modsCollection/mods/originInfo/place/placeTerm": 0.91,
+    "/modsCollection/mods/recordInfo/recordOrigin": 0.91,
+    "/modsCollection/mods/recordInfo": 0.91,
+    "/modsCollection/mods/physicalDescription/extent": 0.91,
+    "/modsCollection/mods/physicalDescription/form": 0.91,
+    "/modsCollection/mods/language/languageTerm": 0.91,
+    "/modsCollection/mods/originInfo/place/placeTerm/@type": 0.91,
+    "/modsCollection/mods/recordInfo/recordChangeDate/@encoding": 0.91,
+    "/modsCollection/mods/originInfo/dateIssued": 0.91,
+    "/modsCollection/mods/physicalDescription": 0.91,
+    "/modsCollection/mods/physicalDescription/form/@authority": 0.91,
+    "/modsCollection/mods/originInfo/place": 0.91,
+    "/modsCollection/mods/recordInfo/languageOfCataloging/languageTerm/@authority": 0.91,
+    "/modsCollection/mods/recordInfo/recordChangeDate": 0.91,
+    "/modsCollection/mods/recordInfo/recordContentSource/@authority": 0.91,
+    "/modsCollection/mods/typeOfResource": 0.91,
+    "/modsCollection/mods/recordInfo/languageOfCataloging": 0.91,
+    "/modsCollection/mods/location": 0.9,
+    "/modsCollection/mods/location/physicalLocation": 0.9,
+    "/modsCollection/mods/location/physicalLocation/@authority": 0.9,
+    "/modsCollection/mods/location/shelfLocator": 0.9,
+    "/modsCollection/mods/originInfo/publisher": 0.89,
+    "/modsCollection/mods/note": 0.87,
+    "/modsCollection/mods/originInfo/issuance": 0.86,
+    "/modsCollection/mods/@ID": 0.85,
+    "/modsCollection/mods/recordInfo/recordIdentifier/@source": 0.82,
+    "/modsCollection/mods/name/namePart": 0.8,
+    "/modsCollection/mods/note/@type": 0.8,
+    "/modsCollection/mods/name": 0.8,
+    "/modsCollection/mods/name/@type": 0.8,
+    "/modsCollection/mods/name/role/roleTerm": 0.78,
+    "/modsCollection/mods/name/role/roleTerm/@authority": 0.78,
+    "/modsCollection/mods/name/role/roleTerm/@type": 0.78,
+    "/modsCollection/mods/name/role": 0.78,
+    "/modsCollection/mods/recordInfo/descriptionStandard": 0.78,
+    "/modsCollection/mods/originInfo/place/placeTerm/@authority": 0.76,
+    "/modsCollection/mods/name/@usage": 0.73,
+    "/modsCollection/mods/classification": 0.71,
+    "/modsCollection/mods/classification/@authority": 0.71,
+    "/modsCollection/mods/name/namePart/@type": 0.7,
+    "/modsCollection/mods/targetAudience/@authority": 0.67,
+    "/modsCollection/mods/targetAudience": 0.67,
+    "/modsCollection/mods/@version": 0.58
+   },
+   "dc_paths": {
+    "/dc/identifier": 1.0,
+    "/dc": 1.0,
+    "/dc/title": 1.0,
+    "/dc/publisher": 0.94,
+    "/dc/language": 0.91,
+    "/dc/date": 0.9,
+    "/dc/type": 0.89,
+    "/dc/format": 0.87,
+    "/dc/@schemaLocation": 0.82,
+    "/dc/rights": 0.82,
+    "/dc/description": 0.82,
+    "/dc/creator": 0.76,
+    "/dc/subject": 0.67,
+    "/dc/coverage": 0.53,
+    "/dc/source": 0.46,
+    "/dc/contributor": 0.22,
+    "/dc/relation": 0.05
+   },
+   "image_mime": {
+    "IMG_FULL application/pdf location": 3,
+    "IMG_PREVIEW image/jpeg location": 3,
+    "IMG_THUMB image/jpeg location": 3
+   },
+   "images": {}
+  },
+  "periodicalitem": {
+   "n": 51,
+   "file_bytes": {
+    "n": 51,
+    "p10": 7222.0,
+    "p50": 11665.0,
+    "p90": 30528.0,
+    "max": 63865.0
+   },
+   "datastreams": {
+    "BIBLIO_MODS": 1.0,
+    "DC": 1.0,
+    "RELS-EXT": 1.0,
+    "POLICY": 0.96,
+    "AUDIT": 0.92
+   },
+   "datastream_kinds": [
+    {
+     "id": "BIBLIO_MODS",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 1.0
+    },
+    {
+     "id": "DC",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 1.0
+    },
+    {
+     "id": "RELS-EXT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "application/rdf+xml",
+     "share": 0.98
+    },
+    {
+     "id": "POLICY",
+     "control": "E",
+     "kind": "location",
+     "mime": "application/rdf+xml",
+     "share": 0.96
+    },
+    {
+     "id": "AUDIT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 0.92
+    },
+    {
+     "id": "RELS-EXT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 0.02
+    }
+   ],
+   "datastream_bytes": {
+    "AUDIT": {
+     "n": 47,
+     "p10": 523.2,
+     "p50": 1714.0,
+     "p90": 14292.0,
+     "max": 51668.0
+    },
+    "BIBLIO_MODS": {
+     "n": 51,
+     "p10": 874.0,
+     "p50": 980.0,
+     "p90": 1134.0,
+     "max": 1153.0
+    },
+    "DC": {
+     "n": 51,
+     "p10": 623.0,
+     "p50": 752.0,
+     "p90": 986.0,
+     "max": 1010.0
+    },
+    "RELS-EXT": {
+     "n": 51,
+     "p10": 869.0,
+     "p50": 1637.0,
+     "p90": 13814.0,
+     "max": 26166.0
+    }
+   },
+   "datastream_versions": {
+    "RELS-EXT": {
+     "n": 51,
+     "p10": 1.0,
+     "p50": 1.0,
+     "p90": 1.0,
+     "max": 3.0
+    }
+   },
+   "external_hosts": {
+    "POLICY local.fedora.server": 49
+   },
+   "rels_predicates": {
+    "hasPage": 1.0,
+    "hasModel": 1.0,
+    "itemID": 1.0,
+    "policy": 0.96,
+    "contract": 0.82,
+    "handle": 0.82,
+    "isMemberOfCollection": 0.45,
+    "hasIntCompPart": 0.02
+   },
+   "rels_predicate_counts": {
+    "hasPage": {
+     "n": 51,
+     "p10": 4.0,
+     "p50": 12.0,
+     "p90": 148.0,
+     "max": 304.0
+    },
+    "isMemberOfCollection": {
+     "n": 23,
+     "p10": 1.0,
+     "p50": 1.0,
+     "p90": 2.0,
+     "max": 2.0
+    },
+    "hasIntCompPart": {
+     "n": 1,
+     "p10": 119.0,
+     "p50": 119.0,
+     "p90": 119.0,
+     "max": 119.0
+    }
+   },
+   "rels_vocab": {
+    "hasModel=info:fedora/model:periodicalitem": 51,
+    "policy=policy:private": 29,
+    "policy=policy:public": 20
+   },
+   "mods_paths": {
+    "/modsCollection/mods/genre/@type": 1.0,
+    "/modsCollection/mods/identifier/@type": 1.0,
+    "/modsCollection/mods/genre": 1.0,
+    "/modsCollection/mods/titleInfo": 1.0,
+    "/modsCollection": 1.0,
+    "/modsCollection/mods": 1.0,
+    "/modsCollection/mods/titleInfo/partNumber": 1.0,
+    "/modsCollection/mods/identifier": 1.0,
+    "/modsCollection/mods/@ID": 1.0,
+    "/modsCollection/mods/language/languageTerm/@type": 0.96,
+    "/modsCollection/mods/language": 0.96,
+    "/modsCollection/mods/language/languageTerm/@authority": 0.96,
+    "/modsCollection/mods/location": 0.96,
+    "/modsCollection/mods/language/languageTerm": 0.96,
+    "/modsCollection/mods/originInfo": 0.96,
+    "/modsCollection/mods/originInfo/dateIssued": 0.96,
+    "/modsCollection/mods/originInfo/place/placeTerm": 0.92,
+    "/modsCollection/mods/location/physicalLocation": 0.92,
+    "/modsCollection/mods/originInfo/place": 0.92,
+    "/modsCollection/mods/location/shelfLocator": 0.88,
+    "/modsCollection/mods/originInfo/publisher": 0.84,
+    "/modsCollection/mods/subject": 0.31,
+    "/modsCollection/mods/subject/topic": 0.31,
+    "/modsCollection/mods/@version": 0.27,
+    "/modsCollection/mods/physicalDescription": 0.16,
+    "/modsCollection/mods/physicalDescription/note": 0.12,
+    "/modsCollection/mods/location/url": 0.04,
+    "/modsCollection/@schemaLocation": 0.04,
+    "/modsCollection/mods/part/@type": 0.04,
+    "/modsCollection/mods/part": 0.04,
+    "/modsCollection/mods/titleInfo/subTitle": 0.04,
+    "/modsCollection/mods/physicalDescription/extent": 0.04,
+    "/modsCollection/mods/titleInfo/title": 0.04
+   },
+   "dc_paths": {
+    "/dc/type": 1.0,
+    "/dc/identifier": 1.0,
+    "/dc": 1.0,
+    "/dc/title": 1.0,
+    "/dc/@schemaLocation": 0.96,
+    "/dc/rights": 0.96,
+    "/dc/language": 0.96,
+    "/dc/date": 0.92,
+    "/dc/publisher": 0.84,
+    "/dc/coverage": 0.49,
+    "/dc/description": 0.49,
+    "/dc/source": 0.49,
+    "/dc/subject": 0.31,
+    "/dc/format": 0.04
+   },
+   "image_mime": {},
+   "images": {}
+  },
+  "soundunit": {
+   "n": 30,
+   "file_bytes": {
+    "n": 30,
+    "p10": 5337.0,
+    "p50": 7023.0,
+    "p90": 11368.8,
+    "max": 12408.0
+   },
+   "datastreams": {
+    "DC": 1.0,
+    "BIBLIO_MODS": 1.0,
+    "RELS-EXT": 1.0,
+    "IMG_FULL": 0.93,
+    "IMG_THUMB": 0.93,
+    "IMG_PREVIEW": 0.53,
+    "POLICY": 0.47,
+    "AUDIT": 0.4
+   },
+   "datastream_kinds": [
+    {
+     "id": "DC",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 1.0
+    },
+    {
+     "id": "BIBLIO_MODS",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 1.0
+    },
+    {
+     "id": "IMG_FULL",
+     "control": "R",
+     "kind": "location",
+     "mime": "image/jpeg",
+     "share": 0.93
+    },
+    {
+     "id": "IMG_THUMB",
+     "control": "R",
+     "kind": "location",
+     "mime": "image/jpeg",
+     "share": 0.93
+    },
+    {
+     "id": "RELS-EXT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "application/rdf+xml",
+     "share": 0.87
+    },
+    {
+     "id": "IMG_PREVIEW",
+     "control": "R",
+     "kind": "location",
+     "mime": "image/jpeg",
+     "share": 0.53
+    },
+    {
+     "id": "POLICY",
+     "control": "E",
+     "kind": "location",
+     "mime": "application/rdf+xml",
+     "share": 0.47
+    },
+    {
+     "id": "AUDIT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 0.4
+    },
+    {
+     "id": "RELS-EXT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 0.13
+    }
+   ],
+   "datastream_bytes": {
+    "AUDIT": {
+     "n": 12,
+     "p10": 366.0,
+     "p50": 1127.0,
+     "p90": 1909.5,
+     "max": 1965.0
+    },
+    "DC": {
+     "n": 30,
+     "p10": 457.0,
+     "p50": 459.0,
+     "p90": 2012.0,
+     "max": 2013.0
+    },
+    "BIBLIO_MODS": {
+     "n": 30,
+     "p10": 1038.0,
+     "p50": 1136.0,
+     "p90": 3992.1,
+     "max": 4140.0
+    },
+    "RELS-EXT": {
+     "n": 30,
+     "p10": 627.6,
+     "p50": 742.5,
+     "p90": 1093.2,
+     "max": 1527.0
+    }
+   },
+   "datastream_versions": {
+    "DC": {
+     "n": 30,
+     "p10": 1.0,
+     "p50": 1.0,
+     "p90": 2.0,
+     "max": 2.0
+    },
+    "RELS-EXT": {
+     "n": 30,
+     "p10": 1.0,
+     "p50": 1.0,
+     "p90": 4.0,
+     "max": 4.0
+    }
+   },
+   "external_hosts": {
+    "IMG_FULL imageserver.mzk.cz": 28,
+    "IMG_THUMB imageserver.mzk.cz": 28,
+    "IMG_PREVIEW imageserver.mzk.cz": 16,
+    "POLICY local.fedora.server": 14
+   },
+   "rels_predicates": {
+    "containsTrack": 1.0,
+    "hasModel": 1.0,
+    "itemID": 1.0,
+    "policy": 1.0,
+    "tiles-url": 0.8,
+    "containsLicense": 0.03
+   },
+   "rels_predicate_counts": {
+    "containsTrack": {
+     "n": 30,
+     "p10": 1.0,
+     "p50": 2.0,
+     "p90": 5.2,
+     "max": 10.0
+    }
+   },
+   "rels_vocab": {
+    "hasModel=info:fedora/model:soundunit": 30,
+    "policy=policy:private": 24,
+    "policy=policy:public": 6,
+    "containsLicense=onsite": 1
+   },
+   "mods_paths": {
+    "/modsCollection/mods/recordInfo/recordCreationDate/@encoding": 1.0,
+    "/modsCollection/mods/titleInfo/title": 1.0,
+    "/modsCollection/mods/recordInfo/recordCreationDate": 1.0,
+    "/modsCollection/mods/identifier/@type": 1.0,
+    "/modsCollection/mods/recordInfo": 1.0,
+    "/modsCollection/mods/genre": 1.0,
+    "/modsCollection/mods/titleInfo": 1.0,
+    "/modsCollection": 1.0,
+    "/modsCollection/mods": 1.0,
+    "/modsCollection/mods/titleInfo/partNumber": 1.0,
+    "/modsCollection/mods/recordInfo/recordChangeDate/@encoding": 1.0,
+    "/modsCollection/mods/identifier": 1.0,
+    "/modsCollection/mods/@ID": 1.0,
+    "/modsCollection/mods/recordInfo/recordChangeDate": 1.0,
+    "/modsCollection/mods/relatedItem": 0.87,
+    "/modsCollection/mods/relatedItem/titleinfo/partName": 0.87,
+    "/modsCollection/mods/relatedItem/titleinfo": 0.87,
+    "/modsCollection/mods/relatedItem/titleinfo/partNumber": 0.87,
+    "/modsCollection/mods/genre/@type": 0.8,
+    "/modsCollection/mods/titleInfo/partName": 0.8,
+    "/modsCollection/mods/titleInfo/title/title": 0.8,
+    "/modsCollection/@schemaLocation": 0.8,
+    "/modsCollection/mods/@version": 0.8,
+    "/modsCollection/mods/language/languageTerm/@type": 0.2,
+    "/modsCollection/mods/originInfo/issuance": 0.2,
+    "/modsCollection/mods/subject": 0.2,
+    "/modsCollection/mods/name/namePart": 0.2,
+    "/modsCollection/mods/language": 0.2,
+    "/modsCollection/mods/language/languageTerm/@authority": 0.2,
+    "/modsCollection/mods/name/@usage": 0.2,
+    "/modsCollection/mods/name/nameIdentifier": 0.2,
+    "/modsCollection/mods/note/@altRepGroup": 0.2,
+    "/modsCollection/mods/recordInfo/descriptionStandard": 0.2,
+    "/modsCollection/mods/name/role/roleTerm": 0.2,
+    "/modsCollection/mods/originInfo/place/placeTerm": 0.2,
+    "/modsCollection/mods/note": 0.2,
+    "/modsCollection/mods/subject/topic/@lang": 0.2,
+    "/modsCollection/mods/titleInfo/@type": 0.2,
+    "/modsCollection/mods/physicalDescription/extent": 0.2,
+    "/modsCollection/mods/physicalDescription/form": 0.2,
+    "/modsCollection/mods/language/languageTerm": 0.2,
+    "/modsCollection/mods/originInfo/place/placeTerm/@type": 0.2,
+    "/modsCollection/mods/originInfo": 0.2,
+    "/modsCollection/mods/originInfo/publisher": 0.2,
+    "/modsCollection/mods/originInfo/dateIssued": 0.2,
+    "/modsCollection/mods/physicalDescription": 0.2,
+    "/modsCollection/mods/physicalDescription/form/@authority": 0.2,
+    "/modsCollection/mods/name/role/roleTerm/@authority": 0.2,
+    "/modsCollection/mods/subject/topic": 0.2,
+    "/modsCollection/mods/originInfo/place": 0.2,
+    "/modsCollection/mods/tableOfContents": 0.2,
+    "/modsCollection/mods/note/@type": 0.2,
+    "/modsCollection/mods/name": 0.2,
+    "/modsCollection/mods/originInfo/place/placeTerm/@authority": 0.2,
+    "/modsCollection/mods/name/namePart/@type": 0.2,
+    "/modsCollection/mods/name/role/roleTerm/@type": 0.2,
+    "/modsCollection/mods/name/role": 0.2,
+    "/modsCollection/mods/name/@type": 0.2
+   },
+   "dc_paths": {
+    "/dc/type": 1.0,
+    "/dc/rights": 1.0,
+    "/dc/identifier": 1.0,
+    "/dc": 1.0,
+    "/dc/title": 1.0,
+    "/dc/@schemaLocation": 0.8,
+    "/dc/coverage": 0.2,
+    "/dc/description": 0.2,
+    "/dc/subject": 0.2,
+    "/dc/creator": 0.2,
+    "/dc/language": 0.2
+   },
+   "image_mime": {
+    "IMG_FULL image/jpeg location": 28,
+    "IMG_THUMB image/jpeg location": 28,
+    "IMG_PREVIEW image/jpeg location": 16
+   },
+   "images": {}
+  },
+  "periodical": {
+   "n": 27,
+   "file_bytes": {
+    "n": 27,
+    "p10": 8123.6,
+    "p50": 11232.0,
+    "p90": 18650.8,
+    "max": 42135.0
+   },
+   "datastreams": {
+    "DC": 1.0,
+    "BIBLIO_MODS": 1.0,
+    "RELS-EXT": 1.0,
+    "POLICY": 0.96,
+    "AUDIT": 0.96
+   },
+   "datastream_kinds": [
+    {
+     "id": "DC",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 0.96
+    },
+    {
+     "id": "BIBLIO_MODS",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 0.96
+    },
+    {
+     "id": "POLICY",
+     "control": "E",
+     "kind": "location",
+     "mime": "application/rdf+xml",
+     "share": 0.96
+    },
+    {
+     "id": "AUDIT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 0.96
+    },
+    {
+     "id": "RELS-EXT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 0.78
+    },
+    {
+     "id": "RELS-EXT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "application/xml",
+     "share": 0.15
+    },
+    {
+     "id": "RELS-EXT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "application/rdf+xml",
+     "share": 0.07
+    },
+    {
+     "id": "BIBLIO_MODS",
+     "control": "M",
+     "kind": "binary",
+     "mime": "application/xml; charset=UTF-8",
+     "share": 0.04
+    },
+    {
+     "id": "DC",
+     "control": "M",
+     "kind": "binary",
+     "mime": "application/xml; charset=UTF-8",
+     "share": 0.04
+    }
+   ],
+   "datastream_bytes": {
+    "DC": {
+     "n": 27,
+     "p10": 930.6,
+     "p50": 1634.0,
+     "p90": 2919.4,
+     "max": 3731.0
+    },
+    "BIBLIO_MODS": {
+     "n": 27,
+     "p10": 2311.2,
+     "p50": 3564.0,
+     "p90": 5741.2,
+     "max": 7101.0
+    },
+    "RELS-EXT": {
+     "n": 27,
+     "p10": 677.2,
+     "p50": 899.0,
+     "p90": 2212.0,
+     "max": 7180.0
+    },
+    "AUDIT": {
+     "n": 26,
+     "p10": 357.0,
+     "p50": 1457.0,
+     "p90": 2776.5,
+     "max": 15555.0
+    }
+   },
+   "datastream_versions": {
+    "DC": {
+     "n": 27,
+     "p10": 1.0,
+     "p50": 1.0,
+     "p90": 1.0,
+     "max": 2.0
+    },
+    "BIBLIO_MODS": {
+     "n": 27,
+     "p10": 1.0,
+     "p50": 1.0,
+     "p90": 1.0,
+     "max": 2.0
+    },
+    "RELS-EXT": {
+     "n": 27,
+     "p10": 1.0,
+     "p50": 1.0,
+     "p90": 2.0,
+     "max": 3.0
+    }
+   },
+   "external_hosts": {
+    "POLICY local.fedora.server": 26
+   },
+   "rels_predicates": {
+    "hasVolume": 1.0,
+    "hasModel": 1.0,
+    "itemID": 1.0,
+    "containsLicense": 1.0,
+    "policy": 0.96,
+    "contract": 0.81,
+    "handle": 0.81,
+    "isMemberOfCollection": 0.41,
+    "dnnt": 0.04
+   },
+   "rels_predicate_counts": {
+    "containsLicense": {
+     "n": 27,
+     "p10": 1.0,
+     "p50": 2.0,
+     "p90": 2.0,
+     "max": 3.0
+    },
+    "hasVolume": {
+     "n": 27,
+     "p10": 1.0,
+     "p50": 2.0,
+     "p90": 17.8,
+     "max": 74.0
+    },
+    "policy": {
+     "n": 26,
+     "p10": 1.0,
+     "p50": 1.0,
+     "p90": 1.0,
+     "max": 2.0
+    },
+    "isMemberOfCollection": {
+     "n": 11,
+     "p10": 1.0,
+     "p50": 1.0,
+     "p90": 2.0,
+     "max": 2.0
+    }
+   },
+   "rels_vocab": {
+    "hasModel=info:fedora/model:periodical": 27,
+    "containsLicense=onsite": 22,
+    "policy=policy:private": 17,
+    "containsLicense=dnnto": 15,
+    "policy=policy:public": 10,
+    "containsLicense=public": 10,
+    "containsLicense=dnntt": 2
+   },
+   "mods_paths": {
+    "/modsCollection/mods/originInfo/issuance": 0.96,
+    "/modsCollection/mods/language/languageTerm/@type": 0.96,
+    "/modsCollection/mods/recordInfo/recordCreationDate/@encoding": 0.96,
+    "/modsCollection/mods/language": 0.96,
+    "/modsCollection/mods/language/languageTerm/@authority": 0.96,
+    "/modsCollection/mods/titleInfo/title": 0.96,
+    "/modsCollection/mods/recordInfo/recordCreationDate": 0.96,
+    "/modsCollection/mods/location": 0.96,
+    "/modsCollection/mods/originInfo/place/placeTerm": 0.96,
+    "/modsCollection/mods/identifier/@type": 0.96,
+    "/modsCollection/mods/recordInfo": 0.96,
+    "/modsCollection/mods/genre": 0.96,
+    "/modsCollection/mods/titleInfo": 0.96,
+    "/modsCollection": 0.96,
+    "/modsCollection/mods": 0.96,
+    "/modsCollection/mods/physicalDescription/form": 0.96,
+    "/modsCollection/mods/language/languageTerm": 0.96,
+    "/modsCollection/mods/originInfo/place/placeTerm/@type": 0.96,
+    "/modsCollection/mods/originInfo": 0.96,
+    "/modsCollection/mods/location/physicalLocation": 0.96,
+    "/modsCollection/mods/location/physicalLocation/@authority": 0.96,
+    "/modsCollection/mods/originInfo/dateIssued": 0.96,
+    "/modsCollection/mods/physicalDescription": 0.96,
+    "/modsCollection/mods/physicalDescription/form/@authority": 0.96,
+    "/modsCollection/mods/identifier": 0.96,
+    "/modsCollection/mods/originInfo/place": 0.96,
+    "/modsCollection/mods/@ID": 0.96,
+    "/modsCollection/mods/recordInfo/recordIdentifier": 0.93,
+    "/modsCollection/mods/recordInfo/recordContentSource": 0.93,
+    "/modsCollection/mods/recordInfo/languageOfCataloging/languageTerm": 0.93,
+    "/modsCollection/mods/recordInfo/languageOfCataloging/languageTerm/@type": 0.93,
+    "/modsCollection/mods/recordInfo/recordOrigin": 0.93,
+    "/modsCollection/mods/recordInfo/recordChangeDate/@encoding": 0.93,
+    "/modsCollection/mods/location/shelfLocator": 0.93,
+    "/modsCollection/mods/recordInfo/recordIdentifier/@source": 0.93,
+    "/modsCollection/mods/recordInfo/languageOfCataloging/languageTerm/@authority": 0.93,
+    "/modsCollection/mods/originInfo/place/placeTerm/@authority": 0.93,
+    "/modsCollection/mods/originInfo/dateIssued/@encoding": 0.93,
+    "/modsCollection/mods/originInfo/dateIssued/@point": 0.93,
+    "/modsCollection/mods/recordInfo/recordContentSource/@authority": 0.93,
+    "/modsCollection/mods/recordInfo/recordChangeDate": 0.93,
+    "/modsCollection/mods/typeOfResource": 0.93,
+    "/modsCollection/mods/recordInfo/languageOfCataloging": 0.93,
+    "/modsCollection/mods/note": 0.89,
+    "/modsCollection/mods/originInfo/publisher": 0.89,
+    "/modsCollection/mods/physicalDescription/extent": 0.85,
+    "/modsCollection/mods/originInfo/frequency/@authority": 0.85,
+    "/modsCollection/mods/originInfo/frequency": 0.85,
+    "/modsCollection/mods/note/@type": 0.81,
+    "/modsCollection/mods/classification": 0.78,
+    "/modsCollection/mods/classification/@authority": 0.78,
+    "/modsCollection/mods/recordInfo/descriptionStandard": 0.67,
+    "/modsCollection/mods/titleInfo/subTitle": 0.63,
+    "/modsCollection/mods/titleInfo/@type": 0.59,
+    "/modsCollection/mods/relatedItem": 0.56,
+    "/modsCollection/mods/subject": 0.56,
+    "/modsCollection/mods/relatedItem/@type": 0.52,
+    "/modsCollection/mods/relatedItem/titleInfo/title": 0.52,
+    "/modsCollection/mods/relatedItem/titleInfo": 0.52,
+    "/modsCollection/mods/classification/@edition": 0.48
+   },
+   "dc_paths": {
+    "/dc/type": 0.96,
+    "/dc/identifier": 0.96,
+    "/dc/language": 0.96,
+    "/dc": 0.96,
+    "/dc/title": 0.96,
+    "/dc/date": 0.96,
+    "/dc/format": 0.93,
+    "/dc/@schemaLocation": 0.93,
+    "/dc/rights": 0.93,
+    "/dc/publisher": 0.89,
+    "/dc/description": 0.85,
+    "/dc/subject": 0.74,
+    "/dc/coverage": 0.56,
+    "/dc/relation": 0.52,
+    "/dc/source": 0.48,
+    "/dc/contributor": 0.26,
+    "/dc/creator": 0.07
+   },
+   "image_mime": {},
+   "images": {}
+  },
+  "periodicalvolume": {
+   "n": 27,
+   "file_bytes": {
+    "n": 27,
+    "p10": 5022.2,
+    "p50": 12413.0,
+    "p90": 110385.6,
+    "max": 158142.0
+   },
+   "datastreams": {
+    "DC": 1.0,
+    "BIBLIO_MODS": 1.0,
+    "RELS-EXT": 1.0,
+    "POLICY": 0.96,
+    "AUDIT": 0.93
+   },
+   "datastream_kinds": [
+    {
+     "id": "DC",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 1.0
+    },
+    {
+     "id": "BIBLIO_MODS",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 1.0
+    },
+    {
+     "id": "POLICY",
+     "control": "E",
+     "kind": "location",
+     "mime": "application/rdf+xml",
+     "share": 0.96
+    },
+    {
+     "id": "AUDIT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 0.93
+    },
+    {
+     "id": "RELS-EXT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 0.74
+    },
+    {
+     "id": "RELS-EXT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "application/xml",
+     "share": 0.19
+    },
+    {
+     "id": "RELS-EXT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "application/rdf+xml",
+     "share": 0.07
+    }
+   ],
+   "datastream_bytes": {
+    "AUDIT": {
+     "n": 25,
+     "p10": 640.0,
+     "p50": 5231.0,
+     "p90": 61182.8,
+     "max": 94526.0
+    },
+    "DC": {
+     "n": 27,
+     "p10": 457.0,
+     "p50": 482.0,
+     "p90": 493.4,
+     "max": 531.0
+    },
+    "BIBLIO_MODS": {
+     "n": 27,
+     "p10": 478.6,
+     "p50": 594.0,
+     "p90": 692.8,
+     "max": 1188.0
+    },
+    "RELS-EXT": {
+     "n": 27,
+     "p10": 719.2,
+     "p50": 1880.0,
+     "p90": 17978.0,
+     "max": 28997.0
+    }
+   },
+   "datastream_versions": {
+    "RELS-EXT": {
+     "n": 27,
+     "p10": 1.0,
+     "p50": 1.0,
+     "p90": 2.0,
+     "max": 3.0
+    }
+   },
+   "external_hosts": {
+    "POLICY local.fedora.server": 26
+   },
+   "rels_predicates": {
+    "hasModel": 1.0,
+    "hasItem": 1.0,
+    "itemID": 1.0,
+    "license": 0.96,
+    "policy": 0.96,
+    "contract": 0.81,
+    "handle": 0.81,
+    "isMemberOfCollection": 0.44,
+    "hasIntCompPart": 0.15,
+    "licence": 0.04
+   },
+   "rels_predicate_counts": {
+    "policy": {
+     "n": 26,
+     "p10": 1.0,
+     "p50": 1.0,
+     "p90": 1.0,
+     "max": 2.0
+    },
+    "hasItem": {
+     "n": 27,
+     "p10": 1.6,
+     "p50": 13.0,
+     "p90": 206.6,
+     "max": 338.0
+    },
+    "license": {
+     "n": 26,
+     "p10": 1.0,
+     "p50": 2.0,
+     "p90": 2.0,
+     "max": 2.0
+    },
+    "isMemberOfCollection": {
+     "n": 12,
+     "p10": 1.0,
+     "p50": 1.0,
+     "p90": 2.0,
+     "max": 2.0
+    },
+    "hasIntCompPart": {
+     "n": 4,
+     "p10": 1.6,
+     "p50": 8.0,
+     "p90": 15.1,
+     "max": 16.0
+    }
+   },
+   "rels_vocab": {
+    "hasModel=info:fedora/model:periodicalvolume": 27,
+    "policy=policy:private": 17,
+    "license=onsite": 16,
+    "license=dnnto": 13,
+    "policy=policy:public": 10,
+    "license=public": 10,
+    "license=dnntt": 1
+   },
+   "mods_paths": {
+    "/modsCollection/mods/identifier/@type": 1.0,
+    "/modsCollection/mods/originInfo": 1.0,
+    "/modsCollection/mods/genre": 1.0,
+    "/modsCollection/mods/titleInfo": 1.0,
+    "/modsCollection": 1.0,
+    "/modsCollection/mods/titleInfo/partNumber": 1.0,
+    "/modsCollection/mods/originInfo/dateIssued": 1.0,
+    "/modsCollection/mods/identifier": 1.0,
+    "/modsCollection/mods": 1.0,
+    "/modsCollection/mods/@ID": 1.0,
+    "/modsCollection/mods/part": 0.96,
+    "/modsCollection/mods/part/date": 0.93,
+    "/modsCollection/mods/physicalDescription": 0.52,
+    "/modsCollection/mods/physicalDescription/note": 0.48,
+    "/modsCollection/mods/@version": 0.3,
+    "/modsCollection/mods/originInfo/issuance": 0.04,
+    "/modsCollection/mods/recordInfo/recordCreationDate/@encoding": 0.04,
+    "/modsCollection/mods/location/url": 0.04,
+    "/modsCollection/mods/part/detail": 0.04,
+    "/modsCollection/mods/recordInfo/recordCreationDate": 0.04,
+    "/modsCollection/mods/location": 0.04,
+    "/modsCollection/mods/recordInfo": 0.04,
+    "/modsCollection/mods/recordInfo/recordChangeDate/@encoding": 0.04,
+    "/modsCollection/@schemaLocation": 0.04,
+    "/modsCollection/mods/part/detail/number": 0.04,
+    "/modsCollection/mods/part/detail/@type": 0.04,
+    "/modsCollection/mods/part/@type": 0.04,
+    "/modsCollection/mods/recordInfo/recordChangeDate": 0.04
+   },
+   "dc_paths": {
+    "/dc/type": 1.0,
+    "/dc/identifier": 1.0,
+    "/dc": 1.0,
+    "/dc/@schemaLocation": 0.96,
+    "/dc/rights": 0.96,
+    "/dc/date": 0.96,
+    "/dc/description": 0.44,
+    "/dc/title": 0.3
+   },
+   "image_mime": {},
+   "images": {}
+  },
+  "sheetmusic": {
+   "n": 24,
+   "file_bytes": {
+    "n": 24,
+    "p10": 6776.4,
+    "p50": 12882.0,
+    "p90": 18720.7,
+    "max": 73994.0
+   },
+   "datastreams": {
+    "RELS-EXT": 1.0,
+    "BIBLIO_MODS": 1.0,
+    "DC": 1.0,
+    "AUDIT": 0.92,
+    "POLICY": 0.5
+   },
+   "datastream_kinds": [
+    {
+     "id": "BIBLIO_MODS",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 1.0
+    },
+    {
+     "id": "DC",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 1.0
+    },
+    {
+     "id": "AUDIT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 0.92
+    },
+    {
+     "id": "RELS-EXT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 0.54
+    },
+    {
+     "id": "POLICY",
+     "control": "E",
+     "kind": "location",
+     "mime": "application/rdf+xml",
+     "share": 0.5
+    },
+    {
+     "id": "RELS-EXT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "application/rdf+xml",
+     "share": 0.29
+    },
+    {
+     "id": "RELS-EXT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "application/xml",
+     "share": 0.17
+    }
+   ],
+   "datastream_bytes": {
+    "AUDIT": {
+     "n": 22,
+     "p10": 357.0,
+     "p50": 357.0,
+     "p90": 1374.8,
+     "max": 1425.0
+    },
+    "RELS-EXT": {
+     "n": 24,
+     "p10": 603.0,
+     "p50": 2065.5,
+     "p90": 8757.3,
+     "max": 56582.0
+    },
+    "BIBLIO_MODS": {
+     "n": 24,
+     "p10": 795.2,
+     "p50": 4161.0,
+     "p90": 6855.7,
+     "max": 7292.0
+    },
+    "DC": {
+     "n": 24,
+     "p10": 782.3,
+     "p50": 1527.0,
+     "p90": 3556.1,
+     "max": 3645.0
+    }
+   },
+   "datastream_versions": {
+    "RELS-EXT": {
+     "n": 24,
+     "p10": 1.0,
+     "p50": 1.0,
+     "p90": 2.0,
+     "max": 4.0
+    }
+   },
+   "external_hosts": {
+    "POLICY local.fedora.server": 12
+   },
+   "rels_predicates": {
+    "hasModel": 1.0,
+    "itemID": 1.0,
+    "policy": 0.96,
+    "hasPage": 0.67,
+    "contract": 0.46,
+    "handle": 0.46,
+    "license": 0.42,
+    "hasDonator": 0.29,
+    "hasUnit": 0.25,
+    "isMemberOfCollection": 0.17,
+    "licence": 0.08,
+    "containsLicense": 0.04
+   },
+   "rels_predicate_counts": {
+    "hasModel": {
+     "n": 24,
+     "p10": 1.0,
+     "p50": 1.0,
+     "p90": 1.0,
+     "max": 2.0
+    },
+    "hasUnit": {
+     "n": 6,
+     "p10": 1.0,
+     "p50": 2.0,
+     "p90": 4.0,
+     "max": 5.0
+    },
+    "hasPage": {
+     "n": 16,
+     "p10": 7.0,
+     "p50": 38.5,
+     "p90": 141.5,
+     "max": 666.0
+    }
+   },
+   "rels_vocab": {
+    "hasModel=info:fedora/model:sheetmusic": 24,
+    "policy=policy:public": 17,
+    "license=public": 8,
+    "policy=policy:private": 6,
+    "license=mzk_public-muo": 2,
+    "hasModel=info:fedora/model:monograph": 1,
+    "containsLicense=onsite": 1
+   },
+   "mods_paths": {
+    "/modsCollection/mods/titleInfo/title": 1.0,
+    "/modsCollection/mods/identifier/@type": 1.0,
+    "/modsCollection/mods/genre": 1.0,
+    "/modsCollection/mods/titleInfo": 1.0,
+    "/modsCollection": 1.0,
+    "/modsCollection/mods": 1.0,
+    "/modsCollection/mods/identifier": 1.0,
+    "/modsCollection/mods/originInfo": 0.96,
+    "/modsCollection/mods/recordInfo/recordCreationDate/@encoding": 0.79,
+    "/modsCollection/mods/subject": 0.79,
+    "/modsCollection/mods/subject/@authority": 0.79,
+    "/modsCollection/mods/recordInfo/recordContentSource": 0.79,
+    "/modsCollection/mods/recordInfo/recordIdentifier": 0.79,
+    "/modsCollection/mods/recordInfo/descriptionStandard": 0.79,
+    "/modsCollection/mods/recordInfo/languageOfCataloging/languageTerm": 0.79,
+    "/modsCollection/mods/recordInfo/languageOfCataloging/languageTerm/@type": 0.79,
+    "/modsCollection/mods/recordInfo/recordCreationDate": 0.79,
+    "/modsCollection/mods/location": 0.79,
+    "/modsCollection/mods/recordInfo/recordOrigin": 0.79,
+    "/modsCollection/mods/recordInfo": 0.79,
+    "/modsCollection/mods/location/physicalLocation": 0.79,
+    "/modsCollection/mods/location/physicalLocation/@authority": 0.79,
+    "/modsCollection/mods/recordInfo/recordChangeDate/@encoding": 0.79,
+    "/modsCollection/mods/recordInfo/languageOfCataloging/languageTerm/@authority": 0.79,
+    "/modsCollection/mods/location/shelfLocator": 0.79,
+    "/modsCollection/mods/subject/topic": 0.79,
+    "/modsCollection/mods/recordInfo/recordChangeDate": 0.79,
+    "/modsCollection/mods/recordInfo/recordContentSource/@authority": 0.79,
+    "/modsCollection/mods/recordInfo/languageOfCataloging": 0.79,
+    "/modsCollection/mods/language/languageTerm/@type": 0.75,
+    "/modsCollection/mods/language": 0.75,
+    "/modsCollection/mods/language/languageTerm/@authority": 0.75,
+    "/modsCollection/mods/note": 0.75,
+    "/modsCollection/mods/physicalDescription/extent": 0.75,
+    "/modsCollection/mods/language/languageTerm": 0.75,
+    "/modsCollection/mods/originInfo/dateIssued": 0.75,
+    "/modsCollection/mods/physicalDescription": 0.75,
+    "/modsCollection/mods/classification": 0.75,
+    "/modsCollection/mods/typeOfResource": 0.75,
+    "/modsCollection/mods/classification/@authority": 0.75,
+    "/modsCollection/mods/relatedItem": 0.71,
+    "/modsCollection/mods/note/@type": 0.71,
+    "/modsCollection/mods/titleInfo/subTitle": 0.71,
+    "/modsCollection/mods/name/namePart": 0.67,
+    "/modsCollection/mods/originInfo/place/placeTerm": 0.67,
+    "/modsCollection/mods/originInfo/place/placeTerm/@type": 0.67,
+    "/modsCollection/mods/originInfo/place": 0.67,
+    "/modsCollection/mods/name": 0.67,
+    "/modsCollection/mods/name/namePart/@type": 0.67,
+    "/modsCollection/mods/classification/@edition": 0.67,
+    "/modsCollection/mods/name/@type": 0.67,
+    "/modsCollection/mods/physicalDescription/form": 0.67,
+    "/modsCollection/mods/physicalDescription/form/@authority": 0.67,
+    "/modsCollection/mods/name/role/roleTerm": 0.62,
+    "/modsCollection/mods/name/role/roleTerm/@authority": 0.62,
+    "/modsCollection/mods/genre/@authority": 0.62,
+    "/modsCollection/mods/name/role/roleTerm/@type": 0.62,
+    "/modsCollection/mods/name/role": 0.62,
+    "/modsCollection/mods/originInfo/issuance": 0.58,
+    "/modsCollection/mods/originInfo/publisher": 0.58
+   },
+   "dc_paths": {
+    "/dc/identifier": 1.0,
+    "/dc": 1.0,
+    "/dc/title": 1.0,
+    "/dc/rights": 0.96,
+    "/dc/@schemaLocation": 0.92,
+    "/dc/description": 0.75,
+    "/dc/subject": 0.75,
+    "/dc/source": 0.75,
+    "/dc/format": 0.75,
+    "/dc/language": 0.75,
+    "/dc/date": 0.75,
+    "/dc/publisher": 0.58,
+    "/dc/coverage": 0.54,
+    "/dc/type": 0.54,
+    "/dc/creator": 0.46,
+    "/dc/contributor": 0.21,
+    "/dc/relation": 0.12
+   },
+   "image_mime": {},
+   "images": {}
+  },
+  "track": {
+   "n": 20,
+   "file_bytes": {
+    "n": 20,
+    "p10": 5915.5,
+    "p50": 5941.5,
+    "p90": 64498.0,
+    "max": 10272731.0
+   },
+   "datastreams": {
+    "DC": 1.0,
+    "BIBLIO_MODS": 1.0,
+    "RELS-EXT": 1.0,
+    "MP3": 1.0,
+    "IMG_FULL": 0.85,
+    "IMG_PREVIEW": 0.85,
+    "IMG_THUMB": 0.85,
+    "WAV": 0.7,
+    "OGG": 0.7,
+    "POLICY": 0.4,
+    "IMG_FULL_AMD": 0.3,
+    "AUDIT": 0.1
+   },
+   "datastream_kinds": [
+    {
+     "id": "DC",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 1.0
+    },
+    {
+     "id": "BIBLIO_MODS",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 1.0
+    },
+    {
+     "id": "RELS-EXT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "application/rdf+xml",
+     "share": 0.95
+    },
+    {
+     "id": "MP3",
+     "control": "E",
+     "kind": "location",
+     "mime": "audio/mpeg",
+     "share": 0.95
+    },
+    {
+     "id": "IMG_FULL",
+     "control": "E",
+     "kind": "location",
+     "mime": "image/jpeg",
+     "share": 0.85
+    },
+    {
+     "id": "IMG_PREVIEW",
+     "control": "E",
+     "kind": "location",
+     "mime": "image/jpeg",
+     "share": 0.85
+    },
+    {
+     "id": "IMG_THUMB",
+     "control": "E",
+     "kind": "location",
+     "mime": "image/jpeg",
+     "share": 0.85
+    },
+    {
+     "id": "WAV",
+     "control": "E",
+     "kind": "location",
+     "mime": "audio/wav",
+     "share": 0.7
+    },
+    {
+     "id": "OGG",
+     "control": "E",
+     "kind": "location",
+     "mime": "audio/ogg",
+     "share": 0.7
+    },
+    {
+     "id": "POLICY",
+     "control": "E",
+     "kind": "location",
+     "mime": "application/rdf+xml",
+     "share": 0.4
+    },
+    {
+     "id": "IMG_FULL_AMD",
+     "control": "M",
+     "kind": "binary",
+     "mime": "text/xml",
+     "share": 0.3
+    },
+    {
+     "id": "AUDIT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 0.1
+    },
+    {
+     "id": "MP3",
+     "control": "M",
+     "kind": "binary",
+     "mime": "audio/mpeg",
+     "share": 0.05
+    },
+    {
+     "id": "RELS-EXT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 0.05
+    }
+   ],
+   "datastream_bytes": {
+    "AUDIT": {
+     "n": 2,
+     "p10": 1127.0,
+     "p50": 1127.0,
+     "p90": 1127.0,
+     "max": 1127.0
+    },
+    "DC": {
+     "n": 20,
+     "p10": 451.9,
+     "p50": 471.5,
+     "p90": 815.0,
+     "max": 815.0
+    },
+    "BIBLIO_MODS": {
+     "n": 20,
+     "p10": 984.0,
+     "p50": 1002.0,
+     "p90": 3992.1,
+     "max": 3993.0
+    },
+    "RELS-EXT": {
+     "n": 20,
+     "p10": 510.2,
+     "p50": 512.0,
+     "p90": 530.0,
+     "max": 559.0
+    },
+    "IMG_FULL_AMD": {
+     "n": 6,
+     "p10": 41186.0,
+     "p50": 41370.0,
+     "p90": 41389.0,
+     "max": 41397.0
+    },
+    "MP3": {
+     "n": 1,
+     "p10": 7656960.0,
+     "p50": 7656960.0,
+     "p90": 7656960.0,
+     "max": 7656960.0
+    }
+   },
+   "datastream_versions": {
+    "DC": {
+     "n": 20,
+     "p10": 1.0,
+     "p50": 1.0,
+     "p90": 1.1,
+     "max": 2.0
+    },
+    "RELS-EXT": {
+     "n": 20,
+     "p10": 1.0,
+     "p50": 1.0,
+     "p90": 1.2,
+     "max": 3.0
+    }
+   },
+   "external_hosts": {
+    "MP3 audioserver.mzk.cz": 19,
+    "IMG_FULL kramerius.mzk.cz": 17,
+    "IMG_PREVIEW kramerius.mzk.cz": 17,
+    "IMG_THUMB kramerius.mzk.cz": 17,
+    "WAV audioserver.mzk.cz": 14,
+    "OGG audioserver.mzk.cz": 14,
+    "POLICY local.fedora.server": 8
+   },
+   "rels_predicates": {
+    "hasModel": 1.0,
+    "itemID": 1.0,
+    "policy": 1.0,
+    "license": 0.05
+   },
+   "rels_predicate_counts": {},
+   "rels_vocab": {
+    "hasModel=info:fedora/model:track": 20,
+    "policy=policy:private": 18,
+    "policy=policy:public": 2,
+    "license=onsite": 1
+   },
+   "mods_paths": {
+    "/modsCollection/mods/language/languageTerm/@type": 1.0,
+    "/modsCollection/mods/language": 1.0,
+    "/modsCollection/mods/language/languageTerm/@authority": 1.0,
+    "/modsCollection/mods/titleInfo/title": 1.0,
+    "/modsCollection/mods/identifier/@type": 1.0,
+    "/modsCollection/mods/genre": 1.0,
+    "/modsCollection/mods/titleInfo": 1.0,
+    "/modsCollection": 1.0,
+    "/modsCollection/mods": 1.0,
+    "/modsCollection/mods/language/languageTerm": 1.0,
+    "/modsCollection/mods/identifier": 1.0,
+    "/modsCollection/mods/genre/@type": 0.7,
+    "/modsCollection/mods/titleInfo/partName": 0.7,
+    "/modsCollection/mods/recordChangeDate/@encoding": 0.7,
+    "/modsCollection/mods/titleInfo/title/title": 0.7,
+    "/modsCollection/mods/recordChangeDate": 0.7,
+    "/modsCollection/@schemaLocation": 0.7,
+    "/modsCollection/mods/recordCreationDate": 0.7,
+    "/modsCollection/mods/@version": 0.7,
+    "/modsCollection/mods/typeOfResource": 0.7,
+    "/modsCollection/mods/recordCreationDate/@encoding": 0.7,
+    "/modsCollection/mods/originInfo/issuance": 0.3,
+    "/modsCollection/mods/recordInfo/recordCreationDate/@encoding": 0.3,
+    "/modsCollection/mods/subject": 0.3,
+    "/modsCollection/mods/name/namePart": 0.3,
+    "/modsCollection/mods/name/@usage": 0.3,
+    "/modsCollection/mods/name/nameIdentifier": 0.3,
+    "/modsCollection/mods/note/@altRepGroup": 0.3,
+    "/modsCollection/mods/recordInfo/descriptionStandard": 0.3,
+    "/modsCollection/mods/recordInfo/recordCreationDate": 0.3,
+    "/modsCollection/mods/name/role/roleTerm": 0.3,
+    "/modsCollection/mods/originInfo/place/placeTerm": 0.3,
+    "/modsCollection/mods/note": 0.3,
+    "/modsCollection/mods/recordInfo": 0.3,
+    "/modsCollection/mods/subject/topic/@lang": 0.3,
+    "/modsCollection/mods/titleInfo/@type": 0.3,
+    "/modsCollection/mods/physicalDescription/extent": 0.3,
+    "/modsCollection/mods/physicalDescription/form": 0.3,
+    "/modsCollection/mods/originInfo/place/placeTerm/@type": 0.3,
+    "/modsCollection/mods/originInfo": 0.3,
+    "/modsCollection/mods/originInfo/publisher": 0.3,
+    "/modsCollection/mods/recordInfo/recordChangeDate/@encoding": 0.3,
+    "/modsCollection/mods/originInfo/dateIssued": 0.3,
+    "/modsCollection/mods/physicalDescription": 0.3,
+    "/modsCollection/mods/physicalDescription/form/@authority": 0.3,
+    "/modsCollection/mods/titleInfo/partNumber": 0.3,
+    "/modsCollection/mods/name/role/roleTerm/@authority": 0.3,
+    "/modsCollection/mods/subject/topic": 0.3,
+    "/modsCollection/mods/originInfo/place": 0.3,
+    "/modsCollection/mods/tableOfContents": 0.3,
+    "/modsCollection/mods/@ID": 0.3,
+    "/modsCollection/mods/note/@type": 0.3,
+    "/modsCollection/mods/name": 0.3,
+    "/modsCollection/mods/originInfo/place/placeTerm/@authority": 0.3,
+    "/modsCollection/mods/recordInfo/recordChangeDate": 0.3,
+    "/modsCollection/mods/name/namePart/@type": 0.3,
+    "/modsCollection/mods/name/role/roleTerm/@type": 0.3,
+    "/modsCollection/mods/name/role": 0.3,
+    "/modsCollection/mods/name/@type": 0.3
+   },
+   "dc_paths": {
+    "/dc/type": 1.0,
+    "/dc/rights": 1.0,
+    "/dc/identifier": 1.0,
+    "/dc": 1.0,
+    "/dc/title": 1.0,
+    "/dc/@schemaLocation": 0.7
+   },
+   "image_mime": {
+    "IMG_FULL image/jpeg location": 17,
+    "IMG_PREVIEW image/jpeg location": 17,
+    "IMG_THUMB image/jpeg location": 17
+   },
+   "images": {}
+  },
+  "monographunit": {
+   "n": 19,
+   "file_bytes": {
+    "n": 19,
+    "p10": 17572.8,
+    "p50": 50388.0,
+    "p90": 99565.8,
+    "max": 196742.0
+   },
+   "datastreams": {
+    "DC": 1.0,
+    "BIBLIO_MODS": 1.0,
+    "RELS-EXT": 1.0,
+    "POLICY": 0.89,
+    "AUDIT": 0.84
+   },
+   "datastream_kinds": [
+    {
+     "id": "DC",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 1.0
+    },
+    {
+     "id": "BIBLIO_MODS",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 1.0
+    },
+    {
+     "id": "POLICY",
+     "control": "E",
+     "kind": "location",
+     "mime": "application/rdf+xml",
+     "share": 0.89
+    },
+    {
+     "id": "AUDIT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 0.84
+    },
+    {
+     "id": "RELS-EXT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 0.68
+    },
+    {
+     "id": "RELS-EXT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "application/xml",
+     "share": 0.21
+    },
+    {
+     "id": "RELS-EXT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "application/rdf+xml",
+     "share": 0.11
+    }
+   ],
+   "datastream_bytes": {
+    "AUDIT": {
+     "n": 16,
+     "p10": 501.5,
+     "p50": 646.0,
+     "p90": 8281.0,
+     "max": 30667.0
+    },
+    "DC": {
+     "n": 19,
+     "p10": 669.4,
+     "p50": 2016.0,
+     "p90": 4018.2,
+     "max": 6572.0
+    },
+    "BIBLIO_MODS": {
+     "n": 19,
+     "p10": 3355.0,
+     "p50": 4676.0,
+     "p90": 7636.4,
+     "max": 9767.0
+    },
+    "RELS-EXT": {
+     "n": 19,
+     "p10": 8934.0,
+     "p50": 27979.0,
+     "p90": 46917.2,
+     "max": 48532.0
+    }
+   },
+   "datastream_versions": {
+    "RELS-EXT": {
+     "n": 19,
+     "p10": 1.0,
+     "p50": 1.0,
+     "p90": 2.0,
+     "max": 2.0
+    }
+   },
+   "external_hosts": {
+    "POLICY local.fedora.server": 17
+   },
+   "rels_predicates": {
+    "hasModel": 1.0,
+    "hasPage": 1.0,
+    "itemID": 1.0,
+    "policy": 1.0,
+    "license": 0.95,
+    "contract": 0.79,
+    "handle": 0.68
+   },
+   "rels_predicate_counts": {
+    "hasPage": {
+     "n": 19,
+     "p10": 99.4,
+     "p50": 326.0,
+     "p90": 551.6,
+     "max": 571.0
+    },
+    "license": {
+     "n": 18,
+     "p10": 1.0,
+     "p50": 1.0,
+     "p90": 2.0,
+     "max": 2.0
+    }
+   },
+   "rels_vocab": {
+    "hasModel=info:fedora/model:monographunit": 19,
+    "license=onsite": 14,
+    "policy=policy:private": 13,
+    "policy=policy:public": 6,
+    "license=dnnto": 6,
+    "license=public": 4
+   },
+   "mods_paths": {
+    "/modsCollection/mods/language/languageTerm/@type": 1.0,
+    "/modsCollection/mods/language": 1.0,
+    "/modsCollection/mods/language/languageTerm/@authority": 1.0,
+    "/modsCollection/mods/titleInfo/title": 1.0,
+    "/modsCollection/mods/originInfo/place/placeTerm": 1.0,
+    "/modsCollection/mods/identifier/@type": 1.0,
+    "/modsCollection/mods/genre": 1.0,
+    "/modsCollection/mods/titleInfo": 1.0,
+    "/modsCollection": 1.0,
+    "/modsCollection/mods": 1.0,
+    "/modsCollection/mods/physicalDescription/form": 1.0,
+    "/modsCollection/mods/language/languageTerm": 1.0,
+    "/modsCollection/mods/originInfo/place/placeTerm/@type": 1.0,
+    "/modsCollection/mods/originInfo": 1.0,
+    "/modsCollection/mods/titleInfo/partNumber": 1.0,
+    "/modsCollection/mods/originInfo/publisher": 1.0,
+    "/modsCollection/mods/originInfo/dateIssued": 1.0,
+    "/modsCollection/mods/physicalDescription": 1.0,
+    "/modsCollection/mods/physicalDescription/form/@authority": 1.0,
+    "/modsCollection/mods/identifier": 1.0,
+    "/modsCollection/mods/originInfo/place": 1.0,
+    "/modsCollection/mods/recordInfo/recordCreationDate/@encoding": 0.89,
+    "/modsCollection/mods/name/namePart": 0.89,
+    "/modsCollection/mods/recordInfo/recordContentSource": 0.89,
+    "/modsCollection/mods/recordInfo/recordIdentifier": 0.89,
+    "/modsCollection/mods/recordInfo/languageOfCataloging/languageTerm": 0.89,
+    "/modsCollection/mods/recordInfo/languageOfCataloging/languageTerm/@type": 0.89,
+    "/modsCollection/mods/name/role/roleTerm": 0.89,
+    "/modsCollection/mods/recordInfo/recordCreationDate": 0.89,
+    "/modsCollection/mods/location": 0.89,
+    "/modsCollection/mods/note": 0.89,
+    "/modsCollection/mods/recordInfo/recordOrigin": 0.89,
+    "/modsCollection/mods/recordInfo": 0.89,
+    "/modsCollection/mods/physicalDescription/extent": 0.89,
+    "/modsCollection/mods/recordInfo/recordChangeDate/@encoding": 0.89,
+    "/modsCollection/mods/location/physicalLocation": 0.89,
+    "/modsCollection/mods/location/shelfLocator": 0.89,
+    "/modsCollection/mods/name/role/roleTerm/@authority": 0.89,
+    "/modsCollection/mods/recordInfo/recordIdentifier/@source": 0.89,
+    "/modsCollection/mods/recordInfo/languageOfCataloging/languageTerm/@authority": 0.89,
+    "/modsCollection/mods/@ID": 0.89,
+    "/modsCollection/mods/note/@type": 0.89,
+    "/modsCollection/mods/name": 0.89,
+    "/modsCollection/mods/originInfo/place/placeTerm/@authority": 0.89,
+    "/modsCollection/mods/recordInfo/recordChangeDate": 0.89,
+    "/modsCollection/mods/name/role/roleTerm/@type": 0.89,
+    "/modsCollection/mods/recordInfo/recordContentSource/@authority": 0.89,
+    "/modsCollection/mods/name/role": 0.89,
+    "/modsCollection/mods/typeOfResource": 0.89,
+    "/modsCollection/mods/recordInfo/languageOfCataloging": 0.89,
+    "/modsCollection/mods/name/@type": 0.89,
+    "/modsCollection/mods/originInfo/issuance": 0.79,
+    "/modsCollection/mods/location/physicalLocation/@authority": 0.79,
+    "/modsCollection/mods/name/namePart/@type": 0.79,
+    "/modsCollection/mods/tableOfContents": 0.74,
+    "/modsCollection/mods/recordInfo/descriptionStandard": 0.68,
+    "/modsCollection/mods/classification": 0.68,
+    "/modsCollection/mods/classification/@authority": 0.68,
+    "/modsCollection/mods/subject": 0.63,
+    "/modsCollection/mods/subject/topic": 0.63
+   },
+   "dc_paths": {
+    "/dc/type": 1.0,
+    "/dc/rights": 1.0,
+    "/dc/identifier": 1.0,
+    "/dc": 1.0,
+    "/dc/title": 1.0,
+    "/dc/@schemaLocation": 0.95,
+    "/dc/language": 0.89,
+    "/dc/date": 0.89,
+    "/dc/publisher": 0.89,
+    "/dc/description": 0.79,
+    "/dc/format": 0.79,
+    "/dc/contributor": 0.63,
+    "/dc/subject": 0.58,
+    "/dc/creator": 0.58,
+    "/dc/coverage": 0.53,
+    "/dc/source": 0.37,
+    "/dc/relation": 0.11
+   },
+   "image_mime": {},
+   "images": {}
+  },
+  "collection": {
+   "n": 17,
+   "file_bytes": {
+    "n": 17,
+    "p10": 4230.4,
+    "p50": 17602.0,
+    "p90": 74627.8,
+    "max": 118852.0
+   },
+   "datastreams": {
+    "BIBLIO_MODS": 1.0,
+    "RELS-EXT": 1.0,
+    "IMG_THUMB": 0.41
+   },
+   "datastream_kinds": [
+    {
+     "id": "RELS-EXT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 0.65
+    },
+    {
+     "id": "BIBLIO_MODS",
+     "control": "X",
+     "kind": "xml",
+     "mime": "application/xml",
+     "share": 0.59
+    },
+    {
+     "id": "BIBLIO_MODS",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 0.41
+    },
+    {
+     "id": "RELS-EXT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "application/xml",
+     "share": 0.35
+    },
+    {
+     "id": "IMG_THUMB",
+     "control": "E",
+     "kind": "location",
+     "mime": "image/jpeg",
+     "share": 0.29
+    },
+    {
+     "id": "IMG_THUMB",
+     "control": "M",
+     "kind": "binary",
+     "mime": "image/png",
+     "share": 0.12
+    }
+   ],
+   "datastream_bytes": {
+    "BIBLIO_MODS": {
+     "n": 17,
+     "p10": 1296.6,
+     "p50": 1842.0,
+     "p90": 2390.4,
+     "max": 4194.0
+    },
+    "RELS-EXT": {
+     "n": 17,
+     "p10": 839.4,
+     "p50": 1979.0,
+     "p90": 9699.2,
+     "max": 23908.0
+    },
+    "IMG_THUMB": {
+     "n": 2,
+     "p10": 28339.6,
+     "p50": 30394.0,
+     "p90": 32448.4,
+     "max": 32962.0
+    }
+   },
+   "datastream_versions": {
+    "BIBLIO_MODS": {
+     "n": 17,
+     "p10": 1.0,
+     "p50": 1.0,
+     "p90": 3.0,
+     "max": 7.0
+    },
+    "RELS-EXT": {
+     "n": 17,
+     "p10": 1.0,
+     "p50": 1.0,
+     "p90": 26.0,
+     "max": 45.0
+    }
+   },
+   "external_hosts": {
+    "IMG_THUMB imageserver.mzk.cz": 5
+   },
+   "rels_predicates": {
+    "hasModel": 1.0,
+    "itemID": 1.0,
+    "standalone": 1.0,
+    "contains": 1.0,
+    "policy": 1.0
+   },
+   "rels_predicate_counts": {
+    "contains": {
+     "n": 17,
+     "p10": 3.6,
+     "p50": 17.0,
+     "p90": 108.8,
+     "max": 275.0
+    }
+   },
+   "rels_vocab": {
+    "hasModel=info:fedora/model:collection": 17,
+    "policy=policy:public": 17
+   },
+   "mods_paths": {
+    "/modsCollection/mods/titleInfo/@lang": 1.0,
+    "/modsCollection/mods/@version": 1.0,
+    "/modsCollection/mods/titleInfo": 1.0,
+    "/modsCollection": 1.0,
+    "/modsCollection/mods": 1.0,
+    "/modsCollection/mods/titleInfo/title": 1.0,
+    "/modsCollection/mods/note/@lang": 0.94,
+    "/modsCollection/mods/abstract": 0.94,
+    "/modsCollection/mods/abstract/@lang": 0.94,
+    "/modsCollection/mods/note": 0.94,
+    "/modsCollection/mods/subject": 0.06,
+    "/modsCollection/mods/subject/@lang": 0.06,
+    "/modsCollection/mods/subject/topic": 0.06
+   },
+   "dc_paths": {},
+   "image_mime": {
+    "IMG_THUMB image/jpeg location": 5,
+    "IMG_THUMB image/png binary": 2
+   },
+   "images": {
+    "IMG_THUMB": {
+     "width": {
+      "n": 2,
+      "p10": 87.5,
+      "p50": 93.5,
+      "p90": 99.5,
+      "max": 101.0
+     },
+     "height": {
+      "n": 2,
+      "p10": 127.0,
+      "p50": 127.0,
+      "p90": 127.0,
+      "max": 127.0
+     },
+     "bytes": {
+      "n": 2,
+      "p10": 28339.6,
+      "p50": 30394.0,
+      "p90": 32448.4,
+      "max": 32962.0
+     }
+    }
+   }
+  },
+  "supplement": {
+   "n": 17,
+   "file_bytes": {
+    "n": 17,
+    "p10": 6349.0,
+    "p50": 8455.0,
+    "p90": 12375.0,
+    "max": 14688.0
+   },
+   "datastreams": {
+    "BIBLIO_MODS": 1.0,
+    "DC": 1.0,
+    "RELS-EXT": 1.0,
+    "POLICY": 1.0,
+    "AUDIT": 0.82
+   },
+   "datastream_kinds": [
+    {
+     "id": "BIBLIO_MODS",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 1.0
+    },
+    {
+     "id": "DC",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 1.0
+    },
+    {
+     "id": "POLICY",
+     "control": "E",
+     "kind": "location",
+     "mime": "application/rdf+xml",
+     "share": 1.0
+    },
+    {
+     "id": "RELS-EXT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "application/rdf+xml",
+     "share": 0.94
+    },
+    {
+     "id": "AUDIT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 0.82
+    },
+    {
+     "id": "RELS-EXT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 0.06
+    }
+   ],
+   "datastream_bytes": {
+    "AUDIT": {
+     "n": 14,
+     "p10": 440.1,
+     "p50": 2286.5,
+     "p90": 4336.0,
+     "max": 6250.0
+    },
+    "BIBLIO_MODS": {
+     "n": 17,
+     "p10": 933.0,
+     "p50": 1081.0,
+     "p90": 3895.0,
+     "max": 3902.0
+    },
+    "DC": {
+     "n": 17,
+     "p10": 523.0,
+     "p50": 824.0,
+     "p90": 1750.4,
+     "max": 1757.0
+    },
+    "RELS-EXT": {
+     "n": 17,
+     "p10": 784.2,
+     "p50": 1267.0,
+     "p90": 1721.2,
+     "max": 1969.0
+    }
+   },
+   "datastream_versions": {
+    "RELS-EXT": {
+     "n": 17,
+     "p10": 1.0,
+     "p50": 1.0,
+     "p90": 1.0,
+     "max": 3.0
+    }
+   },
+   "external_hosts": {
+    "POLICY local.fedora.server": 17
+   },
+   "rels_predicates": {
+    "hasModel": 1.0,
+    "itemID": 1.0,
+    "policy": 1.0,
+    "hasPage": 0.88,
+    "contract": 0.76,
+    "handle": 0.76,
+    "isMemberOfCollection": 0.59,
+    "isOnPage": 0.12
+   },
+   "rels_predicate_counts": {
+    "hasPage": {
+     "n": 15,
+     "p10": 2.8,
+     "p50": 8.0,
+     "p90": 14.4,
+     "max": 16.0
+    },
+    "isMemberOfCollection": {
+     "n": 10,
+     "p10": 1.0,
+     "p50": 1.0,
+     "p90": 2.0,
+     "max": 2.0
+    },
+    "isOnPage": {
+     "n": 2,
+     "p10": 2.2,
+     "p50": 3.0,
+     "p90": 3.8,
+     "max": 4.0
+    }
+   },
+   "rels_vocab": {
+    "hasModel=info:fedora/model:supplement": 17,
+    "policy=policy:public": 9,
+    "policy=policy:private": 8
+   },
+   "mods_paths": {
+    "/modsCollection/mods/language/languageTerm/@type": 1.0,
+    "/modsCollection/mods/language": 1.0,
+    "/modsCollection/mods/language/languageTerm/@authority": 1.0,
+    "/modsCollection/mods/identifier/@type": 1.0,
+    "/modsCollection/mods/genre": 1.0,
+    "/modsCollection/mods/titleInfo": 1.0,
+    "/modsCollection": 1.0,
+    "/modsCollection/mods": 1.0,
+    "/modsCollection/mods/physicalDescription/extent": 1.0,
+    "/modsCollection/mods/physicalDescription/form": 1.0,
+    "/modsCollection/mods/language/languageTerm": 1.0,
+    "/modsCollection/mods/physicalDescription": 1.0,
+    "/modsCollection/mods/physicalDescription/form/@authority": 1.0,
+    "/modsCollection/mods/identifier": 1.0,
+    "/modsCollection/mods/@ID": 1.0,
+    "/modsCollection/mods/originInfo/place/placeTerm": 0.94,
+    "/modsCollection/mods/originInfo": 0.94,
+    "/modsCollection/mods/titleInfo/partNumber": 0.94,
+    "/modsCollection/mods/originInfo/publisher": 0.94,
+    "/modsCollection/mods/originInfo/dateIssued": 0.94,
+    "/modsCollection/mods/originInfo/place": 0.94,
+    "/modsCollection/mods/genre/@type": 0.76,
+    "/modsCollection/mods/titleInfo/partName": 0.71,
+    "/modsCollection/mods/classification": 0.65,
+    "/modsCollection/mods/subject": 0.35,
+    "/modsCollection/mods/subject/topic": 0.35,
+    "/modsCollection/mods/@version": 0.35,
+    "/modsCollection/mods/titleInfo/title": 0.24,
+    "/modsCollection/mods/originInfo/issuance": 0.18,
+    "/modsCollection/mods/recordInfo/recordCreationDate/@encoding": 0.18,
+    "/modsCollection/mods/name/namePart": 0.18,
+    "/modsCollection/mods/name/@usage": 0.18,
+    "/modsCollection/mods/name/nameIdentifier": 0.18,
+    "/modsCollection/mods/note/@altRepGroup": 0.18,
+    "/modsCollection/mods/recordInfo/descriptionStandard": 0.18,
+    "/modsCollection/mods/recordInfo/recordCreationDate": 0.18,
+    "/modsCollection/mods/name/role/roleTerm": 0.18,
+    "/modsCollection/mods/note": 0.18,
+    "/modsCollection/mods/recordInfo": 0.18,
+    "/modsCollection/mods/subject/topic/@lang": 0.18,
+    "/modsCollection/mods/titleInfo/@type": 0.18,
+    "/modsCollection/mods/originInfo/place/placeTerm/@type": 0.18,
+    "/modsCollection/mods/recordInfo/recordChangeDate/@encoding": 0.18,
+    "/modsCollection/mods/name/role/roleTerm/@authority": 0.18,
+    "/modsCollection/mods/tableOfContents": 0.18,
+    "/modsCollection/mods/note/@type": 0.18,
+    "/modsCollection/mods/name": 0.18,
+    "/modsCollection/mods/originInfo/place/placeTerm/@authority": 0.18,
+    "/modsCollection/mods/recordInfo/recordChangeDate": 0.18,
+    "/modsCollection/mods/name/namePart/@type": 0.18,
+    "/modsCollection/mods/name/role/roleTerm/@type": 0.18,
+    "/modsCollection/mods/name/role": 0.18,
+    "/modsCollection/mods/name/@type": 0.18
+   },
+   "dc_paths": {
+    "/dc/type": 1.0,
+    "/dc/rights": 1.0,
+    "/dc/identifier": 1.0,
+    "/dc": 1.0,
+    "/dc/title": 1.0,
+    "/dc/date": 0.94,
+    "/dc/@schemaLocation": 0.82,
+    "/dc/language": 0.82,
+    "/dc/format": 0.82,
+    "/dc/publisher": 0.76,
+    "/dc/subject": 0.65,
+    "/dc/coverage": 0.29,
+    "/dc/description": 0.29,
+    "/dc/creator": 0.18
+   },
+   "image_mime": {},
+   "images": {}
+  },
+  "soundrecording": {
+   "n": 16,
+   "file_bytes": {
+    "n": 16,
+    "p10": 7406.5,
+    "p50": 10550.5,
+    "p90": 16533.0,
+    "max": 25534.0
+   },
+   "datastreams": {
+    "DC": 1.0,
+    "BIBLIO_MODS": 1.0,
+    "RELS-EXT": 1.0,
+    "POLICY": 0.44,
+    "AUDIT": 0.44
+   },
+   "datastream_kinds": [
+    {
+     "id": "DC",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 1.0
+    },
+    {
+     "id": "BIBLIO_MODS",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 1.0
+    },
+    {
+     "id": "RELS-EXT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 0.75
+    },
+    {
+     "id": "POLICY",
+     "control": "E",
+     "kind": "location",
+     "mime": "application/rdf+xml",
+     "share": 0.44
+    },
+    {
+     "id": "AUDIT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 0.44
+    },
+    {
+     "id": "RELS-EXT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "application/xml",
+     "share": 0.19
+    },
+    {
+     "id": "RELS-EXT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "application/rdf+xml",
+     "share": 0.06
+    }
+   ],
+   "datastream_bytes": {
+    "DC": {
+     "n": 16,
+     "p10": 744.0,
+     "p50": 843.5,
+     "p90": 2006.0,
+     "max": 2073.0
+    },
+    "BIBLIO_MODS": {
+     "n": 16,
+     "p10": 3439.5,
+     "p50": 4191.5,
+     "p90": 5095.0,
+     "max": 6409.0
+    },
+    "RELS-EXT": {
+     "n": 16,
+     "p10": 713.5,
+     "p50": 889.0,
+     "p90": 1679.5,
+     "max": 2439.0
+    },
+    "AUDIT": {
+     "n": 7,
+     "p10": 369.0,
+     "p50": 1127.0,
+     "p90": 1520.6,
+     "max": 1682.0
+    }
+   },
+   "datastream_versions": {
+    "DC": {
+     "n": 16,
+     "p10": 1.0,
+     "p50": 1.0,
+     "p90": 2.0,
+     "max": 2.0
+    },
+    "BIBLIO_MODS": {
+     "n": 16,
+     "p10": 1.0,
+     "p50": 1.0,
+     "p90": 2.0,
+     "max": 2.0
+    },
+    "RELS-EXT": {
+     "n": 16,
+     "p10": 1.0,
+     "p50": 1.0,
+     "p90": 4.0,
+     "max": 4.0
+    }
+   },
+   "external_hosts": {
+    "POLICY local.fedora.server": 7
+   },
+   "rels_predicates": {
+    "hasSoundUnit": 1.0,
+    "license": 1.0,
+    "hasModel": 1.0,
+    "itemID": 1.0,
+    "policy": 1.0,
+    "hasPage": 0.62,
+    "hasIntCompPart": 0.19,
+    "containsLicense": 0.06
+   },
+   "rels_predicate_counts": {
+    "hasPage": {
+     "n": 10,
+     "p10": 2.0,
+     "p50": 2.0,
+     "p90": 5.6,
+     "max": 11.0
+    },
+    "hasSoundUnit": {
+     "n": 16,
+     "p10": 2.0,
+     "p50": 2.0,
+     "p90": 5.0,
+     "max": 20.0
+    }
+   },
+   "rels_vocab": {
+    "hasModel=info:fedora/model:soundrecording": 16,
+    "policy=policy:private": 13,
+    "license=onsite": 13,
+    "policy=policy:public": 3,
+    "license=public": 3,
+    "containsLicense=onsite": 1
+   },
+   "mods_paths": {
+    "/modsCollection/mods/originInfo/issuance": 1.0,
+    "/modsCollection/mods/language/languageTerm/@type": 1.0,
+    "/modsCollection/mods/name/@type": 1.0,
+    "/modsCollection/mods/recordInfo/recordCreationDate/@encoding": 1.0,
+    "/modsCollection/mods/name/namePart": 1.0,
+    "/modsCollection/mods/language": 1.0,
+    "/modsCollection/mods/language/languageTerm/@authority": 1.0,
+    "/modsCollection/mods/recordInfo/recordContentSource": 1.0,
+    "/modsCollection/mods/recordInfo/recordIdentifier": 1.0,
+    "/modsCollection/mods/recordInfo/descriptionStandard": 1.0,
+    "/modsCollection/mods/recordInfo/languageOfCataloging/languageTerm": 1.0,
+    "/modsCollection/mods/recordInfo/languageOfCataloging/languageTerm/@type": 1.0,
+    "/modsCollection/mods/titleInfo/title": 1.0,
+    "/modsCollection/mods/name/role/roleTerm": 1.0,
+    "/modsCollection/mods/recordInfo/recordCreationDate": 1.0,
+    "/modsCollection/mods/location": 1.0,
+    "/modsCollection/mods/originInfo/place/placeTerm": 1.0,
+    "/modsCollection/mods/note": 1.0,
+    "/modsCollection/mods/recordInfo/recordOrigin": 1.0,
+    "/modsCollection/mods/identifier/@type": 1.0,
+    "/modsCollection/mods/recordInfo": 1.0,
+    "/modsCollection/mods/targetAudience/@authority": 1.0,
+    "/modsCollection/mods/titleInfo": 1.0,
+    "/modsCollection": 1.0,
+    "/modsCollection/mods": 1.0,
+    "/modsCollection/mods/physicalDescription/extent": 1.0,
+    "/modsCollection/mods/targetAudience": 1.0,
+    "/modsCollection/mods/physicalDescription/form": 1.0,
+    "/modsCollection/mods/language/languageTerm": 1.0,
+    "/modsCollection/mods/originInfo/place/placeTerm/@type": 1.0,
+    "/modsCollection/mods/originInfo": 1.0,
+    "/modsCollection/mods/location/physicalLocation": 1.0,
+    "/modsCollection/mods/originInfo/publisher": 1.0,
+    "/modsCollection/mods/recordInfo/recordChangeDate/@encoding": 1.0,
+    "/modsCollection/mods/originInfo/dateIssued": 1.0,
+    "/modsCollection/mods/physicalDescription": 1.0,
+    "/modsCollection/mods/physicalDescription/form/@authority": 1.0,
+    "/modsCollection/mods/identifier": 1.0,
+    "/modsCollection/mods/location/shelfLocator": 1.0,
+    "/modsCollection/mods/name/role/roleTerm/@authority": 1.0,
+    "/modsCollection/mods/originInfo/place": 1.0,
+    "/modsCollection/mods/recordInfo/recordIdentifier/@source": 1.0,
+    "/modsCollection/mods/recordInfo/languageOfCataloging/languageTerm/@authority": 1.0,
+    "/modsCollection/mods/name": 1.0,
+    "/modsCollection/mods/originInfo/place/placeTerm/@authority": 1.0,
+    "/modsCollection/mods/recordInfo/recordChangeDate": 1.0,
+    "/modsCollection/mods/recordInfo/recordContentSource/@authority": 1.0,
+    "/modsCollection/mods/name/role": 1.0,
+    "/modsCollection/mods/typeOfResource": 1.0,
+    "/modsCollection/mods/recordInfo/languageOfCataloging": 1.0,
+    "/modsCollection/mods/name/role/roleTerm/@type": 1.0,
+    "/modsCollection/mods/name/namePart/@type": 0.88,
+    "/modsCollection/mods/originInfo/dateIssued/@encoding": 0.81,
+    "/modsCollection/mods/subject": 0.75,
+    "/modsCollection/mods/titleInfo/@type": 0.75,
+    "/modsCollection/mods/subject/topic": 0.75,
+    "/modsCollection/mods/classification": 0.75,
+    "/modsCollection/mods/classification/@authority": 0.75,
+    "/modsCollection/mods/@version": 0.56,
+    "/modsCollection/mods/location/physicalLocation/@authority": 0.44
+   },
+   "dc_paths": {
+    "/dc/type": 1.0,
+    "/dc/rights": 1.0,
+    "/dc/identifier": 1.0,
+    "/dc/creator": 1.0,
+    "/dc": 1.0,
+    "/dc/date": 1.0,
+    "/dc/title": 1.0,
+    "/dc/publisher": 1.0,
+    "/dc/@schemaLocation": 0.81,
+    "/dc/language": 0.81,
+    "/dc/coverage": 0.19,
+    "/dc/description": 0.19,
+    "/dc/source": 0.19,
+    "/dc/format": 0.19
+   },
+   "image_mime": {},
+   "images": {}
+  },
+  "map": {
+   "n": 15,
+   "file_bytes": {
+    "n": 15,
+    "p10": 9414.4,
+    "p50": 10806.0,
+    "p90": 19208.6,
+    "max": 117126.0
+   },
+   "datastreams": {
+    "DC": 1.0,
+    "BIBLIO_MODS": 1.0,
+    "RELS-EXT": 1.0,
+    "AUDIT": 0.8,
+    "POLICY": 0.73
+   },
+   "datastream_kinds": [
+    {
+     "id": "DC",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 1.0
+    },
+    {
+     "id": "BIBLIO_MODS",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 1.0
+    },
+    {
+     "id": "AUDIT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 0.8
+    },
+    {
+     "id": "POLICY",
+     "control": "E",
+     "kind": "location",
+     "mime": "application/rdf+xml",
+     "share": 0.73
+    },
+    {
+     "id": "RELS-EXT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 0.67
+    },
+    {
+     "id": "RELS-EXT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "application/rdf+xml",
+     "share": 0.2
+    },
+    {
+     "id": "RELS-EXT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "application/xml",
+     "share": 0.13
+    }
+   ],
+   "datastream_bytes": {
+    "DC": {
+     "n": 15,
+     "p10": 858.2,
+     "p50": 1978.0,
+     "p90": 2945.2,
+     "max": 3020.0
+    },
+    "BIBLIO_MODS": {
+     "n": 15,
+     "p10": 2127.4,
+     "p50": 5138.0,
+     "p90": 7209.6,
+     "max": 7408.0
+    },
+    "RELS-EXT": {
+     "n": 15,
+     "p10": 647.0,
+     "p50": 723.0,
+     "p90": 3545.4,
+     "max": 64363.0
+    },
+    "AUDIT": {
+     "n": 12,
+     "p10": 357.0,
+     "p50": 498.5,
+     "p90": 3562.0,
+     "max": 3562.0
+    }
+   },
+   "datastream_versions": {
+    "RELS-EXT": {
+     "n": 15,
+     "p10": 1.0,
+     "p50": 1.0,
+     "p90": 1.6,
+     "max": 3.0
+    }
+   },
+   "external_hosts": {
+    "POLICY local.fedora.server": 11
+   },
+   "rels_predicates": {
+    "hasModel": 1.0,
+    "itemID": 1.0,
+    "policy": 1.0,
+    "license": 0.87,
+    "hasPage": 0.87,
+    "contract": 0.73,
+    "handle": 0.73,
+    "hasUnit": 0.27,
+    "containsLicense": 0.2,
+    "isMemberOfCollection": 0.07
+   },
+   "rels_predicate_counts": {
+    "hasPage": {
+     "n": 13,
+     "p10": 1.0,
+     "p50": 1.0,
+     "p90": 46.8,
+     "max": 760.0
+    },
+    "hasUnit": {
+     "n": 4,
+     "p10": 1.0,
+     "p50": 1.5,
+     "p90": 2.0,
+     "max": 2.0
+    }
+   },
+   "rels_vocab": {
+    "hasModel=info:fedora/model:map": 15,
+    "policy=policy:private": 13,
+    "license=onsite": 9,
+    "license=public": 4,
+    "policy=policy:public": 2,
+    "containsLicense=onsite": 2,
+    "containsLicense=public": 1
+   },
+   "mods_paths": {
+    "/modsCollection/mods/titleInfo": 1.0,
+    "/modsCollection": 1.0,
+    "/modsCollection/mods": 1.0,
+    "/modsCollection/mods/originInfo": 1.0,
+    "/modsCollection/mods/titleInfo/title": 1.0,
+    "/modsCollection/mods/genre": 1.0,
+    "/modsCollection/mods/originInfo/publisher": 1.0,
+    "/modsCollection/mods/identifier": 0.93,
+    "/modsCollection/mods/identifier/@type": 0.93,
+    "/modsCollection/mods/@ID": 0.93,
+    "/modsCollection/mods/language": 0.87,
+    "/modsCollection/mods/recordInfo": 0.87,
+    "/modsCollection/mods/subject/cartographics/scale": 0.87,
+    "/modsCollection/mods/language/languageTerm": 0.87,
+    "/modsCollection/mods/location/physicalLocation": 0.87,
+    "/modsCollection/mods/recordInfo/recordChangeDate/@encoding": 0.87,
+    "/modsCollection/mods/location/shelfLocator": 0.87,
+    "/modsCollection/mods/recordInfo/recordContentSource/@authority": 0.87,
+    "/modsCollection/mods/typeOfResource": 0.87,
+    "/modsCollection/mods/recordInfo/languageOfCataloging": 0.87,
+    "/modsCollection/mods/name/namePart": 0.87,
+    "/modsCollection/mods/recordInfo/recordIdentifier": 0.87,
+    "/modsCollection/mods/recordInfo/languageOfCataloging/languageTerm": 0.87,
+    "/modsCollection/mods/location": 0.87,
+    "/modsCollection/mods/recordInfo/recordOrigin": 0.87,
+    "/modsCollection/mods/note": 0.87,
+    "/modsCollection/mods/physicalDescription/extent": 0.87,
+    "/modsCollection/mods/physicalDescription/form": 0.87,
+    "/modsCollection/mods/recordInfo/languageOfCataloging/languageTerm/@authority": 0.87,
+    "/modsCollection/mods/recordInfo/recordIdentifier/@source": 0.87,
+    "/modsCollection/mods/originInfo/place": 0.87,
+    "/modsCollection/mods/name/@type": 0.87,
+    "/modsCollection/mods/subject": 0.87,
+    "/modsCollection/mods/recordInfo/recordCreationDate/@encoding": 0.87,
+    "/modsCollection/mods/language/languageTerm/@authority": 0.87,
+    "/modsCollection/mods/recordInfo/recordContentSource": 0.87,
+    "/modsCollection/mods/originInfo/place/placeTerm": 0.87,
+    "/modsCollection/mods/originInfo/dateIssued": 0.87,
+    "/modsCollection/mods/physicalDescription/form/@authority": 0.87,
+    "/modsCollection/mods/recordInfo/recordChangeDate": 0.87,
+    "/modsCollection/mods/classification/@authority": 0.87,
+    "/modsCollection/mods/subject/cartographics": 0.87,
+    "/modsCollection/mods/language/languageTerm/@type": 0.87,
+    "/modsCollection/mods/subject/@authority": 0.87,
+    "/modsCollection/mods/recordInfo/languageOfCataloging/languageTerm/@type": 0.87,
+    "/modsCollection/mods/recordInfo/recordCreationDate": 0.87,
+    "/modsCollection/mods/originInfo/place/placeTerm/@type": 0.87,
+    "/modsCollection/mods/physicalDescription": 0.87,
+    "/modsCollection/mods/subject/topic": 0.87,
+    "/modsCollection/mods/classification": 0.87,
+    "/modsCollection/mods/name": 0.87,
+    "/modsCollection/mods/originInfo/place/placeTerm/@authority": 0.87,
+    "/modsCollection/mods/recordInfo/descriptionStandard": 0.87,
+    "/modsCollection/mods/originInfo/issuance": 0.8,
+    "/modsCollection/mods/relatedItem/titleInfo/title": 0.73,
+    "/modsCollection/mods/location/physicalLocation/@authority": 0.73,
+    "/modsCollection/mods/relatedItem/titleInfo": 0.73,
+    "/modsCollection/mods/name/role/roleTerm": 0.73,
+    "/modsCollection/mods/subject/geographicCode/@authority": 0.73,
+    "/modsCollection/mods/name/role/roleTerm/@type": 0.73
+   },
+   "dc_paths": {
+    "/dc/type": 1.0,
+    "/dc/@schemaLocation": 1.0,
+    "/dc/rights": 1.0,
+    "/dc/identifier": 1.0,
+    "/dc": 1.0,
+    "/dc/title": 1.0,
+    "/dc/publisher": 0.93,
+    "/dc/language": 0.87,
+    "/dc/date": 0.87,
+    "/dc/coverage": 0.6,
+    "/dc/description": 0.6,
+    "/dc/subject": 0.6,
+    "/dc/format": 0.6,
+    "/dc/contributor": 0.6,
+    "/dc/source": 0.47,
+    "/dc/creator": 0.33
+   },
+   "image_mime": {},
+   "images": {}
+  },
+  "convolute": {
+   "n": 14,
+   "file_bytes": {
+    "n": 14,
+    "p10": 7981.1,
+    "p50": 9297.0,
+    "p90": 28190.1,
+    "max": 30928.0
+   },
+   "datastreams": {
+    "BIBLIO_MODS": 1.0,
+    "DC": 1.0,
+    "RELS-EXT": 1.0,
+    "AUDIT": 0.93,
+    "POLICY": 0.07
+   },
+   "datastream_kinds": [
+    {
+     "id": "BIBLIO_MODS",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 1.0
+    },
+    {
+     "id": "DC",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 1.0
+    },
+    {
+     "id": "AUDIT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 0.93
+    },
+    {
+     "id": "RELS-EXT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 0.93
+    },
+    {
+     "id": "POLICY",
+     "control": "E",
+     "kind": "location",
+     "mime": "application/rdf+xml",
+     "share": 0.07
+    },
+    {
+     "id": "RELS-EXT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "application/xml",
+     "share": 0.07
+    }
+   ],
+   "datastream_bytes": {
+    "AUDIT": {
+     "n": 13,
+     "p10": 357.0,
+     "p50": 357.0,
+     "p90": 640.0,
+     "max": 3035.0
+    },
+    "BIBLIO_MODS": {
+     "n": 14,
+     "p10": 2617.9,
+     "p50": 5459.5,
+     "p90": 22984.0,
+     "max": 25157.0
+    },
+    "DC": {
+     "n": 14,
+     "p10": 528.3,
+     "p50": 697.0,
+     "p90": 1272.9,
+     "max": 1318.0
+    },
+    "RELS-EXT": {
+     "n": 14,
+     "p10": 631.8,
+     "p50": 785.0,
+     "p90": 1105.7,
+     "max": 1125.0
+    }
+   },
+   "datastream_versions": {
+    "RELS-EXT": {
+     "n": 14,
+     "p10": 1.0,
+     "p50": 1.0,
+     "p90": 1.0,
+     "max": 2.0
+    }
+   },
+   "external_hosts": {
+    "POLICY local.fedora.server": 1
+   },
+   "rels_predicates": {
+    "hasModel": 1.0,
+    "itemID": 1.0,
+    "hasUnit": 1.0,
+    "policy": 0.93,
+    "hasDonator": 0.86,
+    "license": 0.64,
+    "containsLicense": 0.43,
+    "isMemberOfCollection": 0.14
+   },
+   "rels_predicate_counts": {
+    "hasUnit": {
+     "n": 14,
+     "p10": 2.0,
+     "p50": 2.5,
+     "p90": 5.7,
+     "max": 7.0
+    }
+   },
+   "rels_vocab": {
+    "hasModel=info:fedora/model:convolute": 14,
+    "policy=policy:public": 12,
+    "containsLicense=public": 6,
+    "license=public": 6,
+    "license=mzk_public-muo": 3,
+    "policy=policy:private": 1
+   },
+   "mods_paths": {
+    "/modsCollection/mods/recordInfo/recordCreationDate/@encoding": 1.0,
+    "/modsCollection/mods/recordInfo/recordIdentifier": 1.0,
+    "/modsCollection/mods/recordInfo/recordContentSource": 1.0,
+    "/modsCollection/mods/recordInfo/descriptionStandard": 1.0,
+    "/modsCollection/mods/recordInfo/languageOfCataloging/languageTerm": 1.0,
+    "/modsCollection/mods/recordInfo/languageOfCataloging/languageTerm/@type": 1.0,
+    "/modsCollection/mods/recordInfo/recordCreationDate": 1.0,
+    "/modsCollection/mods/titleInfo/title": 1.0,
+    "/modsCollection/mods/location": 1.0,
+    "/modsCollection/mods/recordInfo/recordOrigin": 1.0,
+    "/modsCollection/mods/recordInfo/recordInfoNote": 1.0,
+    "/modsCollection/mods/identifier/@type": 1.0,
+    "/modsCollection/mods/recordInfo": 1.0,
+    "/modsCollection/mods/genre": 1.0,
+    "/modsCollection/mods/titleInfo": 1.0,
+    "/modsCollection": 1.0,
+    "/modsCollection/mods": 1.0,
+    "/modsCollection/mods/location/physicalLocation": 1.0,
+    "/modsCollection/mods/recordInfo/recordChangeDate/@encoding": 1.0,
+    "/modsCollection/mods/recordInfo/languageOfCataloging/languageTerm/@authority": 1.0,
+    "/modsCollection/mods/identifier": 1.0,
+    "/modsCollection/mods/location/shelfLocator": 1.0,
+    "/modsCollection/mods/@version": 1.0,
+    "/modsCollection/mods/genre/@authority": 1.0,
+    "/modsCollection/mods/recordInfo/recordChangeDate": 1.0,
+    "/modsCollection/mods/recordInfo/recordContentSource/@authority": 1.0,
+    "/modsCollection/mods/recordInfo/languageOfCataloging": 1.0,
+    "/modsCollection/mods/subject": 0.93,
+    "/modsCollection/mods/subject/@authority": 0.93,
+    "/modsCollection/mods/relatedItem": 0.93,
+    "/modsCollection/mods/subject/topic": 0.93,
+    "/modsCollection/mods/name/@type": 0.86,
+    "/modsCollection/mods/name/namePart": 0.86,
+    "/modsCollection/mods/relatedItem/titleInfo/title": 0.86,
+    "/modsCollection/mods/name": 0.86,
+    "/modsCollection/mods/relatedItem/titleInfo": 0.86,
+    "/modsCollection/mods/name/role/roleTerm": 0.79,
+    "/modsCollection/mods/relatedItem/@type": 0.79,
+    "/modsCollection/mods/name/role/roleTerm/@authority": 0.79,
+    "/modsCollection/mods/name/namePart/@type": 0.79,
+    "/modsCollection/mods/name/role": 0.79,
+    "/modsCollection/mods/name/role/roleTerm/@type": 0.79,
+    "/modsCollection/mods/name/nameIdentifier": 0.71,
+    "/modsCollection/mods/name/@usage": 0.71,
+    "/modsCollection/mods/relatedItem/identifier/@type": 0.64,
+    "/modsCollection/mods/relatedItem/identifier": 0.64,
+    "/modsCollection/mods/relatedItem/originInfo/publisher": 0.57,
+    "/modsCollection/mods/relatedItem/physicalDescription": 0.57,
+    "/modsCollection/mods/relatedItem/physicalDescription/extent": 0.57,
+    "/modsCollection/mods/relatedItem/name/namePart": 0.57,
+    "/modsCollection/mods/relatedItem/name": 0.57,
+    "/modsCollection/mods/relatedItem/originInfo": 0.57,
+    "/modsCollection/mods/recordInfo/recordIdentifier/@source": 0.43,
+    "/modsCollection/mods/titleInfo/subTitle": 0.36,
+    "/modsCollection/mods/relatedItem/part/detail/@type": 0.29,
+    "/modsCollection/mods/relatedItem/part/detail/number": 0.29,
+    "/modsCollection/mods/relatedItem/part": 0.29,
+    "/modsCollection/mods/relatedItem/part/detail": 0.29,
+    "/modsCollection/mods/titleInfo/partNumber": 0.21,
+    "/modsCollection/mods/name/@nameTitleGroup": 0.21
+   },
+   "dc_paths": {
+    "/dc/identifier": 1.0,
+    "/dc": 1.0,
+    "/dc/title": 1.0,
+    "/dc/@schemaLocation": 0.93,
+    "/dc/rights": 0.93,
+    "/dc/creator": 0.86
+   },
+   "image_mime": {},
+   "images": {}
+  },
+  "graphic": {
+   "n": 11,
+   "file_bytes": {
+    "n": 11,
+    "p10": 9628.0,
+    "p50": 22076.0,
+    "p90": 56835.0,
+    "max": 64631.0
+   },
+   "datastreams": {
+    "AUDIT": 1.0,
+    "DC": 1.0,
+    "BIBLIO_MODS": 1.0,
+    "RELS-EXT": 1.0,
+    "POLICY": 0.36
+   },
+   "datastream_kinds": [
+    {
+     "id": "AUDIT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 1.0
+    },
+    {
+     "id": "DC",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 1.0
+    },
+    {
+     "id": "BIBLIO_MODS",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 1.0
+    },
+    {
+     "id": "RELS-EXT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 0.55
+    },
+    {
+     "id": "RELS-EXT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "application/xml",
+     "share": 0.45
+    },
+    {
+     "id": "POLICY",
+     "control": "E",
+     "kind": "location",
+     "mime": "application/rdf+xml",
+     "share": 0.36
+    }
+   ],
+   "datastream_bytes": {
+    "AUDIT": {
+     "n": 11,
+     "p10": 357.0,
+     "p50": 357.0,
+     "p90": 357.0,
+     "max": 357.0
+    },
+    "DC": {
+     "n": 11,
+     "p10": 1391.0,
+     "p50": 3403.0,
+     "p90": 7892.0,
+     "max": 7903.0
+    },
+    "BIBLIO_MODS": {
+     "n": 11,
+     "p10": 3419.0,
+     "p50": 8963.0,
+     "p90": 36564.0,
+     "max": 44854.0
+    },
+    "RELS-EXT": {
+     "n": 11,
+     "p10": 707.0,
+     "p50": 2279.0,
+     "p90": 8075.0,
+     "max": 8999.0
+    }
+   },
+   "datastream_versions": {
+    "RELS-EXT": {
+     "n": 11,
+     "p10": 1.0,
+     "p50": 1.0,
+     "p90": 2.0,
+     "max": 3.0
+    }
+   },
+   "external_hosts": {
+    "POLICY local.fedora.server": 4
+   },
+   "rels_predicates": {
+    "license": 1.0,
+    "hasModel": 1.0,
+    "hasPage": 1.0,
+    "itemID": 1.0,
+    "policy": 1.0,
+    "hasDonator": 0.55,
+    "isMemberOfCollection": 0.45
+   },
+   "rels_predicate_counts": {
+    "hasPage": {
+     "n": 11,
+     "p10": 1.0,
+     "p50": 20.0,
+     "p90": 89.0,
+     "max": 100.0
+    }
+   },
+   "rels_vocab": {
+    "hasModel=info:fedora/model:graphic": 11,
+    "policy=policy:public": 11,
+    "license=public": 11
+   },
+   "mods_paths": {
+    "/modsCollection/mods/originInfo/issuance": 1.0,
+    "/modsCollection/mods/language/languageTerm/@type": 1.0,
+    "/modsCollection/mods/recordInfo/recordCreationDate/@encoding": 1.0,
+    "/modsCollection/mods/language": 1.0,
+    "/modsCollection/mods/language/languageTerm/@authority": 1.0,
+    "/modsCollection/mods/recordInfo/descriptionStandard": 1.0,
+    "/modsCollection/mods/recordInfo/recordContentSource": 1.0,
+    "/modsCollection/mods/recordInfo/recordIdentifier": 1.0,
+    "/modsCollection/mods/recordInfo/languageOfCataloging/languageTerm": 1.0,
+    "/modsCollection/mods/recordInfo/languageOfCataloging/languageTerm/@type": 1.0,
+    "/modsCollection/mods/titleInfo/title": 1.0,
+    "/modsCollection/mods/recordInfo/recordCreationDate": 1.0,
+    "/modsCollection/mods/location": 1.0,
+    "/modsCollection/mods/originInfo/place/placeTerm": 1.0,
+    "/modsCollection/mods/note": 1.0,
+    "/modsCollection/mods/recordInfo/recordOrigin": 1.0,
+    "/modsCollection/mods/recordInfo": 1.0,
+    "/modsCollection/mods/genre": 1.0,
+    "/modsCollection/mods/titleInfo": 1.0,
+    "/modsCollection": 1.0,
+    "/modsCollection/mods": 1.0,
+    "/modsCollection/mods/physicalDescription/extent": 1.0,
+    "/modsCollection/mods/physicalDescription/form": 1.0,
+    "/modsCollection/mods/language/languageTerm": 1.0,
+    "/modsCollection/mods/originInfo/place/placeTerm/@type": 1.0,
+    "/modsCollection/mods/originInfo": 1.0,
+    "/modsCollection/mods/location/physicalLocation": 1.0,
+    "/modsCollection/mods/originInfo/publisher": 1.0,
+    "/modsCollection/mods/recordInfo/recordChangeDate/@encoding": 1.0,
+    "/modsCollection/mods/originInfo/dateIssued": 1.0,
+    "/modsCollection/mods/physicalDescription": 1.0,
+    "/modsCollection/mods/physicalDescription/form/@authority": 1.0,
+    "/modsCollection/mods/location/shelfLocator": 1.0,
+    "/modsCollection/mods/classification": 1.0,
+    "/modsCollection/mods/originInfo/place": 1.0,
+    "/modsCollection/mods/recordInfo/languageOfCataloging/languageTerm/@authority": 1.0,
+    "/modsCollection/mods/genre/@authority": 1.0,
+    "/modsCollection/mods/recordInfo/recordChangeDate": 1.0,
+    "/modsCollection/mods/recordInfo/recordContentSource/@authority": 1.0,
+    "/modsCollection/mods/typeOfResource": 1.0,
+    "/modsCollection/mods/recordInfo/languageOfCataloging": 1.0,
+    "/modsCollection/mods/classification/@authority": 1.0,
+    "/modsCollection/mods/name/namePart": 0.91,
+    "/modsCollection/mods/name/role/roleTerm": 0.91,
+    "/modsCollection/mods/identifier/@type": 0.91,
+    "/modsCollection/mods/name/role/roleTerm/@authority": 0.91,
+    "/modsCollection/mods/identifier": 0.91,
+    "/modsCollection/mods/name": 0.91,
+    "/modsCollection/mods/@version": 0.91,
+    "/modsCollection/mods/name/role/roleTerm/@type": 0.91,
+    "/modsCollection/mods/name/role": 0.91,
+    "/modsCollection/mods/name/@type": 0.91,
+    "/modsCollection/mods/subject": 0.82,
+    "/modsCollection/mods/subject/@authority": 0.82,
+    "/modsCollection/mods/name/@usage": 0.82,
+    "/modsCollection/mods/subject/topic": 0.82,
+    "/modsCollection/mods/note/@type": 0.82,
+    "/modsCollection/mods/name/namePart/@type": 0.82,
+    "/modsCollection/mods/location/physicalLocation/@authority": 0.73,
+    "/modsCollection/mods/relatedItem/titleInfo/title": 0.73
+   },
+   "dc_paths": {
+    "/dc/@schemaLocation": 1.0,
+    "/dc/rights": 1.0,
+    "/dc/identifier": 1.0,
+    "/dc/language": 1.0,
+    "/dc": 1.0,
+    "/dc/date": 1.0,
+    "/dc/title": 1.0,
+    "/dc/publisher": 1.0,
+    "/dc/description": 0.91,
+    "/dc/subject": 0.91,
+    "/dc/format": 0.91,
+    "/dc/coverage": 0.64,
+    "/dc/creator": 0.64,
+    "/dc/source": 0.55,
+    "/dc/type": 0.45,
+    "/dc/contributor": 0.27,
+    "/dc/relation": 0.09
+   },
+   "image_mime": {},
+   "images": {}
+  },
+  "internalpart": {
+   "n": 10,
+   "file_bytes": {
+    "n": 10,
+    "p10": 6519.6,
+    "p50": 11722.5,
+    "p90": 32532.8,
+    "max": 72869.0
+   },
+   "datastreams": {
+    "AUDIT": 1.0,
+    "DC": 1.0,
+    "BIBLIO_MODS": 1.0,
+    "RELS-EXT": 1.0,
+    "POLICY": 1.0
+   },
+   "datastream_kinds": [
+    {
+     "id": "AUDIT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 1.0
+    },
+    {
+     "id": "DC",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 1.0
+    },
+    {
+     "id": "BIBLIO_MODS",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 1.0
+    },
+    {
+     "id": "RELS-EXT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "application/rdf+xml",
+     "share": 1.0
+    },
+    {
+     "id": "POLICY",
+     "control": "E",
+     "kind": "location",
+     "mime": "text/xml",
+     "share": 0.9
+    },
+    {
+     "id": "POLICY",
+     "control": "E",
+     "kind": "location",
+     "mime": "application/rdf+xml",
+     "share": 0.1
+    }
+   ],
+   "datastream_bytes": {
+    "AUDIT": {
+     "n": 10,
+     "p10": 609.0,
+     "p50": 649.0,
+     "p90": 650.9,
+     "max": 668.0
+    },
+    "DC": {
+     "n": 10,
+     "p10": 475.7,
+     "p50": 493.0,
+     "p90": 573.2,
+     "max": 773.0
+    },
+    "BIBLIO_MODS": {
+     "n": 10,
+     "p10": 875.6,
+     "p50": 899.5,
+     "p90": 1172.4,
+     "max": 1356.0
+    },
+    "RELS-EXT": {
+     "n": 10,
+     "p10": 1140.0,
+     "p50": 2678.5,
+     "p90": 21869.3,
+     "max": 25841.0
+    }
+   },
+   "datastream_versions": {
+    "RELS-EXT": {
+     "n": 10,
+     "p10": 1.0,
+     "p50": 2.0,
+     "p90": 2.0,
+     "max": 2.0
+    }
+   },
+   "external_hosts": {
+    "POLICY local.fedora.server": 10
+   },
+   "rels_predicates": {
+    "isOnPage": 1.0,
+    "hasModel": 1.0,
+    "itemID": 1.0,
+    "policy": 1.0,
+    "isMemberOfCollection": 0.8,
+    "handle": 0.1
+   },
+   "rels_predicate_counts": {
+    "isOnPage": {
+     "n": 10,
+     "p10": 6.4,
+     "p50": 24.5,
+     "p90": 251.1,
+     "max": 297.0
+    }
+   },
+   "rels_vocab": {
+    "hasModel=info:fedora/model:internalpart": 10,
+    "policy=policy:public": 10
+   },
+   "mods_paths": {
+    "/modsCollection/mods/part/detail": 1.0,
+    "/modsCollection/mods/titleInfo/title": 1.0,
+    "/modsCollection/mods/part/extent/list": 1.0,
+    "/modsCollection/mods/part/extent/@unit": 1.0,
+    "/modsCollection/mods/identifier/@type": 1.0,
+    "/modsCollection/mods/titleInfo": 1.0,
+    "/modsCollection": 1.0,
+    "/modsCollection/mods": 1.0,
+    "/modsCollection/mods/part/extent": 1.0,
+    "/modsCollection/mods/identifier": 1.0,
+    "/modsCollection/mods/part/detail/number": 1.0,
+    "/modsCollection/mods/part/detail/@type": 1.0,
+    "/modsCollection/mods/@version": 1.0,
+    "/modsCollection/mods/part/@type": 1.0,
+    "/modsCollection/mods/part": 1.0,
+    "/modsCollection/mods/part/extent/end": 0.9,
+    "/modsCollection/mods/part/extent/total": 0.9,
+    "/modsCollection/mods/physicalDescription": 0.9,
+    "/modsCollection/mods/accessCondition": 0.9,
+    "/modsCollection/mods/classification": 0.9,
+    "/modsCollection/mods/part/extent/start": 0.9,
+    "/modsCollection/@schemaLocation": 0.9,
+    "/modsCollection/mods/accessCondition/@type": 0.9,
+    "/modsCollection/mods/classification/@authority": 0.9,
+    "/modsCollection/mods/physicalDescription/note": 0.2,
+    "/modsCollection/mods/language/languageTerm/@type": 0.1,
+    "/modsCollection/mods/language": 0.1,
+    "/modsCollection/mods/language/languageTerm/@authority": 0.1,
+    "/modsCollection/mods/language/languageTerm": 0.1
+   },
+   "dc_paths": {
+    "/dc/type": 1.0,
+    "/dc/@schemaLocation": 1.0,
+    "/dc/rights": 1.0,
+    "/dc/identifier": 1.0,
+    "/dc": 1.0,
+    "/dc/title": 1.0,
+    "/dc/language": 0.1
+   },
+   "image_mime": {},
+   "images": {}
+  },
+  "article": {
+   "n": 6,
+   "file_bytes": {
+    "n": 6,
+    "p10": 6108.0,
+    "p50": 11517.0,
+    "p90": 12638.0,
+    "max": 13185.0
+   },
+   "datastreams": {
+    "AUDIT": 1.0,
+    "BIBLIO_MODS": 1.0,
+    "DC": 1.0,
+    "RELS-EXT": 1.0,
+    "POLICY": 1.0,
+    "IMG_FULL": 0.67,
+    "IMG_PREVIEW": 0.67,
+    "IMG_THUMB": 0.67
+   },
+   "datastream_kinds": [
+    {
+     "id": "AUDIT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 1.0
+    },
+    {
+     "id": "BIBLIO_MODS",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 1.0
+    },
+    {
+     "id": "DC",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 1.0
+    },
+    {
+     "id": "POLICY",
+     "control": "E",
+     "kind": "location",
+     "mime": "application/rdf+xml",
+     "share": 1.0
+    },
+    {
+     "id": "IMG_FULL",
+     "control": "E",
+     "kind": "location",
+     "mime": "application/pdf",
+     "share": 0.67
+    },
+    {
+     "id": "IMG_PREVIEW",
+     "control": "E",
+     "kind": "location",
+     "mime": "image/jpeg",
+     "share": 0.67
+    },
+    {
+     "id": "IMG_THUMB",
+     "control": "E",
+     "kind": "location",
+     "mime": "image/jpeg",
+     "share": 0.67
+    },
+    {
+     "id": "RELS-EXT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 0.67
+    },
+    {
+     "id": "RELS-EXT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "application/rdf+xml",
+     "share": 0.33
+    }
+   ],
+   "datastream_bytes": {
+    "AUDIT": {
+     "n": 6,
+     "p10": 357.0,
+     "p50": 5665.5,
+     "p90": 6201.0,
+     "max": 6201.0
+    },
+    "BIBLIO_MODS": {
+     "n": 6,
+     "p10": 738.0,
+     "p50": 968.0,
+     "p90": 1440.5,
+     "max": 1586.0
+    },
+    "DC": {
+     "n": 6,
+     "p10": 481.0,
+     "p50": 580.5,
+     "p90": 736.0,
+     "max": 786.0
+    },
+    "RELS-EXT": {
+     "n": 6,
+     "p10": 530.0,
+     "p50": 539.0,
+     "p90": 889.5,
+     "max": 1102.0
+    }
+   },
+   "datastream_versions": {},
+   "external_hosts": {
+    "POLICY local.fedora.server": 6,
+    "IMG_FULL pdfserver.mzk.cz": 4,
+    "IMG_PREVIEW pdfserver.mzk.cz": 4,
+    "IMG_THUMB pdfserver.mzk.cz": 4
+   },
+   "rels_predicates": {
+    "hasModel": 1.0,
+    "itemID": 1.0,
+    "policy": 1.0,
+    "file": 0.67,
+    "isMemberOfCollection": 0.33,
+    "isOnPage": 0.33
+   },
+   "rels_predicate_counts": {
+    "isOnPage": {
+     "n": 2,
+     "p10": 1.5,
+     "p50": 3.5,
+     "p90": 5.5,
+     "max": 6.0
+    }
+   },
+   "rels_vocab": {
+    "hasModel=info:fedora/model:article": 6,
+    "policy=policy:private": 6
+   },
+   "mods_paths": {
+    "/modsCollection/mods/language/languageTerm/@type": 1.0,
+    "/modsCollection/mods/name/@type": 1.0,
+    "/modsCollection/mods/recordInfo/recordCreationDate/@encoding": 1.0,
+    "/modsCollection/mods/language": 1.0,
+    "/modsCollection/mods/language/languageTerm/@authority": 1.0,
+    "/modsCollection/mods/recordInfo/recordCreationDate": 1.0,
+    "/modsCollection/mods/titleInfo/title": 1.0,
+    "/modsCollection/mods/identifier/@type": 1.0,
+    "/modsCollection/mods/recordInfo": 1.0,
+    "/modsCollection/mods/genre": 1.0,
+    "/modsCollection/mods/titleInfo": 1.0,
+    "/modsCollection": 1.0,
+    "/modsCollection/mods": 1.0,
+    "/modsCollection/mods/language/languageTerm": 1.0,
+    "/modsCollection/mods/identifier": 1.0,
+    "/modsCollection/mods/name": 1.0,
+    "/modsCollection/mods/titleInfo/@lang": 0.67,
+    "/modsCollection/mods/genre/@type": 0.67,
+    "/modsCollection/mods/relatedItem": 0.67,
+    "/modsCollection/mods/relatedItem/name": 0.67,
+    "/modsCollection/mods/recordInfo/recordChangeDate/@encoding": 0.67,
+    "/modsCollection/mods/relatedItem/name/@type": 0.67,
+    "/modsCollection/mods/@version": 0.67,
+    "/modsCollection/mods/recordInfo/recordChangeDate": 0.67,
+    "/modsCollection/mods/name/namePart": 0.5,
+    "/modsCollection/mods/name/role/roleTerm": 0.5,
+    "/modsCollection/mods/name/role/roleTerm/@authority": 0.5,
+    "/modsCollection/mods/name/namePart/@type": 0.5,
+    "/modsCollection/mods/name/role": 0.5,
+    "/modsCollection/mods/name/role/roleTerm/@type": 0.5,
+    "/modsCollection/mods/part/extent/end": 0.33,
+    "/modsCollection/mods/recordInfo/recordContentSource": 0.33,
+    "/modsCollection/mods/recordInfo/recordOrigin": 0.33,
+    "/modsCollection/mods/part/extent": 0.33,
+    "/modsCollection/mods/@ID": 0.33,
+    "/modsCollection/mods/part/extent/start": 0.33,
+    "/modsCollection/mods/part": 0.33,
+    "/modsCollection/mods/relatedItem/part/extent": 0.17,
+    "/modsCollection/mods/relatedItem/part/extent/start": 0.17,
+    "/modsCollection/mods/relatedItem/part/extent/end": 0.17,
+    "/modsCollection/mods/relatedItem/part": 0.17
+   },
+   "dc_paths": {
+    "/dc/type": 1.0,
+    "/dc/@schemaLocation": 1.0,
+    "/dc/rights": 1.0,
+    "/dc/identifier": 1.0,
+    "/dc": 1.0,
+    "/dc/title": 1.0,
+    "/dc/creator": 0.5,
+    "/dc/coverage": 0.33,
+    "/dc/language": 0.33
+   },
+   "image_mime": {
+    "IMG_FULL application/pdf location": 4,
+    "IMG_PREVIEW image/jpeg location": 4,
+    "IMG_THUMB image/jpeg location": 4
+   },
+   "images": {}
+  },
+  "manuscript": {
+   "n": 6,
+   "file_bytes": {
+    "n": 6,
+    "p10": 53630.5,
+    "p50": 147261.0,
+    "p90": 235740.0,
+    "max": 279143.0
+   },
+   "datastreams": {
+    "DC": 1.0,
+    "BIBLIO_MODS": 1.0,
+    "RELS-EXT": 1.0,
+    "AUDIT": 0.67,
+    "POLICY": 0.5,
+    "TEI_P5": 0.17
+   },
+   "datastream_kinds": [
+    {
+     "id": "DC",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 1.0
+    },
+    {
+     "id": "BIBLIO_MODS",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 1.0
+    },
+    {
+     "id": "RELS-EXT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "application/xml",
+     "share": 1.0
+    },
+    {
+     "id": "AUDIT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 0.67
+    },
+    {
+     "id": "POLICY",
+     "control": "E",
+     "kind": "location",
+     "mime": "text/xml",
+     "share": 0.5
+    },
+    {
+     "id": "TEI_P5",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 0.17
+    }
+   ],
+   "datastream_bytes": {
+    "DC": {
+     "n": 6,
+     "p10": 654.0,
+     "p50": 703.0,
+     "p90": 1479.0,
+     "max": 1961.0
+    },
+    "BIBLIO_MODS": {
+     "n": 6,
+     "p10": 2702.0,
+     "p50": 3045.5,
+     "p90": 8176.0,
+     "max": 11698.0
+    },
+    "RELS-EXT": {
+     "n": 6,
+     "p10": 9246.5,
+     "p50": 24357.5,
+     "p90": 37292.0,
+     "max": 43214.0
+    },
+    "AUDIT": {
+     "n": 4,
+     "p10": 543.6,
+     "p50": 1515.0,
+     "p90": 2647.4,
+     "max": 2891.0
+    },
+    "TEI_P5": {
+     "n": 1,
+     "p10": 109021.0,
+     "p50": 109021.0,
+     "p90": 109021.0,
+     "max": 109021.0
+    }
+   },
+   "datastream_versions": {
+    "DC": {
+     "n": 6,
+     "p10": 1.0,
+     "p50": 1.0,
+     "p90": 2.5,
+     "max": 3.0
+    },
+    "BIBLIO_MODS": {
+     "n": 6,
+     "p10": 1.0,
+     "p50": 1.5,
+     "p90": 2.5,
+     "max": 3.0
+    },
+    "RELS-EXT": {
+     "n": 6,
+     "p10": 3.0,
+     "p50": 3.5,
+     "p90": 5.0,
+     "max": 6.0
+    }
+   },
+   "external_hosts": {
+    "POLICY local.fedora.server": 3
+   },
+   "rels_predicates": {
+    "license": 1.0,
+    "hasModel": 1.0,
+    "hasPage": 1.0,
+    "itemID": 1.0,
+    "policy": 1.0,
+    "isMemberOfCollection": 0.83,
+    "hasIntCompPart": 0.5
+   },
+   "rels_predicate_counts": {
+    "hasPage": {
+     "n": 6,
+     "p10": 101.0,
+     "p50": 282.0,
+     "p90": 436.5,
+     "max": 507.0
+    },
+    "hasIntCompPart": {
+     "n": 3,
+     "p10": 1.0,
+     "p50": 1.0,
+     "p90": 2.6,
+     "max": 3.0
+    }
+   },
+   "rels_vocab": {
+    "hasModel=info:fedora/model:manuscript": 6,
+    "policy=policy:public": 6,
+    "license=public": 6
+   },
+   "mods_paths": {
+    "/modsCollection/mods/language/languageTerm/@type": 1.0,
+    "/modsCollection/mods/subject": 1.0,
+    "/modsCollection/mods/recordInfo/recordCreationDate/@encoding": 1.0,
+    "/modsCollection/mods/language": 1.0,
+    "/modsCollection/mods/language/languageTerm/@authority": 1.0,
+    "/modsCollection/mods/recordInfo/recordContentSource": 1.0,
+    "/modsCollection/mods/recordInfo/recordIdentifier": 1.0,
+    "/modsCollection/mods/recordInfo/languageOfCataloging/languageTerm": 1.0,
+    "/modsCollection/mods/recordInfo/languageOfCataloging/languageTerm/@type": 1.0,
+    "/modsCollection/mods/titleInfo/title": 1.0,
+    "/modsCollection/mods/recordInfo/recordCreationDate": 1.0,
+    "/modsCollection/mods/location": 1.0,
+    "/modsCollection/mods/originInfo/place/placeTerm": 1.0,
+    "/modsCollection/mods/recordInfo/recordOrigin": 1.0,
+    "/modsCollection/mods/identifier/@type": 1.0,
+    "/modsCollection/mods/recordInfo": 1.0,
+    "/modsCollection/mods/titleInfo": 1.0,
+    "/modsCollection": 1.0,
+    "/modsCollection/mods": 1.0,
+    "/modsCollection/mods/physicalDescription/extent": 1.0,
+    "/modsCollection/mods/physicalDescription/form": 1.0,
+    "/modsCollection/mods/language/languageTerm": 1.0,
+    "/modsCollection/mods/originInfo/place/placeTerm/@type": 1.0,
+    "/modsCollection/mods/originInfo": 1.0,
+    "/modsCollection/mods/location/physicalLocation": 1.0,
+    "/modsCollection/mods/recordInfo/recordChangeDate/@encoding": 1.0,
+    "/modsCollection/mods/originInfo/dateIssued": 1.0,
+    "/modsCollection/mods/physicalDescription": 1.0,
+    "/modsCollection/mods/location/shelfLocator": 1.0,
+    "/modsCollection/mods/subject/topic": 1.0,
+    "/modsCollection/mods/originInfo/place": 1.0,
+    "/modsCollection/mods/classification": 1.0,
+    "/modsCollection/mods/recordInfo/languageOfCataloging/languageTerm/@authority": 1.0,
+    "/modsCollection/mods/identifier": 1.0,
+    "/modsCollection/mods/recordInfo/recordChangeDate": 1.0,
+    "/modsCollection/mods/typeOfResource": 1.0,
+    "/modsCollection/mods/recordInfo/languageOfCataloging": 1.0,
+    "/modsCollection/mods/classification/@authority": 1.0,
+    "/modsCollection/mods/name/role/roleTerm": 0.83,
+    "/modsCollection/mods/name": 0.83,
+    "/modsCollection/mods/name/role/roleTerm/@type": 0.83,
+    "/modsCollection/mods/name/role": 0.83,
+    "/modsCollection/mods/name/@type": 0.83,
+    "/modsCollection/mods/location/url": 0.83,
+    "/modsCollection/mods/subject/@authority": 0.67,
+    "/modsCollection/mods/name/namePart": 0.67,
+    "/modsCollection/mods/recordInfo/descriptionStandard": 0.67,
+    "/modsCollection/mods/targetAudience/@authority": 0.67,
+    "/modsCollection/mods/relatedItem/@type": 0.67,
+    "/modsCollection/mods/relatedItem": 0.67,
+    "/modsCollection/mods/targetAudience": 0.67,
+    "/modsCollection/mods/physicalDescription/form/@authority": 0.67,
+    "/modsCollection/mods/recordInfo/recordIdentifier/@source": 0.67,
+    "/modsCollection/mods/@ID": 0.67,
+    "/modsCollection/mods/originInfo/place/placeTerm/@authority": 0.67,
+    "/modsCollection/mods/originInfo/dateIssued/@encoding": 0.67,
+    "/modsCollection/mods/recordInfo/recordContentSource/@authority": 0.67,
+    "/modsCollection/mods/originInfo/issuance": 0.67,
+    "/modsCollection/mods/@version": 0.67,
+    "/modsCollection/mods/originInfo/dateIssued/@qualifier": 0.5
+   },
+   "dc_paths": {
+    "/dc/type": 1.0,
+    "/dc/@schemaLocation": 1.0,
+    "/dc/rights": 1.0,
+    "/dc/identifier": 1.0,
+    "/dc": 1.0,
+    "/dc/date": 1.0,
+    "/dc/title": 1.0,
+    "/dc/language": 0.67,
+    "/dc/creator": 0.5,
+    "/dc/publisher": 0.5,
+    "/dc/subject": 0.33,
+    "/dc/description": 0.17
+   },
+   "image_mime": {},
+   "images": {}
+  },
+  "archive": {
+   "n": 3,
+   "file_bytes": {
+    "n": 3,
+    "p10": 25286.4,
+    "p50": 33512.0,
+    "p90": 199538.4,
+    "max": 241045.0
+   },
+   "datastreams": {
+    "DC": 1.0,
+    "BIBLIO_MODS": 1.0,
+    "RELS-EXT": 1.0,
+    "AUDIT": 0.67
+   },
+   "datastream_kinds": [
+    {
+     "id": "DC",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 1.0
+    },
+    {
+     "id": "BIBLIO_MODS",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 1.0
+    },
+    {
+     "id": "RELS-EXT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "application/xml",
+     "share": 1.0
+    },
+    {
+     "id": "AUDIT",
+     "control": "X",
+     "kind": "xml",
+     "mime": "text/xml",
+     "share": 0.67
+    }
+   ],
+   "datastream_bytes": {
+    "AUDIT": {
+     "n": 2,
+     "p10": 643.0,
+     "p50": 643.0,
+     "p90": 643.0,
+     "max": 643.0
+    },
+    "DC": {
+     "n": 3,
+     "p10": 856.4,
+     "p50": 1554.0,
+     "p90": 2246.0,
+     "max": 2419.0
+    },
+    "BIBLIO_MODS": {
+     "n": 3,
+     "p10": 3932.0,
+     "p50": 5088.0,
+     "p90": 6480.0,
+     "max": 6828.0
+    },
+    "RELS-EXT": {
+     "n": 3,
+     "p10": 5040.6,
+     "p50": 7255.0,
+     "p90": 35751.0,
+     "max": 42875.0
+    }
+   },
+   "datastream_versions": {
+    "DC": {
+     "n": 3,
+     "p10": 1.2,
+     "p50": 2.0,
+     "p90": 2.0,
+     "max": 2.0
+    },
+    "RELS-EXT": {
+     "n": 3,
+     "p10": 2.4,
+     "p50": 4.0,
+     "p90": 4.0,
+     "max": 4.0
+    }
+   },
+   "external_hosts": {},
+   "rels_predicates": {
+    "license": 1.0,
+    "hasModel": 1.0,
+    "hasPage": 1.0,
+    "itemID": 1.0,
+    "policy": 1.0,
+    "isMemberOfCollection": 0.67
+   },
+   "rels_predicate_counts": {
+    "hasPage": {
+     "n": 3,
+     "p10": 52.8,
+     "p50": 80.0,
+     "p90": 418.4,
+     "max": 503.0
+    }
+   },
+   "rels_vocab": {
+    "hasModel=info:fedora/model:archive": 3,
+    "policy=policy:public": 3,
+    "license=public": 3
+   },
+   "mods_paths": {
+    "/modsCollection/mods/originInfo/issuance": 1.0,
+    "/modsCollection/mods/language/languageTerm/@type": 1.0,
+    "/modsCollection/mods/subject": 1.0,
+    "/modsCollection/mods/abstract/@type": 1.0,
+    "/modsCollection/mods/recordInfo/recordCreationDate/@encoding": 1.0,
+    "/modsCollection/mods/subject/@authority": 1.0,
+    "/modsCollection/mods/name/namePart": 1.0,
+    "/modsCollection/mods/language": 1.0,
+    "/modsCollection/mods/language/languageTerm/@authority": 1.0,
+    "/modsCollection/mods/recordInfo/descriptionStandard": 1.0,
+    "/modsCollection/mods/recordInfo/recordContentSource": 1.0,
+    "/modsCollection/mods/recordInfo/recordIdentifier": 1.0,
+    "/modsCollection/mods/recordInfo/languageOfCataloging/languageTerm": 1.0,
+    "/modsCollection/mods/recordInfo/languageOfCataloging/languageTerm/@type": 1.0,
+    "/modsCollection/mods/titleInfo/title": 1.0,
+    "/modsCollection/mods/name/role/roleTerm": 1.0,
+    "/modsCollection/mods/recordInfo/recordCreationDate": 1.0,
+    "/modsCollection/mods/originInfo/place/placeTerm": 1.0,
+    "/modsCollection/mods/note": 1.0,
+    "/modsCollection/mods/recordInfo/recordOrigin": 1.0,
+    "/modsCollection/mods/identifier/@type": 1.0,
+    "/modsCollection/mods/recordInfo": 1.0,
+    "/modsCollection/mods/abstract": 1.0,
+    "/modsCollection/mods/genre": 1.0,
+    "/modsCollection/mods/targetAudience/@authority": 1.0,
+    "/modsCollection/mods/titleInfo": 1.0,
+    "/modsCollection": 1.0,
+    "/modsCollection/mods/relatedItem": 1.0,
+    "/modsCollection/mods": 1.0,
+    "/modsCollection/mods/physicalDescription/extent": 1.0,
+    "/modsCollection/mods/targetAudience": 1.0,
+    "/modsCollection/mods/physicalDescription/form": 1.0,
+    "/modsCollection/mods/language/languageTerm": 1.0,
+    "/modsCollection/mods/originInfo/place/placeTerm/@type": 1.0,
+    "/modsCollection/mods/originInfo": 1.0,
+    "/modsCollection/mods/recordInfo/recordChangeDate/@encoding": 1.0,
+    "/modsCollection/mods/originInfo/dateIssued": 1.0,
+    "/modsCollection/mods/physicalDescription": 1.0,
+    "/modsCollection/mods/physicalDescription/form/@authority": 1.0,
+    "/modsCollection/mods/recordInfo/recordIdentifier/@source": 1.0,
+    "/modsCollection/mods/recordInfo/languageOfCataloging/languageTerm/@authority": 1.0,
+    "/modsCollection/mods/name/role/roleTerm/@authority": 1.0,
+    "/modsCollection/mods/subject/topic": 1.0,
+    "/modsCollection/mods/originInfo/place": 1.0,
+    "/modsCollection/mods/classification": 1.0,
+    "/modsCollection/mods/identifier": 1.0,
+    "/modsCollection/mods/@ID": 1.0,
+    "/modsCollection/mods/note/@type": 1.0,
+    "/modsCollection/mods/name": 1.0,
+    "/modsCollection/mods/originInfo/place/placeTerm/@authority": 1.0,
+    "/modsCollection/mods/@version": 1.0,
+    "/modsCollection/mods/genre/@authority": 1.0,
+    "/modsCollection/mods/recordInfo/recordChangeDate": 1.0,
+    "/modsCollection/mods/recordInfo/recordContentSource/@authority": 1.0,
+    "/modsCollection/mods/name/role/roleTerm/@type": 1.0,
+    "/modsCollection/mods/name/role": 1.0,
+    "/modsCollection/mods/typeOfResource": 1.0,
+    "/modsCollection/mods/recordInfo/languageOfCataloging": 1.0,
+    "/modsCollection/mods/classification/@authority": 1.0,
+    "/modsCollection/mods/name/@type": 1.0
+   },
+   "dc_paths": {
+    "/dc/type": 1.0,
+    "/dc/@schemaLocation": 1.0,
+    "/dc/rights": 1.0,
+    "/dc/identifier": 1.0,
+    "/dc": 1.0,
+    "/dc/language": 1.0,
+    "/dc/title": 1.0,
+    "/dc/date": 1.0,
+    "/dc/description": 0.67,
+    "/dc/subject": 0.67,
+    "/dc/creator": 0.67
+   },
+   "image_mime": {},
+   "images": {}
+  }
+ }
+}
