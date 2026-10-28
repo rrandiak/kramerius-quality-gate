@@ -1,0 +1,33 @@
+# Run 02 — IIIF critical path and request-time logging
+
+## Current finding
+
+The checked source has two relevant entry points with several branches. The direct `/search/iiif/...` servlet can proxy to a CDK source or serve locally, depending on `cdk.server.mode`; [sampled production traces](13-iiif-runtime-paths.md) now verify that successful direct `info.json` requests on both public pods exercised the local non-CDK path. The forwarded `/search/api/cdk/v7.0/forward/iiif/...` API also has sampled successful traces. The exact deployed source commit and full effective configuration remain unverified. The [path graph](02-iiif-paths.svg) summarizes source calls and route boundaries. Dashed edges are possible remote HTTP calls, not measured traffic joins.
+
+| Path in source | Work before image response | Access-log call? |
+| --- | --- | --- |
+| Direct servlet, non-CDK `info.json` | Solr PID paths and rights; Akubra RELS-EXT tiles URL; log enrichment/write; image-server GET and JSON rewrite | Yes, before image-server GET |
+| Direct servlet, CDK `info.json` | Determine source; remote forwarded HTTP GET and JSON rewrite | No local call in this branch; remote source may log |
+| Direct servlet, CDK tile | Determine source; tiles may also probe remote `info.json`; remote tile GET and body copy | No local call; a probe can invoke remote `info.json` logging |
+| Forwarded API `info.json` | API key/channel gate; Solr PID paths and rights; log enrichment/write; Akubra RELS-EXT tiles URL; image-server GET and JSON rewrite | Yes, before Akubra and image-server GET |
+| Forwarded API tile | API key/channel gate; rights handling in `CDKIIIFResource.iiifTile`; Akubra RELS-EXT tiles URL; image-server GET and streamed body | No call in `iiifTile` |
+
+Anchors in the checkout: `IiifServlet.java` lines 92–229 and 251–357; `CDKForwardResource.java` lines 219–249; `CDKIIIFResource.java` lines 82–188; `IIIFUtils.java` lines 33–41. The request-time logger's binding is `BaseModule.java` line 57 and `AggregatedAccessLogs.java` lines 17–32. `SolrStatisticsAccessLogImpl.java` lines 109–313 reads Solr data, uses request/user and thread-local authorization data, reads Akubra FOXML once per distinct ancestor within the request, then sends a Solr logs update. Its elapsed time and ancestor count have not been measured. A [targeted code audit](14-targeted-code-audit.md) found unconditional duplicate Solr-log XML construction/serialization and logging failure/lifetime concerns. Exceptions in `AggregatedAccessLogs` are caught, but a slow dependency can still delay the request.
+
+## Production observation and what it does not prove
+
+On 2026-10-19 UTC, the direct `info.json` route had 61,185 GETs with exact p50 116 ms and p95 639 ms. The forwarded CDK `info.json` family had 86,204 GETs with approximate p50 589 ms and p95 2747 ms. Forwarded tiles had 155,597 GETs with approximate p50 625 ms and p95 2637 ms. The forwarded families were found by fixed path patterns within the manually curated endpoint list's `unknown` category; `unknown` means unmatched by that list. These are NGINX elapsed times. A [five-minute trace check](13-iiif-runtime-paths.md) found Solr logs POSTs before image-server GETs in all eight sampled successful direct traces and all 70 sampled successful forwarded traces. It verifies that logging is exercised, but cannot assign the logger's full elapsed time or a typical fan-out. No exact NGINX-request-to-trace join is available. The forwarded tile path does not call this logger in the checked source, so its tail cannot be attributed to logging from this evidence.
+
+## Measurement run
+
+1. Match the deployed image to a source revision and establish the complete effective `cdk.server.mode` configuration. The sampled direct non-CDK and forwarded paths are verified; confirm how any direct CDK request would target a forwarded route or different installation. Keep hosts and credentials out of artifacts.
+2. Add or locate bounded spans for source resolution, API key/channel gate, Solr path lookup, rights decision, access-log enrichment (Solr read, FOXML read/parse count, Solr write), Akubra tiles URL, upstream image-server call, and response transfer. Include route class and whether a tile triggered an `info.json` probe; do not attach PIDs, IPs, session tokens, or full URLs. Record correlation ID at NGINX and application boundary if possible.
+3. Sample comparable warm/cold `info.json` and tile requests of several sizes over representative PIDs and concurrency. Report component p50/p95/p99, request p50/p95/p99, upstream status, counts, and overlapping span relationships. Do not add overlapping span durations. Capture a browser page-opening measure because a single image URL is not the complete user experience.
+4. Measure event volume and log-record size, ancestor count, FOXML bytes, Solr logs update rate, error/retry rate, and time to visibility. Confirm logging retention, durability, ordering, acceptable delay/loss, and duplicate semantics with the owner before designing a queue.
+5. In staging, compare the current path with **one** isolated candidate selected from the measured dominant cost: avoiding duplicate enrichment reads, a bounded queue plus batch log writes, or another targeted change. Keep identical data, cache state, image-server behavior, and offered load. Measure request latency, page-opening time, log completeness/delay, backlog, Solr/NFS load, and failures. Report absolute and relative differences with run variability; assign no gain from source calls alone.
+
+If asynchronous logging is selected, capture immutable request/user/authorization values on the request thread. Do not pass servlet request objects, providers, or thread-local state to a worker. Specify a durable or explicitly lossy queue according to the required semantics, capacity/backpressure, retries with idempotency, shutdown draining, recovery, and monitoring. A synchronous fallback under overload would return work to the critical path and must be measured.
+
+## Decision gate and missing inputs
+
+The baseline justifies a **measurement pilot**, not an implementation recommendation. Choose a logging change only if spans show it contributes materially to the `info.json` critical path and correctness requirements permit the alternative. If the upstream image server or another dependency dominates, pilot that component instead. The following are still needed: a source-commit match, dedicated logger/component spans or a permitted staging JFR/instrumentation run, representative staging data and load, browser timing, and logging semantics from the service owner. No production change has been made.

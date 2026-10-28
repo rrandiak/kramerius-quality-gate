@@ -1,0 +1,40 @@
+digraph IIIFInfo {
+  rankdir=LR;
+  graph [fontname="DejaVu Sans", label="IIIF info.json — selected source calls", labelloc=t];
+  node [shape=box, fontname="DejaVu Sans", fontsize=10];
+  edge [fontname="DejaVu Sans", fontsize=9];
+  "GET /search/iiif/{pid}/info.json" [shape=oval];
+  "cdk.server.mode" [shape=diamond];
+  "Source Kramerius" [shape=cylinder];
+  "Image server" [shape=cylinder];
+  "Solr" [shape=cylinder];
+  "Akubra / FOXML" [shape=cylinder];
+  "GET /search/iiif/{pid}/info.json" -> "IiifServlet.doGet" [style="dashed"];
+  "IiifServlet.doGet" -> "cdk.server.mode" [style="dashed"];
+  "cdk.server.mode" -> "IiifServlet.proxyInfoJson" [label="true", style="dashed"];
+  "cdk.server.mode" -> "SolrAccess.getPidPaths" [label="false", style="dashed"];
+  "IiifServlet.doGet" -> "IiifServlet.proxyInfoJson" [label="line 142"];
+  "IiifServlet.proxyInfoJson" -> "Source Kramerius" [label="line 276"];
+  "IiifServlet.doGet" -> "SolrAccess.getPidPaths" [label="line 165"];
+  "IiifServlet.doGet" -> "RightsResolver.isActionAllowed" [label="line 168"];
+  "IiifServlet.doGet" -> "IIIFUtils.iiifImageEndpoint" [label="line 173"];
+  "IIIFUtils.iiifImageEndpoint" -> "AkubraRepository.re().getTilesUrl" [label="line 34"];
+  "AkubraRepository.re().getTilesUrl" -> "RelsExtHelperImpl.getTilesUrl" [style="dashed"];
+  "RelsExtHelperImpl.getTilesUrl" -> "Akubra / FOXML" [label="line 117"];
+  "IiifServlet.doGet" -> "IiifServlet.reportAccess" [label="line 180"];
+  "IiifServlet.reportAccess" -> "AggregatedAccessLogs.reportAccess" [label="line 229"];
+  "AggregatedAccessLogs.reportAccess" -> "StatisticsAccessLog.reportAccess" [label="line 27"];
+  "StatisticsAccessLog.reportAccess" -> "SolrStatisticsAccessLogImpl.reportAccess" [style="dashed"];
+  "SolrStatisticsAccessLogImpl.reportAccess" -> "SolrAccess.getSolrDataByPid" [label="line 110"];
+  "SolrAccess.getSolrDataByPid" -> "Solr" [style="dashed"];
+  "SolrStatisticsAccessLogImpl.reportAccess" -> "AkubraRepository.get" [label="line 224"];
+  "AkubraRepository.get" -> "Akubra / FOXML" [style="dashed"];
+  "SolrStatisticsAccessLogImpl.reportAccess" -> "SolrUpdateUtils.sendToDest" [label="line 313"];
+  "SolrUpdateUtils.sendToDest" -> "Solr" [style="dashed"];
+  "IiifServlet.doGet" -> "RESTHelper.openConnection" [label="line 183"];
+  "RESTHelper.openConnection" -> "Image server" [style="dashed"];
+  subgraph cluster_legend {
+    label="Solid: AST call; dashed: route, branch, binding, or external boundary";
+    color=gray;
+  }
+}

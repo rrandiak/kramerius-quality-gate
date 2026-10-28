@@ -1,0 +1,44 @@
+digraph IIIFPaths {
+  rankdir=LR;
+  graph [fontname="DejaVu Sans", label="IIIF paths in the checked source (deployment revision unverified)", labelloc=t];
+  node [shape=box, style="rounded,filled", fillcolor="#f4f7fb", fontname="DejaVu Sans"];
+  edge [fontname="DejaVu Sans"];
+
+  direct [label="GET /search/iiif/...\nIiifServlet.doGet"];
+  branch [shape=diamond, label="cdk.server.mode?"];
+  remote [label="CDK mode: resolve source\nproxyInfoJson / proxyTile"];
+  probe [label="Large tile only:\nprobe remote info.json"];
+  local [label="Non-CDK: Solr PID paths\nand read authorization"];
+  tilesurl [label="Akubra RELS-EXT\ngetTilesUrl"];
+  directlog [label="Direct info.json only:\nreportAccess"];
+  image [label="Image server\ninfo.json or tile"];
+  forward [label="GET /api/cdk/v7.0/forward/iiif/...\nCDKForwardResource"];
+  key [label="API key / channel check"];
+  fmeta [label="CDKIIIFResource.iiifManifest\nSolr paths + rights"];
+  ftile [label="CDKIIIFResource.iiifTile\nrights handling"];
+  flog [label="Forwarded info.json only:\nreportAccess"];
+  solrlog [label="SolrStatisticsAccessLogImpl\nSolr document + paths"];
+  foxml [label="Akubra FOXML per distinct\npath ancestor"];
+  logwrite [label="Solr logs update"];
+
+  direct -> branch;
+  branch -> remote [label="true"];
+  remote -> probe [label="large tile"];
+  probe -> forward [style=dashed, label="HTTP remote URL"];
+  remote -> forward [style=dashed, label="HTTP remote URL"];
+  branch -> local [label="false"];
+  local -> tilesurl;
+  tilesurl -> directlog [label="info.json"];
+  directlog -> image;
+  tilesurl -> image [label="tile"];
+  forward -> key;
+  key -> fmeta [label="info.json"];
+  key -> ftile [label="tile"];
+  fmeta -> flog;
+  flog -> tilesurl;
+  ftile -> tilesurl;
+  directlog -> solrlog;
+  flog -> solrlog;
+  solrlog -> foxml;
+  foxml -> logwrite;
+}
