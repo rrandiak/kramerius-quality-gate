@@ -1,4 +1,0 @@
-https://github.com/ceskaexpedice/kramerius
-https://ceskaexpedice.github.io/kramerius-docs
-https://github.com/rrandiak/kramerius-helm-chart
-moravianlibrary/kdsm (local checkout, not published): benchmarks with locally configurable latency on "nfs"

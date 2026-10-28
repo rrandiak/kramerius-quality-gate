@@ -1,5 +1,5 @@
 # MZK-like corpus: structure fitted to MZK production data (calibration/findings.md).
-# Only valid Kramerius data: production mistakes are not reproduced here (SCRATCH_PLAN.md §5).
+# Only valid Kramerius data: production mistakes are not reproduced here.
 # Mixes are page shares (what fraction of pages each model/profile gets), not title counts.
 # Lattice p4/p2 are solved from the observed even and divisible-by-4 shares: p2- and unsnapped
 # counts also land on multiples of 4 some of the time, so p4 is below the observed mod-4 share.

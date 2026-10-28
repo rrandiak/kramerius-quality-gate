@@ -1,6 +1,6 @@
 # Corpus spec: the YAML that fully describes what a generated corpus looks like.
 #
-# A spec is model mix -> profiles per model -> distributions per profile (see SCRATCH_PLAN.md §5).
+# A spec is model mix -> profiles per model -> distributions per profile.
 # Mixes are page shares: what fraction of generated pages each model/profile gets (mix.py).
 # Size and seed are not part of it, so one spec drives corpora of any size. The spec is parsed once
 # here and trusted everywhere else.

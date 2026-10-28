@@ -1,7 +1,7 @@
 # data
 
 Calibration inputs and outputs. Nothing here is a benchmark corpus; generated
-corpora live outside the repo (see SCRATCH_PLAN.md §5).
+corpora live outside the repo.
 
 - `raw/` — **not in git.** Dumps fetched from production instances: pid paths,
   model lists, FOXML samples. Large, and may contain production content.

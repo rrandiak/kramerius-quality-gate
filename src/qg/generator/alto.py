@@ -2,7 +2,7 @@
 #
 # The layout is composed once (blocks -> lines -> words, with pixel geometry that fits the print
 # area) and both ALTO and TEXT_OCR are rendered from it, so the OCR is exactly the ALTO text.
-# Every page has ALTO naming its producer (SCRATCH_PLAN.md §5, canonical specs).
+# Every page has ALTO naming its producer (canonical specs).
 #
 # ALTO is written as text rather than through ElementTree: it is the bulk of the corpus bytes and
 # ElementTree serialization dominated generation time. The element set (styles, positioned SP,
