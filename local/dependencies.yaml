@@ -1,0 +1,148 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: qg-solr, namespace: qg}
+spec:
+  replicas: 1
+  selector: {matchLabels: {app: qg-solr}}
+  template:
+    metadata: {labels: {app: qg-solr}}
+    spec:
+      containers:
+        - name: solr
+          image: qg-solr:9.6.1
+          imagePullPolicy: Never
+          ports: [{containerPort: 8983}]
+          resources: {requests: {cpu: 100m, memory: 512Mi}, limits: {cpu: "2", memory: 2Gi}}
+          readinessProbe: {httpGet: {path: "/solr/admin/cores?action=STATUS", port: 8983}, initialDelaySeconds: 15, periodSeconds: 5}
+---
+apiVersion: v1
+kind: Service
+metadata: {name: qg-solr, namespace: qg}
+spec:
+  selector: {app: qg-solr}
+  ports: [{port: 8983, targetPort: 8983}]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: qg-images, namespace: qg}
+spec:
+  replicas: 1
+  selector: {matchLabels: {app: qg-images}}
+  template:
+    metadata: {labels: {app: qg-images}}
+    spec:
+      containers:
+        - name: images
+          image: qg-images:1
+          imagePullPolicy: Never
+          ports: [{containerPort: 8080}]
+          readinessProbe: {httpGet: {path: /health, port: 8080}, periodSeconds: 5}
+          resources: {requests: {cpu: 10m, memory: 32Mi}, limits: {cpu: 200m, memory: 128Mi}}
+---
+apiVersion: v1
+kind: Service
+metadata: {name: qg-images, namespace: qg}
+spec:
+  selector: {app: qg-images}
+  ports: [{port: 8080, targetPort: 8080}]
+---
+apiVersion: v1
+kind: ConfigMap
+metadata: {name: qg-keycloak-realm, namespace: qg}
+data:
+  realm.json: |
+    {
+      "realm": "qg",
+      "enabled": true,
+      "users": [{"username": "qg-admin", "enabled": true, "emailVerified": true,
+        "firstName": "Quality", "lastName": "Gate", "email": "qg-admin@localhost",
+        "credentials": [{"type": "password", "value": "qg-local-only", "temporary": false}],
+        "realmRoles": ["kramerius_admin"]}],
+      "roles": {"realm": [{"name": "kramerius_admin"}]},
+      "clients": [{"clientId": "krameriusClient", "enabled": true,
+        "publicClient": false, "secret": "qg-local-only", "directAccessGrantsEnabled": true,
+        "serviceAccountsEnabled": true, "standardFlowEnabled": true,
+        "redirectUris": ["http://localhost/*", "http://127.0.0.1/*"]}]
+    }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: qg-keycloak, namespace: qg}
+spec:
+  replicas: 1
+  selector: {matchLabels: {app: qg-keycloak}}
+  template:
+    metadata: {labels: {app: qg-keycloak}}
+    spec:
+      containers:
+        - name: keycloak
+          image: quay.io/keycloak/keycloak:25.0.6
+          args: [start-dev, --import-realm]
+          env:
+            - {name: KC_BOOTSTRAP_ADMIN_USERNAME, value: qg-local-admin}
+            - {name: KC_BOOTSTRAP_ADMIN_PASSWORD, value: qg-local-only}
+          ports: [{containerPort: 8080}]
+          volumeMounts: [{name: realm, mountPath: /opt/keycloak/data/import, readOnly: true}]
+          readinessProbe: {httpGet: {path: /realms/qg/.well-known/openid-configuration, port: 8080}, initialDelaySeconds: 30, periodSeconds: 10}
+          resources: {requests: {cpu: 100m, memory: 512Mi}, limits: {cpu: "2", memory: 1Gi}}
+      volumes: [{name: realm, configMap: {name: qg-keycloak-realm}}]
+---
+apiVersion: v1
+kind: Service
+metadata: {name: qg-keycloak, namespace: qg}
+spec:
+  selector: {app: qg-keycloak}
+  ports: [{port: 8080, targetPort: 8080}]
+---
+apiVersion: v1
+kind: ConfigMap
+metadata: {name: qg-otel-config, namespace: qg}
+data:
+  config.yaml: |
+    receivers:
+      otlp:
+        protocols:
+          grpc: {endpoint: 0.0.0.0:4317}
+    processors:
+      batch: {}
+    exporters:
+      file:
+        path: /traces/traces.jsonl
+        format: json
+        append: true
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [file]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: otel-collector, namespace: qg}
+spec:
+  replicas: 1
+  selector: {matchLabels: {app: otel-collector}}
+  template:
+    metadata: {labels: {app: otel-collector}}
+    spec:
+      securityContext: {runAsUser: 0}
+      containers:
+        - name: collector
+          image: otel/opentelemetry-collector-contrib:0.104.0
+          args: ["--config=/etc/otelcol/config.yaml"]
+          ports: [{containerPort: 4317}]
+          volumeMounts:
+            - {name: config, mountPath: /etc/otelcol/config.yaml, subPath: config.yaml, readOnly: true}
+            - {name: traces, mountPath: /traces}
+          resources: {requests: {cpu: 50m, memory: 128Mi}, limits: {cpu: "1", memory: 512Mi}}
+      volumes:
+        - {name: config, configMap: {name: qg-otel-config}}
+        - {name: traces, hostPath: {path: /qg/traces, type: DirectoryOrCreate}}
+---
+apiVersion: v1
+kind: Service
+metadata: {name: otel-collector, namespace: qg}
+spec:
+  selector: {app: otel-collector}
+  ports: [{port: 4317, targetPort: 4317}]

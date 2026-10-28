@@ -1,0 +1,12 @@
+# Correctness is always expected. Set numerical limits after a local baseline.
+search:
+  errors_max: 0
+thumb:
+  errors_max: 0
+# Optional explicit limits (uncomment with values chosen for your machine):
+# search:
+#   p95_ms_max: 250
+#   throughput_rps_min: 10
+# _resources:
+#   memory_working_set_bytes_max: 8589934592
+#   cpu_usage_core_nanoseconds_delta_max: 30000000000

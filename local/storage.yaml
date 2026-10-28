@@ -1,0 +1,75 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata: {name: qg-object-store}
+spec:
+  capacity: {storage: 5Gi}
+  accessModes: [ReadWriteMany]
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: qg-hostpath
+  hostPath: {path: /qg/objectStore, type: DirectoryOrCreate}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata: {name: qg-datastream-store}
+spec:
+  capacity: {storage: 5Gi}
+  accessModes: [ReadWriteMany]
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: qg-hostpath
+  hostPath: {path: /qg/datastreamStore, type: DirectoryOrCreate}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata: {name: qg-import}
+spec:
+  capacity: {storage: 5Gi}
+  accessModes: [ReadWriteMany]
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: qg-hostpath
+  hostPath: {path: /qg/import, type: DirectoryOrCreate}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: {name: qg-object-store, namespace: qg}
+spec:
+  accessModes: [ReadWriteMany]
+  storageClassName: qg-hostpath
+  volumeName: qg-object-store
+  resources: {requests: {storage: 5Gi}}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: {name: qg-datastream-store, namespace: qg}
+spec:
+  accessModes: [ReadWriteMany]
+  storageClassName: qg-hostpath
+  volumeName: qg-datastream-store
+  resources: {requests: {storage: 5Gi}}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: {name: qg-import, namespace: qg}
+spec:
+  accessModes: [ReadWriteMany]
+  storageClassName: qg-hostpath
+  volumeName: qg-import
+  resources: {requests: {storage: 5Gi}}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata: {name: qg-javaagents}
+spec:
+  capacity: {storage: 1Gi}
+  accessModes: [ReadWriteMany]
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: qg-hostpath
+  hostPath: {path: /qg/javaagents, type: DirectoryOrCreate}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: {name: qg-javaagents, namespace: qg}
+spec:
+  accessModes: [ReadWriteMany]
+  storageClassName: qg-hostpath
+  volumeName: qg-javaagents
+  resources: {requests: {storage: 1Gi}}

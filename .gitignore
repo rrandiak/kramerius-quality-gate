@@ -30,5 +30,10 @@ htmlcov/
 .env.*
 !.env.example
 
-# Generated corpora (qg gen --out ...)
+# Generated corpora and local build state
+.gradle-qg
+.m2-qg
+.build-qg
+local/solr/cores/
 corpora/
+runs/

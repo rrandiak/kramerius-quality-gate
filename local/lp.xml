@@ -1,0 +1,16 @@
+<processes>
+  <process>
+    <id>import</id>
+    <description>Import FOXML</description>
+    <mainClass>org.kramerius.Import</mainClass>
+    <javaProcessParameters>-Xms128m -Xmx512m</javaProcessParameters>
+    <securedaction>a_import</securedaction>
+  </process>
+  <process>
+    <id>new_indexer_index_object</id>
+    <description>Index one object</description>
+    <mainClass>cz.kramerius.searchIndex.NewIndexerProcessIndexObject</mainClass>
+    <javaProcessParameters>-Xms128m -Xmx512m</javaProcessParameters>
+    <securedaction>a_index</securedaction>
+  </process>
+</processes>

@@ -38,6 +38,7 @@ packages = ["src/qg"]
 [tool.ruff]
 target-version = "py312"
 line-length = 100  # the universal house width (matches Biome)
+extend-exclude = ["apps"]  # pinned upstream submodules are not this project's Python sources
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "W", "UP", "B", "SIM"]

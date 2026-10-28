@@ -1,0 +1,18 @@
+[submodule "apps/kramerius-web-client-v3"]
+	path = apps/kramerius-web-client-v3
+	url = https://github.com/ceskaexpedice/kramerius-web-client-v3.git
+[submodule "apps/kramerius-helm-chart"]
+	path = apps/kramerius-helm-chart
+	url = https://github.com/rrandiak/kramerius-helm-chart
+[submodule "apps/kramerius"]
+	path = apps/kramerius
+	url = https://github.com/ceskaexpedice/kramerius
+[submodule "apps/process-platform"]
+	path = apps/process-platform
+	url = https://github.com/ceskaexpedice/process-platform
+[submodule "apps/akubra"]
+	path = apps/akubra
+	url = https://github.com/ceskaexpedice/akubra
+[submodule "apps/hazelcast-locks-server"]
+	path = apps/hazelcast-locks-server
+	url = https://github.com/ceskaexpedice/hazelcast-locks-server

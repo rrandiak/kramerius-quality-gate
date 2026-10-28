@@ -1,0 +1,105 @@
+# This file is only for a single-node k3d cluster named qg.
+namespace: qg
+defaultStorageClass: local-path
+defaultLoggingProperties: |
+  handlers = java.util.logging.ConsoleHandler
+  .level = INFO
+  java.util.logging.ConsoleHandler.level = INFO
+  java.util.logging.ConsoleHandler.formatter = java.util.logging.SimpleFormatter
+networking:
+  enabled: false
+adminClient:
+  enabled: false
+databases:
+  mode: pg
+  pg:
+    image: postgres
+    version: "16"
+  kramerius:
+    jdbc: {password: qg-local-only}
+    pg: {storage: {storageClass: local-path, size: 1Gi}}
+  process:
+    jdbc: {password: qg-local-only}
+    pg: {storage: {storageClass: local-path, size: 1Gi}}
+  users:
+    jdbc: {password: qg-local-only}
+    pg: {storage: {storageClass: local-path, size: 1Gi}}
+storages:
+  javaagents: {type: pvc, existingClaim: qg-javaagents}
+  akubra-object-store: {type: pvc, existingClaim: qg-object-store}
+  akubra-datastream-store: {type: pvc, existingClaim: qg-datastream-store}
+  imports:
+    directory: /data/import
+    volumes:
+      - {name: seed, mountPath: /data/import/seed, type: pvc, existingClaim: qg-import}
+solrConfig:
+  search: http://qg-solr:8983/solr/search
+  searchUseComposite: false
+  processing: http://qg-solr:8983/solr/processing
+  logs: http://qg-solr:8983/solr/logs
+  monitor: http://qg-solr:8983/solr/monitor
+auth:
+  keycloak:
+    realm: qg
+    authServerUrl: http://qg-keycloak:8080/
+    resource: krameriusClient
+    secret: qg-local-only
+krameriusPublic:
+  image: {repository: ceskaexpedice/kramerius, tag: "7.2.3", pullPolicy: IfNotPresent}
+  catalinaOptsMemory: -Xms256m -Xmx1g
+  customConfigs:
+    - mountPath: /root/.kramerius4/lp.xml
+      content: "" # local/up.sh loads local/lp.xml with --set-file
+  affinity: {type: soft}
+  tomcatLogs: {type: pvc, storageClass: local-path, size: 1Gi}
+  resources: {requests: {cpu: 100m, memory: 1Gi}, limits: {cpu: "2", memory: 2Gi}}
+  readinessProbe: {httpGet: {path: /search/api/client/v7.0/info, port: 8080}, initialDelaySeconds: 30, periodSeconds: 10}
+krameriusCurator:
+  image: {repository: ceskaexpedice/kramerius, tag: "7.2.3", pullPolicy: IfNotPresent}
+  catalinaOptsMemory: -Xms256m -Xmx1g
+  customConfigs:
+    - mountPath: /root/.kramerius4/lp.xml
+      content: "" # local/up.sh loads local/lp.xml with --set-file
+  affinity: {type: soft}
+  tomcatLogs: {type: pvc, storageClass: local-path, size: 1Gi}
+  resources: {requests: {cpu: 100m, memory: 1Gi}, limits: {cpu: "2", memory: 2Gi}}
+  readinessProbe: {httpGet: {path: /search/api/client/v7.0/info, port: 8080}, initialDelaySeconds: 30, periodSeconds: 10}
+processManager:
+  image: {repository: ceskaexpedice/process-manager, tag: "1.5.2", pullPolicy: IfNotPresent}
+  catalinaOptsMemory: -Xms256m -Xmx768m
+  tomcatLogs: {type: pvc, storageClass: local-path, size: 1Gi}
+  resources: {requests: {cpu: 100m, memory: 512Mi}, limits: {cpu: "1", memory: 1Gi}}
+workersDefaults:
+  image: {repository: ceskaexpedice/curator-worker, tag: "7.2.3", pullPolicy: IfNotPresent}
+  tomcatLogs: {type: pvc, storageClass: local-path, size: 1Gi}
+  processLogs: {type: pvc, storageClass: local-path, size: 1Gi}
+workerGroups:
+  - name: curator
+    replicas: 1
+    affinity: {type: soft}
+    workerLoopSleepSecs: 5
+    workerLoopPrintSecs: 30
+    catalinaOptsMemory: -Xms128m -Xmx512m
+    resources: {requests: {cpu: 100m, memory: 512Mi}, limits: {cpu: "1", memory: 1536Mi}}
+hazelcast:
+  image: {repository: ceskaexpedice/hazelcast-locks-server, tag: "2.0", pullPolicy: IfNotPresent}
+  env: {JAVA_OPTS: "-Xms128m -Xmx512m"}
+  resources: {requests: {cpu: 50m, memory: 256Mi}, limits: {cpu: "1", memory: 768Mi}}
+observability:
+  enabled: false
+  otel:
+    jarName: opentelemetry-javaagent.jar
+    protocol: grpc
+    krameriusPublic:
+      enabled: true
+      includeMethods:
+        - org.ceskaexpedice.akubra.impl.AkubraRepositoryImpl[get,getDatastreamContent,getDatastreamMetadata]
+    krameriusCurator:
+      enabled: true
+      includeMethods:
+        - org.ceskaexpedice.akubra.impl.AkubraRepositoryImpl[ingest,get,getDatastreamContent]
+    processManager: {enabled: true, includeMethods: []}
+    workersDefault:
+      enabled: true
+      includeMethods:
+        - org.ceskaexpedice.akubra.impl.AkubraRepositoryImpl[ingest,get,getDatastreamContent]
