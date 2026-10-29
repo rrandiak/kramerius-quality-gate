@@ -118,6 +118,23 @@ No latency gain for admitted requests (one in-memory counter update per request)
    but a new system for every library to run, and it still cannot see CDK users.
 4. **Both layers:** a coarse per-IP limit in the ingress or gateway against floods, and this filter for per-user fairness.
    This is the recommended end state for MZK.
+5. **Kramerius owns the rules, and also configures a proxy in front of its API.** Profiles and rate limits are defined
+   once in Kramerius (admin API and admin client, as above), and enforced in two places:
+   - **Edge proxy** (e.g. OpenResty, in the same container as Tomcat or as a sidecar): enforces whatever needs no
+     Kramerius state: bans, per-IP and per-prefix limits, trusted-header keys, download quotas by bytes. It loads the rule
+     set from Kramerius (an admin endpoint polled with an ETag, keeping the last good copy if Kramerius is down). A
+     rejected request never reaches Java, so floods and scrapers stop costing Tomcat threads and CPU.
+   - **Kramerius filter:** enforces only what needs Kramerius's identity: the logged-in or CDK user, roles, licences,
+     per-request cost (e.g. PDF pages).
+   - Optionally, Kramerius returns the resolved user in an internal response header that the proxy strips and caches by
+     token hash, so later requests can be counted per user at the edge without a `/user` call (the MZK gateway calls
+     `/user` today, `gateway_common.lua:305–327`).
+   - **For:** one place to define rules for every installation; cheap rejections before Java; MZK's gateway
+     (`kramerius-helm-chart/files/gateway/`) is a working basis for the edge part.
+   - **Against:** a second process to ship and run; two processes in one container need a supervisor, so a sidecar is
+     cleaner on Kubernetes, and the single container suits installations without it. Rule semantics must match in Lua
+     and Java. The proxy runs with Kramerius's release cycle, which makes it effort XL (several components and the
+     deployment).
 
 ## Effort
 
