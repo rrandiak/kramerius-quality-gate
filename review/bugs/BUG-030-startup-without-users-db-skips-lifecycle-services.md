@@ -100,6 +100,8 @@ requests pass the rights check (including its Postgres queries), Solr and Akubra
 **How often:** MZK operators say it happens often after Kubernetes node updates, and that a restart is the known
 remedy. The Tomcat logs on both pods go back to 2026-09-29, and only 2026-10-29 has `Request execution cancelled`;
 earlier episodes, if any, are older than the logs. It needs a pod to start exactly while the users database is down.
+At MZK that window opens on every node update: users-db is a single-instance CloudNativePG cluster (kramerius-db has
+two), and it was restarted 30 times between 2026-09-23 and 2026-10-29, mostly in night maintenance windows.
 
 ## Impact
 
