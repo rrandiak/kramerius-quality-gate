@@ -159,7 +159,7 @@ The header fields `touches`, `contracts` and `data_migration` record the facts t
 | [BUG-026](bugs/BUG-026-iiif-500-for-objects-without-tiles.md) | The IIIF endpoint answers 500 and logs SEVERE for objects that have no IIIF image, instead of 404 | low | XS | — | yes, 100 log lines for 69 objects in 7 days; 1 page where items/info and IIIF disagree |
 | [BUG-028](bugs/BUG-028-pdf-endpoints-leave-streams-open.md) | The PDF endpoints never close the three output streams they open per request, and leave the rendered file behind when generation fails | low | XS | — | not seen; one public pod had no leftover PDF temp files at one instant |
 | [BUG-029](bugs/BUG-029-statistics-semaphore-gains-permit-on-interrupt.md) | The statistics report's one-at-a-time semaphore gains a permit each time a waiting request is interrupted | low | XS | — | not observed; source only |
-| [BUG-030](bugs/BUG-030-iiif-tiles-fail-until-restart-after-cluster-disruption.md) | After a cluster disruption, kramerius-public answers 500 for most IIIF tiles until it is restarted, while staying Ready | high | M | — | yes, 52,523 tile 500s on 2026-10-29 02:50–07:53Z (67–82 % of tiles per hour), ended by a manual restart |
+| [BUG-030](bugs/BUG-030-startup-without-users-db-skips-lifecycle-services.md) | When the users database is down while Kramerius starts, it starts anyway without its lifecycle services, and IIIF tiles fail with 500 until a manual restart | high | S | — | yes, 2026-10-29: both public pods started during a users-DB restart, 52,523 tile 500s over 3–5 h, ended by a manual restart |
 
 ## Web client bugs
 
