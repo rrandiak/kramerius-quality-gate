@@ -34,6 +34,15 @@ review: []
   under a named profile (everyone matching shares one counter) or by IP. It learns the user only by calling Kramerius's
   `/user` endpoint with the bearer token, and it cannot tell CDK users apart, because their requests come from the CDK's
   addresses. Readers behind one NAT share a budget; a client changing addresses gets a fresh one.
+- **Measured at MZK** (NGINX logs, 30 days to 2026-10-29, ~120 million requests, ~200,000 gateway 429s):
+  - **CDK:** all CDK API traffic (7.8 million requests, peak 1,344 per minute from one address) matches the gateway's
+    internal-network profile and got **0** 429s. CDK readers do share one budget, but it never ran out.
+  - **Shared addresses:** grouping browser traffic by the number of distinct browser user agents per IP, addresses with
+    11–50 user agents (1,646 IPs, 3.5 million requests) had the highest 429 rate, 0.45 %, but 15,653 of their 15,918
+    429s came from one university network address (CESNET), throttled on thumbnails on 16 days; without it the rate is
+    about 0.007 %. Most 429s go to single heavy clients (one browser user agent on one address got 134,661).
+  - So per-IP counting causes little collateral damage at MZK today; the one real case is fixable with a profile for
+    that network.
 - **Other libraries** run Kramerius without this gateway, and most without Kubernetes.
 
 ## Idea
@@ -59,6 +68,12 @@ At that point the request's user is known, and a rejected request never reaches 
      `[user, cdk-user, header:X-Api-Key, ip/64]`.
    - **Matching conditions**, as the gateway's profiles: a rule or an exception can apply only to requests with given
      header values, users, roles or IP ranges (e.g. a higher limit for a reading-room header from the library's network).
+   - **Nested limits for shared addresses:** a request can count against two budgets at once: an **outer per-IP
+     ceiling**, set high, that stops floods whatever the client sends, and an **inner budget** per logged-in user (or,
+     optionally, per user agent or session) that splits the ceiling fairly between people behind one address. A key the
+     client controls (user agent, cookie) must only ever be an inner key: as a replacement for the IP, a scraper would
+     change it and get a fresh budget. Known shared networks (universities, libraries, reading rooms) get a profile
+     with a higher ceiling.
    Roles can raise or remove limits (curators, admins, the CDK harvester).
 2. **Rules per endpoint group**, as in the gateway: path patterns, requests per window with burst (GCRA), optional cost
    per request (e.g. a PDF counts its pages, an `info.json` or tile counts 1), peak and off-peak values, bans by user or
