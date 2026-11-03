@@ -25,6 +25,8 @@ mzk_programmer_check: null  # who confirmed it, when and how, once an MZK progra
 > every item of the collection and walks each item's ancestors, which can take hours. The lock lease is 120 s, so the
 > lock server drops the lock long before the process writes the collection's RELS-EXT back. The process then writes the
 > version it read at the start, which discards any change made to the collection meanwhile, and the final unlock fails.
+> The collection membership edit in the admin API recomputes the same aggregate correctly, with one Solr query and a
+> short lock.
 
 ## Symptom
 
@@ -77,11 +79,11 @@ Kramerius `master` at `560676c`, `SetLicenseProcess` (`processes/dnntflag/.../Se
 
 When step 2 runs longer than 120 s:
 
-1. **The lock server releases the lock.** Any other writer can now take it: the curator's collection endpoints
+1. **The lock server releases the lock.** Any other writer can now take it: the admin API's collection endpoints
    (`CollectionsResource.java:513`, `:613`, `:709`, `:876`, `:972`: add or remove items, clips, thumbnails), or another
    license process on a different member of the same collection.
 2. **Lost update.** The license process still writes the collection RELS-EXT it read before the scan. Every change
-   written to that RELS-EXT during the scan is lost, such as `rel:contains` added or removed by a curator, or another
+   written to that RELS-EXT during the scan is lost, such as `rel:contains` added or removed through the admin API, or another
    process's `contains_license`. Nothing logs it.
 3. **The final unlock fails.** `lock.unlock()` in the `finally` block throws `IllegalMonitorStateException`. The
    exception is not a `DistributedLocksException`, so the loop in `setLicenseMain` (`:113–117`, `:140–144`) records the
@@ -89,13 +91,21 @@ When step 2 runs longer than 120 s:
    `contains_licenses` update for that collection (`:405`), every remaining affected collection and the final commit are
    skipped. Repository and index now disagree.
 
-During the first 120 s, curator writes to the collection wait and then fail with `LockTimeout`. After that they go
+During the first 120 s, admin writes to the collection wait and then fail with `LockTimeout`. After that they go
 through and are overwritten later.
 
-The curator's own recompute does this correctly. `CollectionsResource.updateCollectionContainsLicensesInRepositoryAndSearchIndex`
-(`CollectionsResource.java:696–717`) gets the licenses with one Solr facet query over `in_collections:"<pid>"`
-(`:719–726`, fields `licenses`, `licenses.facet`, `licenses_of_ancestors`, `contains_licenses`) without a lock. It then
-locks only to re-read the RELS-EXT, replace the relations (`replaceContainsLicenses`, `:810–822`) and write.
+### Two paths recompute the same aggregate; only one does it correctly
+
+A collection's `contains_license` is recomputed on two paths, written separately:
+
+| Path | Trigger | How it computes | Lock held for |
+| --- | --- | --- | --- |
+| Collection membership edit (correct) | Admin API adds or removes items: `POST {pid}/items` (`addItemToCollection`, `addItemsToCollection`), `DELETE {collectionPid}/items/{itemPid}` and `PUT {collectionPid}/items/delete_batch_items` (`removeItemFromCollection`); calls at `CollectionsResource.java:532`, `:648`, `:922`, `:997` | one Solr facet query over `in_collections:"<pid>"` (`:719–726`, fields `licenses`, `licenses.facet`, `licenses_of_ancestors`, `contains_licenses`), with no lock | only the re-read of the RELS-EXT, `replaceContainsLicenses` (`:810–822`) and the write (`:708–717`): milliseconds |
+| License change (wrong) | `SetLicenseProcess` adds or removes a license on a collection member (`:209`, `:366`) | reads every item and walks its ancestors in the repository (`:437–498`) | the whole scan plus the write (`:410–433`): can take hours |
+
+The membership-edit path, `CollectionsResource.updateCollectionContainsLicensesInRepositoryAndSearchIndex`
+(`CollectionsResource.java:696–717`), shows the intended pattern: compute without the lock, then lock only the
+read-modify-write.
 
 ## Evidence and frequency
 
@@ -114,16 +124,16 @@ longer than 120 s hits it.
 
 ## Impact
 
-- **Data loss in collections.** Curator edits to a collection while a license process recomputes it disappear without
+- **Data loss in collections.** Admin edits to a collection made while a license process recomputes it disappear without
   an error. Example: items added to or removed from the collection.
 - **Wrong license aggregates.** Two license processes that touch the same collection can each overwrite the other's
   `contains_license`, which leaves the collection's aggregate wrong in the repository.
 - **A failed process after a successful write.** The process is marked FAILED, and Solr `contains_licenses` of the
   collection is not updated, so search facets and access filters that read it show the old value until the
   collection is reindexed.
-- **Blocked curators for the first 120 s.** Collection edits fail with `LockTimeout` while the lock is still held.
+- **Blocked admin edits for the first 120 s.** Collection edits fail with `LockTimeout` while the lock is still held.
 
-Raising `hazelcast.leaseTime` to hours stops the lost update. But curator edits to the collection then fail with
+Raising `hazelcast.leaseTime` to hours stops the lost update. But admin edits to the collection then fail with
 `LockTimeout` for the whole run, and the setting applies to every PID lock, so a hung thread can hold any object for
 that long. It is a stopgap, not a fix.
 
@@ -149,7 +159,7 @@ private static Set<String> recomputeCollectionContainsLicenses(String collection
 - What's left is a smaller race. If the collection's items change during the scan, the aggregate can be stale until the
   next recompute. To close it, compare the `rel:contains` list inside the lock with the snapshot and scan again if it
   changed.
-- **Better (S):** replace the scan with the curator's approach, a Solr facet query over `in_collections`, and share
+- **Better (S):** replace the scan with what the membership-edit path does, a Solr facet query over `in_collections`, and share
   `replaceContainsLicenses` with `CollectionsResource`. The process commits Solr before the recompute (`:200–206`), so
   the index is fresh. This also removes the hours of item-by-item reads. Check first that the facet result matches the
   item walk. The walk reads only explicit `license` on ancestors, on purpose (comment at `:471–474`), while the facet
@@ -180,8 +190,11 @@ Not reported. An issue in `kramerius` should state:
   process then overwrites the collection RELS-EXT with the copy read before the scan, losing concurrent edits. The final
   unlock throws `IllegalMonitorStateException` (`<not-locked>` on the lock server), the process fails, and the Solr update
   for the collection is skipped.
-- Fix: lock only the re-read + replace + write. Compute the licenses outside the lock, preferably with the same Solr
-  facet query `CollectionsResource` uses (`CollectionsResource.java:696–726`).
+- The collection membership edit in the admin API already recomputes the same aggregate correctly: a Solr facet query
+  without a lock, then a short lock around the RELS-EXT write (`CollectionsResource.java:696–726`). The license process
+  does the same job a second, slower way under the lock.
+- Fix: lock only the re-read + replace + write. Compute the licenses outside the lock, preferably by reusing the
+  membership-edit path's facet query and `replaceContainsLicenses`.
 
 A second issue in `akubra`: `doWithLock`'s `finally` unlock (`AkubraDOManager.java:434–437@51d821b`) throws when the
 lease has expired and hides the operation's own outcome.
