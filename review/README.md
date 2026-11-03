@@ -8,12 +8,12 @@ performance and quality-of-life proposals. Each entry is built from the evidence
 > [!WARNING]
 > **Most of this has not been confirmed by a person yet.** The review was done with an AI coding agent: the agent read
 > the source code of Kramerius, Akubra and process-platform, ran read-only queries against MZK production data, and
-> decided what is a defect and what to propose. There are many findings (73 entries, 53 of them about a specific defect or code-level cost), and so far it
+> decided what is a defect and what to propose. There are many findings (74 entries, 54 of them about a specific defect or code-level cost), and so far it
 > has not been possible to confirm them other than in this agentic way:
 >
 > - **No entry is marked as confirmed by an MZK programmer yet** (`mzk_programmer_check` is empty on all of them).
 > - **No test has been run** for any defect; where a test is described, it is a proposal.
-> - **21 of them are known from code only**, and say so at the top of their evidence section. 29 were also looked for in
+> - **21 of them are known from code only**, and say so at the top of their evidence section. 30 were also looked for in
 >   production data, and 14 match an incident reported in an upstream issue.
 > - Line numbers refer to the named commits, which may differ from the deployed images.
 >
@@ -160,6 +160,7 @@ The header fields `touches`, `contracts` and `data_migration` record the facts t
 | [BUG-028](bugs/BUG-028-pdf-endpoints-leave-streams-open.md) | The PDF endpoints never close the three output streams they open per request, and leave the rendered file behind when generation fails | low | XS | — | not seen; one public pod had no leftover PDF temp files at one instant |
 | [BUG-029](bugs/BUG-029-statistics-semaphore-gains-permit-on-interrupt.md) | The statistics report's one-at-a-time semaphore gains a permit each time a waiting request is interrupted | low | XS | — | not observed; source only |
 | [BUG-030](bugs/BUG-030-startup-without-users-db-skips-lifecycle-services.md) | When the users database is down while Kramerius starts, it starts anyway without its lifecycle services, and IIIF tiles fail with 500 until a manual restart | high | S | — | yes, 2026-10-29: both public pods started during a users-DB restart, 52,523 tile 500s over 3–5 h, ended by a manual restart |
+| [BUG-031](bugs/BUG-031-license-process-holds-collection-lock-for-whole-scan.md) | The add/remove-license process holds a collection's lock for the whole scan of its items, so the 120 s lease expires and edits made to the collection meanwhile are overwritten | high | XS | — | yes, 2026-11-03: one `<not-locked>` unlock on hazelcast-0 after a license process; not counted |
 
 ## Web client bugs
 
