@@ -8,10 +8,10 @@ severity: high
 effort: XS               # publish the client only after it connected; do not set read-only on a local client error
 use_cases: [admin, ingest]
 review_ref: []
-upstream: null
-checked: [source, production]
-checked_how: "Read AkubraDOManager at Akubra 51d821b and Kramerius af7209c; MZK curator logs 2026-10-28 (10 failed deletes); in-memory test described, not run"
-checked_on: 2026-10-28
+upstream: https://github.com/ceskaexpedice/kramerius/issues/1369
+checked: [source, production, test]
+checked_how: "Read AkubraDOManager at Akubra 51d821b and Kramerius af7209c; MZK curator logs 2026-10-28 (10 failed deletes); reproduced on MZK dev 2026-11-09 (kramerius:7.2.2, 5 of 20 deletes after a curator restart, instance went read-only); in-memory test described, not run"
+checked_on: 2026-11-09
 mzk_programmer_check: null  # who confirmed it, when and how, once an MZK programmer has; null = not yet
 ---
 
@@ -20,6 +20,12 @@ mzk_programmer_check: null  # who confirmed it, when and how, once an MZK progra
 > **In one sentence:** Akubra creates its Hazelcast lock client lazily and makes it visible to other threads before it has
 > connected, so writes that arrive in parallel during the first connect fail with a NullPointerException, and Kramerius
 > treats every such failure as a lock-server outage and switches the whole instance to read-only until an admin resets it.
+
+## Upstream issue
+
+[kramerius#1369](https://github.com/ceskaexpedice/kramerius/issues/1369) "Kramerius sa prepína do read-only módu, aj keď je
+Hazelcast dostupný", opened by MZK on 2026-11-09 from this entry: cause in Akubra and Kramerius, the production event of
+2026-10-28, the dev reproduction, since when (akubra `09eb85c`, Kramerius `v7.2.0-rc3`) and the fix.
 
 ## Symptom
 
@@ -84,6 +90,23 @@ together after node or cluster events, this recurs "often" without an obvious ca
 
 Sources: pod start times (`kubectl get pods`), `hazelcast-0` log, error spans in `otel_traces`, and client lifecycle lines
 in the curator Tomcat logs.
+
+**Reproduced on MZK dev, 2026-11-09** (`kramerius:7.2.2`, Akubra 1.7, one curator pod; times UTC). A test datastream
+`QGLOCKTEST` was created on 20 page objects, `kramerius-curator-0` was restarted, and right after it answered, the 20
+datastreams were deleted with `DELETE /search/api/admin/v7.0/repository/deleteDatastream?pid=…&dsId=QGLOCKTEST`, sent 100 ms
+apart:
+
+| Time | Event |
+| --- | --- |
+| 13:31:09.6 | `Server startup` |
+| 13:31:13.4–14.3 | 5 of the 20 deletes fail with the NPE above, each followed by `DbWorkModeServiceImpl.setWorkMode` |
+| 13:31:14.5 / 14.6 | `Trying to connect` / `CLIENT_CONNECTED` |
+| after | work mode `{"readOnly":true,"reason":"distributedLocksException"}`; the other 15 deletes succeed |
+
+A first run with `createXMLDatastream` instead failed 4 of 20 writes the same way but did **not** set read-only: Akubra's
+`CoreRepositoryImpl.createXMLDatastream` wraps the `DistributedLocksException` in a `RepositoryException`, so
+`AkubraResource`'s `catch (DistributedLocksException)` does not match and the request ends as a plain 500. Whether a lock
+failure switches read-only therefore depends on the write path.
 
 ## Impact
 

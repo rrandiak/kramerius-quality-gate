@@ -8,10 +8,10 @@ severity: high
 effort: S                # WorkerMain startup: retry registration off the Tomcat startup thread; plus a probe in the chart
 use_cases: [indexing, ingest, admin]
 review_ref: []
-upstream: null           # comment for process-platform#13 below; the #13 report matches this startup case
-checked: [source, production]
-checked_how: "Read worker registration at process-platform da88e6a; MZK traces 2026-10-27 (5 of 10 pods) and 2026-10-28 (3 of 10)"
-checked_on: 2026-10-27
+upstream: https://github.com/ceskaexpedice/process-platform/issues/13#issuecomment-6801289041
+checked: [source, production, upstream-report]
+checked_how: "Read worker registration at process-platform da88e6a; MZK traces 2026-10-27 (5 of 10 pods) and 2026-10-28 (3 of 10); worker catalina logs and process-manager access logs 2026-11-06 to 2026-11-11 (4 of 11)"
+checked_on: 2026-11-11
 mzk_programmer_check: null  # who confirmed it, when and how, once an MZK programmer has; null = not yet
 ---
 
@@ -20,6 +20,14 @@ mzk_programmer_check: null  # who confirmed it, when and how, once an MZK progra
 > **In one sentence:** a worker registers with the process manager exactly once, while Tomcat starts its webapp; if the
 > manager is not reachable at that moment (it starts at the same time after a deploy), the webapp fails to start, the polling
 > loop is never created, and the pod keeps running and takes no jobs until someone restarts it.
+
+## Upstream issue
+
+Comment on [process-platform#13](https://github.com/ceskaexpedice/process-platform/issues/13), posted by MZK on
+2026-11-11 for KB-002 and KB-005 together ([comment](https://github.com/ceskaexpedice/process-platform/issues/13#issuecomment-6801289041)): both places in the worker (registration once at Tomcat
+startup, `stop()` on any polling exception) with excerpts at v1.5.2 (`285f1e5`), why the v1.5.2 timeouts and HTTP
+retries do not fix it, the MZK incidents of 2026-10-27 and 2026-10-28, a one-line repro and the fix (register in the
+polling thread with backoff; log, back off and continue instead of `stop()`).
 
 ## Symptom
 
@@ -34,6 +42,13 @@ The process manager receives no polls from that worker. Restarting the worker po
 
 ## Cause
 
+Deployed at MZK (checked 2026-11-11): the **workers** run process-platform **v1.5.2** (`285f1e5`, branch `hotfix/1.5.x`,
+bundled in the Kramerius 7.2.2.4 worker images since 2026-10-08), the **process manager** ran **v1.5** (`4974929`, image
+`ceskaexpedice/process-manager:1.5`, `process-common-1.5.jar`) through every incident below; it was upgraded to 1.5.2 on
+2026-11-11 at 19:42 UTC. `GCTask`, `GCScheduler`, `WorkerLoop` and the worker registration are the same in v1.5, v1.5.2 and
+`main` (`da88e6a`, which v1.5.2 is not merged into). v1.5.2 adds the "Issue #13" HTTP client timeouts (`aea65db` worker side,
+`e46ca54` manager side) and a configurable manager DB pool.
+
 `process-platform` `main` at `da88e6a`, module `process-worker`:
 
 - `WorkerStartupListener.contextInitialized` calls `new WorkerMain().initialize(config)` on Tomcat's startup thread
@@ -41,8 +56,9 @@ The process manager receives no polls from that worker. Restarting the worker po
 - `WorkerMain.initialize` calls `registerNode(...)`, then `registerPlugins(...)`, and only then creates and starts the
   `WorkerLoop` (`WorkerMain.java:57–60`).
 - `ManagerClient.registerNode` sends one POST to `worker/register_node` and throws `RemoteNodeException` on any non-200/204
-  status or any `IOException` (`client/ManagerClient.java:71–88`). There is no retry. Its `RequestConfig` sets no timeouts
-  (line 61).
+  status or any `IOException` (`client/ManagerClient.java:71–88`; `:95–112` in v1.5.2). There is no retry. At `main` its
+  `RequestConfig` sets no timeouts; v1.5.2 sets a 10 s connect timeout by default, which matches the ~10.2 s
+  `SocketTimeoutException` below.
 - The exception leaves `contextInitialized`, so Tomcat marks the `/worker` context as failed. The JVM and the pod stay up.
   No polling thread exists, so nothing retries later.
 
@@ -91,6 +107,12 @@ Any deploy that restarts the manager and the workers together can hit it. How ma
 The other seven pods had already lost their polling loop to [KB-002](KB-002-worker-loop-stops-on-poll-error.md), so no
 worker took a job from about 03:24 UTC until the pods were restarted.
 
+**Seen again on 2026-11-06.** During pod restarts at 14:49–14:55 UTC, `worker-default-2`, `worker-import-0`,
+`worker-public-0` and `worker-external-refs-0` logged `Context [/worker] startup failed due to previous errors`
+(`catalina.2026-11-06.log`) and never polled again (process-manager access logs to 2026-11-11). Three of them were the only
+worker of their profile, so MZK had no import, public or external-refs worker for five days, until the workers were
+restarted by hand on 2026-11-11 (16:26 UTC; all restarted pods registered and polled again within two minutes).
+
 ## Impact
 
 - Jobs for a profile served by one worker (import, public) wait indefinitely. With several workers per profile, jobs run more
@@ -103,7 +125,7 @@ worker took a job from about 03:24 UTC until the pods were restarted.
 1. In `WorkerMain.initialize`, do not let a failed registration end startup. Run registration (node and plugins) in the
    polling thread before the first poll, retrying with backoff and jitter (e.g. from 1 s up to 60 s) until it succeeds, then
    start polling. Tomcat's startup thread is then never blocked or failed by the manager's availability.
-2. Set explicit connect and response timeouts on the `ManagerClient` `RequestConfig` (same change as KB-002 fix 2).
+2. Explicit timeouts on `ManagerClient`: done in v1.5.2 (`aea65db`).
 3. Re-register when a poll shows the manager does not know the node (for example after the manager's DB was reset), so the
    same path also covers a manager that restarted later.
 4. In the chart, give worker pods a probe on an endpoint that fails while the `/worker` context is not running (any
@@ -116,19 +138,6 @@ worker took a job from about 03:24 UTC until the pods were restarted.
   and the loop must register and then poll.
 - Staging: scale the process manager to 0, restart a worker, wait 2 minutes, scale the manager back to 1. The worker must
   register and take a scheduled job without being restarted.
-
-## Missing upstream
-
-[process-platform#13](https://github.com/ceskaexpedice/process-platform/issues/13)'s reporter case, "the worker started
-before the process manager", fits this path; the issue does not name it. Missing there:
-
-- **Cause:** the worker registers with the manager only once, in `WorkerStartupListener.contextInitialized` →
-  `WorkerMain.initialize` (`WorkerMain.java:57–60`). If the manager is not running yet (a deploy where both start together),
-  `ManagerClient.registerNode` throws `RemoteNodeException`, Tomcat marks the `/worker` context as failed ("Context
-  [/worker] startup failed"), and `WorkerLoop` is never created. The pod keeps running and looks healthy but takes no jobs.
-- **Seen at MZK:** after one deploy, 5 of 10 workers, including the only import worker and the only public worker.
-- **Fix:** register in the polling thread, with retry and backoff before the first poll (not in Tomcat's startup thread);
-  set timeouts in the `RequestConfig` of `ManagerClient`; do not fail the whole context when registration fails.
 
 ## Related
 

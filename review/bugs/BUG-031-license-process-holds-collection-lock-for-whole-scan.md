@@ -11,10 +11,10 @@ contracts: []
 data_migration: false
 use_cases: [admin]
 review_ref: []
-upstream: null
+upstream: https://github.com/ceskaexpedice/kramerius/issues/1334#issuecomment-6745535189
 checked: [source, production]
-checked_how: "Read SetLicenseProcess and CollectionsResource at Kramerius 560676c, AkubraDOManager at Akubra 51d821b, HazelcastConfiguration at hazelcast-locks-server e094053; MZK 2026-11-03: one hazelcast-0 IllegalMonitorStateException and one add-license process log, shared by an operator; lock hold times and lost updates not counted"
-checked_on: 2026-11-03
+checked_how: "Read SetLicenseProcess and CollectionsResource at Kramerius 560676c, AkubraDOManager at Akubra 51d821b, HazelcastConfiguration at hazelcast-locks-server e094053; MZK 2026-11-03: one hazelcast-0 IllegalMonitorStateException and one add-license process log, shared by an operator; MZK process-db 2026-11-09: license jobs of the last 30 days; lock hold times and lost updates not counted"
+checked_on: 2026-11-09
 mzk_programmer_check: null  # who confirmed it, when and how, once an MZK programmer has; null = not yet
 ---
 
@@ -27,6 +27,14 @@ mzk_programmer_check: null  # who confirmed it, when and how, once an MZK progra
 > version it read at the start, which discards any change made to the collection meanwhile, and the final unlock fails.
 > The collection membership edit in the admin API recomputes the same aggregate correctly, with one Solr query and a
 > short lock.
+
+## Upstream issue
+
+Reported as a [comment on kramerius#1334](https://github.com/ceskaexpedice/kramerius/issues/1334#issuecomment-6745535189)
+("Reindexace sbírky po zařazení dokumentu trvá hodiny") by MZK on 2026-11-09, not as a new issue: #1334 is open and has
+the same root cause. Its fix (`0e3f405f5`, `v7.2.2.4`) moved the membership-edit recompute to the Solr index; the same
+commit added this FOXML recompute under the lock to the license process. The comment asks to unify both on the
+`CollectionsResource` approach.
 
 ## Symptom
 
@@ -114,9 +122,14 @@ and the log of an add-license process (license `mzk_public-muo`, target `uuid:0a
 In that log, the collection recompute started at 11:56:44 and was still listing items when the excerpt ends. The
 operator reports that the recompute can take hours on large collections.
 
+MZK process-db, 2026-11-09, license jobs of the last 30 days: 1 114 (`add_license` 870, `remove_license` 244). 6
+ended FAILED and 5 of these ran 130–193 s, just over the lease; the 2026-11-03 job ran 193 s. 22 more ran over 120 s
+and finished OK (longest 3 133 s); the duration covers the whole process, not only the time under the collection lock.
+`hazelcast-0` and the worker Tomcat logs no longer had matching lines on that day.
+
 **Not yet counted:**
-- how many `<not-locked>` lines `hazelcast-0` logs, and on which PIDs;
-- how long license processes spend in `updateAffectedCollections` (process logs or traces);
+- whether all 6 FAILED jobs failed on the expired lock (their process logs);
+- how long license processes spend in `updateAffectedCollections`;
 - whether any collection was edited during such a run, which would show the lost update.
 
 The 120 s default lease and the `finally` unlock alone are enough for the failure. Any run of the collection recompute
@@ -182,22 +195,9 @@ stays, A succeeds, and the lock is held for well under the lease.
 
 ## Missing upstream
 
-Not reported. An issue in `kramerius` should state:
-
-- `SetLicenseProcess.recomputeCollectionContainsLicenses` (`SetLicenseProcess.java:410–433@560676c`) holds the
-  collection's PID lock while it scans every collection item and its ancestors (`:437–498`), which can take hours.
-- The Akubra lock lease defaults to 120 s (`HazelcastConfiguration.java:48–49`), so the lock expires during the scan. The
-  process then overwrites the collection RELS-EXT with the copy read before the scan, losing concurrent edits. The final
-  unlock throws `IllegalMonitorStateException` (`<not-locked>` on the lock server), the process fails, and the Solr update
-  for the collection is skipped.
-- The collection membership edit in the admin API already recomputes the same aggregate correctly: a Solr facet query
-  without a lock, then a short lock around the RELS-EXT write (`CollectionsResource.java:696–726`). The license process
-  does the same job a second, slower way under the lock.
-- Fix: lock only the re-read + replace + write. Compute the licenses outside the lock, preferably by reusing the
-  membership-edit path's facet query and `replaceContainsLicenses`.
-
-A second issue in `akubra`: `doWithLock`'s `finally` unlock (`AkubraDOManager.java:434–437@51d821b`) throws when the
-lease has expired and hides the operation's own outcome.
+The Kramerius part is reported (see Upstream issue). Not reported, a separate issue in `akubra`: `doWithLock`'s
+`finally` unlock (`AkubraDOManager.java:434–437@51d821b`) throws when the lease has expired and hides the operation's
+own outcome.
 
 ## Related
 

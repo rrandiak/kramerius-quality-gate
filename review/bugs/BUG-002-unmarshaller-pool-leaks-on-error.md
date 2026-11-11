@@ -8,10 +8,10 @@ severity: high
 effort: XS               # return the unmarshaller in a finally block
 use_cases: [admin, indexing, ingest, storage]
 review_ref: [B17]
-upstream: null
-checked: [source, production]
-checked_how: "Read AkubraDOManager pool and its callers at Akubra 51d821b and Kramerius 560676c; 7-day MZK log sweep found no unmarshal errors; 5 malformed FOXML counted; unit test written, not run"
-checked_on: 2026-10-28
+upstream: https://github.com/ceskaexpedice/kramerius/issues/1379
+checked: [source, production, test]
+checked_how: "Read AkubraDOManager pool and its callers at Akubra 51d821b and Kramerius 560676c; 7-day MZK log sweep found no unmarshal errors; 5 malformed FOXML counted; AkubraDOManagerPoolTest run on Akubra v1.7 (51d821b) before and after the fix (2026-11-11)"
+checked_on: 2026-11-11
 mzk_programmer_check: null  # who confirmed it, when and how, once an MZK programmer has; null = not yet
 ---
 
@@ -21,6 +21,14 @@ mzk_programmer_check: null  # who confirmed it, when and how, once an MZK progra
 > export and a few reads) and gives it back only when parsing succeeds, so every failed parse permanently shrinks the pool,
 > and after 50 failures in one JVM every write and export blocks forever, while ordinary reads (images, IIIF, metadata) keep
 > working.
+
+## Upstream issue
+
+[kramerius#1379](https://github.com/ceskaexpedice/kramerius/issues/1379) "Unmarshaller pool stráca unmarshallery pri
+chybe parsovania FOXML, po 50 chybách sa zápisy a exporty natrvalo zaseknú", opened by MZK on 2026-11-11 from this entry
+(filed in kramerius, the code is in Akubra): cause (`offer` skipped when `unmarshal` throws, `take()` without timeout),
+the pool users, the test as an attached patch for Akubra v1.7 with its before/after result, since when (akubra `2ac787b`,
+`v1.0-rc1`) and the fix (`offer` in `finally` in both methods). The audio routes are not mentioned.
 
 ## Symptom
 
@@ -88,8 +96,10 @@ read-only fixture repository in `src/test/resources/data`, no processing index o
    `RepositoryException`.
 3. Read the fixture monograph with `readObjectFromStorage` under `assertTimeoutPreemptively` (10 s).
 
-Before the fix, step 3 blocks in `unmarshallerPool.take()` and fails on the timeout. After the fix (`offer` in `finally`
-in both methods), it returns the object. No stored object is modified.
+The whole test runs under `assertTimeoutPreemptively` (10 s), because before the fix the 51st call already blocks.
+Run on 2026-11-11 against Akubra v1.7 (`51d821b`): before the fix the log shows exactly 50 `Could not unmarshall object`
+and the test fails on the timeout; after the fix (`offer` in `finally` in both methods) it passes in 0.36 s. No stored
+object is modified.
 
 ## Related
 

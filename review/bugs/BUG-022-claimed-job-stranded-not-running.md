@@ -8,10 +8,10 @@ severity: medium
 effort: S                # GC sweep of stale claims, worker reports a failed launch, atomic claim
 use_cases: [indexing, ingest, admin]
 review_ref: [B7]
-upstream: null
+upstream: https://github.com/ceskaexpedice/kramerius/issues/1375
 checked: [source, production]
 checked_how: "Read the claim path at process-platform da88e6a and 976dc4b; MZK process DB, all 41,814 jobs (2 stuck)"
-checked_on: 2026-10-28
+checked_on: 2026-11-11
 mzk_programmer_check: null  # who confirmed it, when and how, once an MZK programmer has; null = not yet
 ---
 
@@ -21,6 +21,14 @@ mzk_programmer_check: null  # who confirmed it, when and how, once an MZK progra
 > moves it on to RUNNING, so if the handover is lost or the JVM dies before its first report, the job stays NOT_RUNNING with
 > no retry, no failure and no alert, and its batch never completes.
 
+## Upstream issue
+
+[kramerius#1375](https://github.com/ceskaexpedice/kramerius/issues/1375) "Proces, ktorý si worker vzal, ale nespustil,
+ostane navždy v stave NOT_RUNNING", opened by MZK on 2026-11-10 from this entry (filed in kramerius, the code is in
+process-platform): cause (GC checks only RUNNING jobs, a NOT_RUNNING job is no longer PLANNED), the MZK numbers, how to
+check it, since when and the fix (GC also checks NOT_RUNNING jobs and fails them after two rounds in which the worker
+does not run them; the worker marks a job FAILED itself when the plugin JVM fails to start).
+
 ## Symptom
 
 A scheduled job (reindex, import, licence change) shows **Not running** in the admin UI and never changes. Its batch also
@@ -28,6 +36,13 @@ shows **Not running**, because the batch state is the highest child state value 
 FAILED (3). The work was never done. The only way out is for an admin to notice, kill the batch, and schedule it again.
 
 ## Cause
+
+Deployed at MZK (checked 2026-11-11): the **workers** run process-platform **v1.5.2** (`285f1e5`, branch `hotfix/1.5.x`,
+bundled in the Kramerius 7.2.2.4 worker images since 2026-10-08), the **process manager** ran **v1.5** (`4974929`, image
+`ceskaexpedice/process-manager:1.5`, `process-common-1.5.jar`) through every incident below; it was upgraded to 1.5.2 on
+2026-11-11 at 19:42 UTC. `GCTask`, `GCScheduler`, `WorkerLoop` and the worker registration are the same in v1.5, v1.5.2 and
+`main` (`da88e6a`, which v1.5.2 is not merged into). v1.5.2 adds the "Issue #13" HTTP client timeouts (`aea65db` worker side,
+`e46ca54` manager side) and a configurable manager DB pool.
 
 `process-platform` `main` at `da88e6a` (unchanged in `976dc4b`):
 
@@ -73,6 +88,19 @@ Both NOT_RUNNING jobs are single-job batches that have been stuck for weeks. Nei
 Which gap caused them (lost response, pod restart, failed JVM start) cannot be told any more: worker traces only exist since
 the 2026-10-27 deploy. It is rare (about 1 in 20,000 jobs), but each case is silent and permanent, and nobody had noticed
 these two.
+
+**Three more by 2026-11-11** (read-only query on `pcp_process`, `status = 4`; times local, as stored), again single-job
+batches with no `started` and `pid = 0`:
+
+| Planned | Profile | Worker |
+| --- | --- | --- |
+| 2026-11-04 03:15 | `processing_rebuild_for_object` | `worker-default-7` |
+| 2026-11-05 05:05 | `processing_rebuild_for_object` | `worker-default-5` |
+| 2026-11-06 04:51 | `new_indexer_index_object` | `worker-default-4` |
+
+All three fall into the nights of 2026-11-04 to 2026-11-06, when the process manager was unreachable for hours (2026-11-04),
+process-db dropped out and GC died ([KB-001](../known-bugs/KB-001-process-gc-stops-forever.md)), and worker loops ended
+([KB-002](../known-bugs/KB-002-worker-loop-stops-on-poll-error.md)). So far: 5 stranded jobs, 3 of them in one week.
 
 The conditions are common at MZK: KB-005 left 5 of 10 worker pods unregistered for over an hour after the 2026-10-27 deploy,
 and every deploy restarts workers, which can land between claim and RUNNING.

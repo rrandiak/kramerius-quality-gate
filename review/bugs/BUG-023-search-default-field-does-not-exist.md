@@ -8,10 +8,10 @@ severity: medium
 effort: S                # one line in three solrconfig.xml files; existing installs must re-upload their search config
 use_cases: [search]
 review_ref: []
-upstream: null
+upstream: https://github.com/ceskaexpedice/kramerius/issues/1373
 checked: [source, production]
 checked_how: "Read the shipped Solr configs at Kramerius 560676c; 7 days of MZK Solr error templates and NGINX query shapes"
-checked_on: 2026-10-28
+checked_on: 2026-11-10
 mzk_programmer_check: null  # who confirmed it, when and how, once an MZK programmer has; null = not yet
 ---
 
@@ -20,6 +20,12 @@ mzk_programmer_check: null  # who confirmed it, when and how, once an MZK progra
 > **In one sentence:** every Kramerius 7 search core is configured with `df=text`, a field that does not exist in its
 > schema, so any query word without a field prefix makes Solr reject the whole query; at MZK an older web client's search
 > inside a document hits this about 1,000 times a day.
+
+## Upstream issue
+
+[kramerius#1373](https://github.com/ceskaexpedice/kramerius/issues/1373) "`solrconfig.xml` vyhľadávacieho jadra má `df=text`, ale pole `text` v schéme neexistuje", opened by MZK on 2026-11-10 from
+this entry: the three shipped configs, the missing field, since when (`be8ea0e38`, `v7.0`), MZK numbers and the proposal to set
+`df` to `text_ocr` (or remove it). Short form, references #1372 for the 500s.
 
 ## Symptom
 

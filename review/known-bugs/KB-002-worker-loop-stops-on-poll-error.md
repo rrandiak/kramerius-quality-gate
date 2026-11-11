@@ -8,10 +8,10 @@ severity: high
 effort: XS               # WorkerLoop only
 use_cases: [indexing, ingest, admin]
 review_ref: [B6]
-upstream: "ceskaexpedice/process-platform#13"
+upstream: https://github.com/ceskaexpedice/process-platform/issues/13#issuecomment-6801289041
 checked: [source, production, upstream-report]
-checked_how: "Read the worker loop at process-platform da88e6a; MZK worker traces 2026-10-28 (all 10 loops exited); process-platform#13"
-checked_on: 2026-10-27
+checked_how: "Read the worker loop at process-platform da88e6a; MZK worker traces 2026-10-28 (all 10 loops exited); worker catalina logs and process-manager access logs 2026-11-04 to 2026-11-11; process-platform#13"
+checked_on: 2026-11-11
 mzk_programmer_check: null  # who confirmed it, when and how, once an MZK programmer has; null = not yet
 ---
 
@@ -20,6 +20,14 @@ mzk_programmer_check: null  # who confirmed it, when and how, once an MZK progra
 > **In one sentence:** if one request from a worker to the process manager fails (manager restarting, a network blip, any
 > HTTP status other than 200 or 404), the worker's polling thread ends, while Tomcat and the pod keep running and look healthy,
 > so the worker silently never takes another job until it is restarted.
+
+## Upstream issue
+
+Comment on [process-platform#13](https://github.com/ceskaexpedice/process-platform/issues/13), posted by MZK on
+2026-11-11 for KB-002 and KB-005 together ([comment](https://github.com/ceskaexpedice/process-platform/issues/13#issuecomment-6801289041)): both places in the worker (registration once at Tomcat
+startup, `stop()` on any polling exception) with excerpts at v1.5.2 (`285f1e5`), why the v1.5.2 timeouts and HTTP
+retries do not fix it, the MZK incidents of 2026-10-27 and 2026-10-28, a one-line repro and the fix (register in the
+polling thread with backoff; log, back off and continue instead of `stop()`).
 
 ## Symptom
 
@@ -41,6 +49,13 @@ case is [KB-005](KB-005-worker-never-starts-if-registration-fails.md) and was se
 be that one, this one, or both.
 
 ## Cause
+
+Deployed at MZK (checked 2026-11-11): the **workers** run process-platform **v1.5.2** (`285f1e5`, branch `hotfix/1.5.x`,
+bundled in the Kramerius 7.2.2.4 worker images since 2026-10-08), the **process manager** ran **v1.5** (`4974929`, image
+`ceskaexpedice/process-manager:1.5`, `process-common-1.5.jar`) through every incident below; it was upgraded to 1.5.2 on
+2026-11-11 at 19:42 UTC. `GCTask`, `GCScheduler`, `WorkerLoop` and the worker registration are the same in v1.5, v1.5.2 and
+`main` (`da88e6a`, which v1.5.2 is not merged into). v1.5.2 adds the "Issue #13" HTTP client timeouts (`aea65db` worker side,
+`e46ca54` manager side) and a configurable manager DB pool.
 
 `process-platform` `main` at `da88e6a`, `process-worker/.../worker/WorkerLoop.java`:
 
@@ -101,6 +116,20 @@ INFO   [WorkerPollingThread] WorkerLoop.lambda$start$0 Worker loop exited.
 
 So a manager that hangs for one response timeout is enough; it does not have to restart.
 
+**Seen again 2026-11-05 to 2026-11-11.** Worker Tomcat logs (`catalina.*.log`) and the process manager's access logs
+(`localhost_access_log.*`, one `GET …/next_process/<worker>` per poll), times UTC:
+
+| Time (UTC) | What | Loops that exited |
+| --- | --- | --- |
+| 2026-11-05 02:50 | poll failed | `worker-default-6` |
+| 2026-11-06 14:46 | pod restarts, manager unreachable (`Connect to … failed`) | `worker-default-3`, `-4`, `-5` |
+| 2026-11-11 16:14 | `rollout restart` of the process manager only (`HttpHostConnectException`, connection refused) | `worker-default-1`, `-7`, the two that were polling during the restart |
+
+From 2026-11-07 to the restart on 2026-11-11 only `worker-default-0`, `-1` and `-7` polled (the others had a dead loop or
+no `/worker` context, see [KB-005](KB-005-worker-never-starts-if-registration-fails.md)). After the restart only
+`worker-default-0` was left: its polling thread was waiting for a plugin JVM it had started at 16:12, so it did not poll
+during the restart. A planned restart of the manager alone is therefore enough.
+
 ## Impact
 
 - A worker that looks healthy takes no jobs. With several workers, jobs still run, only slower, and nobody notices; with one
@@ -111,8 +140,8 @@ So a manager that hangs for one response timeout is enough; it does not have to 
 
 1. In `WorkerLoop`, replace `stop()` in `catch (Exception e)` with: log, sleep with backoff (e.g. from the configured poll
    interval up to 60 s, with jitter), and continue the loop. Keep `stop()` only for shutdown and interruption.
-2. Set explicit connect and response timeouts on the `ManagerClient` `RequestConfig` (today `RequestConfig.custom().build()`,
-   line 61), so a hung manager cannot block the loop forever either.
+2. Explicit connect and response timeouts on `ManagerClient`: done in v1.5.2 (`aea65db`; at `main` still
+   `RequestConfig.custom().build()`, line 61). They keep a hung manager from blocking the loop, but a timeout still ends it.
 3. Optional: expose the loop state (last successful poll time) in `/manager/info` and in a readiness or liveness probe.
 
 ## Test
@@ -121,21 +150,6 @@ So a manager that hangs for one response timeout is enough; it does not have to 
   and launch the job.
 - Staging: scale the process manager to 0 for 1 minute, then back to 1. Schedule a job. Every worker must pick up jobs again
   without being restarted.
-
-## Missing upstream
-
-[process-platform#13](https://github.com/ceskaexpedice/process-platform/issues/13) reports workers that stop taking jobs
-and suggests that it happens when a worker starts before the process manager. Missing there:
-
-- **Cause:** `WorkerLoop.java:88–91` calls `stop()` on any polling exception (`RemoteNodeException` on connection refused
-  or on any status other than 200/404), and the polling thread ends ("Worker loop exited."). Tomcat keeps running, so the
-  worker looks healthy but never takes a job again. Retries on the HTTP calls only delay this: a longer manager outage (a
-  restart during a deploy) still ends the thread.
-- **It is not only a startup problem:** at MZK on 2026-10-28 the manager stopped answering at night (`Read timed out`),
-  and the polling loops of all 10 workers ended within 7 seconds. The pods stayed Ready, and no job ran for about 9.5
-  hours until someone noticed. One polling timeout is enough.
-- **Fix:** in the `catch`, log, wait with backoff and continue instead of `stop()`; set timeouts in the `RequestConfig` of
-  `ManagerClient` (line 61), which has none.
 
 ## Related
 

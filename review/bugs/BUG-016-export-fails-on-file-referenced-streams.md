@@ -8,10 +8,10 @@ severity: medium
 effort: XS               # resolveArchiveManagedStream: resolve by contentLocation TYPE, as the read path does
 use_cases: [admin, storage]
 review_ref: []
-upstream: null
-checked: [source, production]
-checked_how: "Read the export at Akubra 51d821b; 7 days of MZK curator logs (110 errors) and one export of 52 titles"
-checked_on: 2026-10-28
+upstream: https://github.com/ceskaexpedice/kramerius/issues/1376
+checked: [source, production, test]
+checked_how: "Read the export at Akubra 51d821b; 7 days of MZK curator logs (110 errors) and one export of 52 titles; Akubra test at 51d821b (fixture repo, in-memory Hazelcast, mocked processing index): read path returns the file content, resolveArchivedDatastreams keeps the file: reference"
+checked_on: 2026-11-10
 mzk_programmer_check: null  # who confirmed it, when and how, once an MZK programmer has; null = not yet
 ---
 
@@ -68,6 +68,17 @@ In `resolveArchiveManagedStream`, resolve each version by its `contentLocation` 
 fail the export with the PID and datastream ID instead of returning a partial object.
 
 ## Test
+
+Run on 2026-11-10 at Akubra `51d821b`, set up like `DatastreamWriteTest` (fixture repository, in-memory Hazelcast, mocked
+processing index); the test file is kept outside the repository. The title-page fixture gets an `ALTO` datastream,
+`CONTROL_GROUP="M"`, `<contentLocation TYPE="URL" REF="file:/tmp/…xml"/>`, with the file present:
+
+- `RepositoryUtils.getDatastreamContent(…, "ALTO", …)` (the read path) returns the file's content.
+- `coreRepository.resolveArchivedDatastreams(obj)` (what `AkubraRepositoryImpl.export` calls) logs
+  `Malformed object token: file:///tmp/…xml`, leaves `binaryContent` null and keeps the `file:` reference. The test asserts
+  the embedded content, so it fails now and passes after the fix.
+
+Still to write:
 
 - Unit test: an object whose ALTO is `CONTROL_GROUP="M"` with `<contentLocation TYPE="URL" REF="file:/tmp/x.xml"/>` and the
   file present; the export must contain the file's content as `binaryContent` and no `contentLocation`.

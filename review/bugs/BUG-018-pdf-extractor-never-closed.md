@@ -2,31 +2,36 @@
 id: BUG-018
 former_id: BUG-029
 category: bug
-title: Indexing a PDF object never closes the PDF, so a job that indexes many PDFs keeps every document, file handle and temp copy until its JVM exits
+title: Indexing a PDF object never deletes its temp copy of the PDF, so a job that indexes many PDFs fills the worker's /tmp until its JVM exits
 area: indexing
 severity: medium
 effort: XS               # make PdfExtractor closeable, try-with-resources in Indexer, delete the temp file on close
 use_cases: [indexing]
 review_ref: [B5]
-upstream: null
+upstream: https://github.com/ceskaexpedice/kramerius/issues/1374
 checked: [source, production]
 checked_how: "Read PdfExtractor use at Kramerius af7209c; MZK worker /tmp sampled during one reindex 2026-10-28"
-checked_on: 2026-10-28
+checked_on: 2026-11-10
 mzk_programmer_check: null  # who confirmed it, when and how, once an MZK programmer has; null = not yet
 ---
 
-# BUG-018 — Indexing a PDF object never closes the PDF, so a job that indexes many PDFs keeps every document, file handle and temp copy until its JVM exits
+# BUG-018 — Indexing a PDF object never deletes its temp copy of the PDF, so a job that indexes many PDFs fills the worker's /tmp until its JVM exits
 
 > **In one sentence:** for every object whose IMG_FULL is a PDF, the indexer copies the PDF to a temp file and opens it with
-> PDFBox, but never closes it or deletes the copy, so one indexing job over many PDF objects accumulates all of them in heap,
-> open files and `/tmp` until the job's JVM ends, and a killed job leaves the copies behind.
+> PDFBox, but never closes it or deletes the copy; the copy is only marked `deleteOnExit`, so one indexing job over many PDF
+> objects keeps a copy of every PDF in `/tmp` until the job's JVM ends.
+
+## Upstream issue
+
+[kramerius#1374](https://github.com/ceskaexpedice/kramerius/issues/1374) "Indexácia PDF objektov nemaže dočasné kópie PDF,
+takže reindexácia stromu s mnohými PDF plní `/tmp` workera až do konca jobu", opened by MZK on 2026-11-10 from this entry:
+cause, the `/tmp` measurement of 2026-10-28, since when (`c083bc6ee`, `v7.0`) and the fix (`Closeable`, delete the copy in
+`close()`, try-with-resources). It deliberately leaves out heap and file-descriptor growth (see Impact).
 
 ## Symptom
 
 During a reindex of a tree or model with many PDF objects, `/tmp` in the worker pod fills with `uuid_….pdf` copies, one per
-PDF, until the job ends (measured below); the plugin JVM's heap and open file count grow with them. For a large job,
-possible outcomes are an `OutOfMemoryError` in the plugin JVM, a full ephemeral disk on the worker node, or "Too many open
-files".
+PDF, until the job ends (measured below). For a large job, the likely outcome is a full ephemeral disk on the worker node.
 
 ## Cause
 
@@ -38,8 +43,8 @@ Kramerius `master` at `af7209cd5`, `processes/search-index/.../indexer/execution
 - `PdfExtractor` has no `close()`. The old `finalize()` that closed the document is commented out (`:65–68`).
 - `Indexer.indexPagesFromPdf` (`Indexer.java:364–380`) creates one `PdfExtractor` per object with
   `ds.img_full.mime = application/pdf` (`:322–323`), reads the pages, and drops it without closing.
-- `deleteOnExit` runs only when the JVM exits normally. A job JVM that is killed (admin kill, OOM kill, pod restart) leaves
-  every copy. If `PDDocument.load` throws (corrupt or encrypted PDF), the copy is also kept until exit.
+- `deleteOnExit` runs only when the JVM shuts down (normal exit or SIGTERM). A JVM ended by SIGKILL (OOM kill) leaves every
+  copy until the container is replaced. If `PDDocument.load` throws (corrupt or encrypted PDF), the copy is also kept until exit.
 
 Each job runs in its own plugin JVM, so the leak is bounded by one job, and a single-object reindex is harmless. A job that
 indexes a whole tree or model reaches every PDF in it in one JVM.
@@ -59,20 +64,21 @@ by `worker-default-3`. The worker's `/tmp`, sampled every ~20 s:
 
 The count only grew while the job ran, about one full copy per PDF processed, and dropped to 0 when the job's JVM exited
 normally (`deleteOnExit`). Open file descriptors and heap were not sampled: plugin JVMs start as `java @<args file>`, so the
-sampler did not recognize the process. Each unclosed `PDDocument` keeps its file open, so descriptors grow with the files
-(source, not measured).
+sampler did not recognize the process.
 
 - MZK has **13,832** objects whose IMG_FULL is a PDF (public search API, 2026-10-28): 10,571 `article`, 2,320 `monograph`,
   940 `periodicalitem`, 1 `supplement`. At the measured ~4.4 MiB per copy, a model-wide reindex of articles would hold
-  roughly 45 GB of copies in the worker's `/tmp` before the JVM exits, plus 10.5k open documents in one heap.
-- A job JVM that is killed, or dies of OOM, never runs `deleteOnExit`; its copies stay until the pod is restarted.
+  roughly 45 GB of copies in the worker's `/tmp` before the JVM exits.
+- A job JVM ended by SIGKILL (OOM kill) never runs `deleteOnExit`; its copies stay until the container is replaced.
 
 ## Impact
 
-- **Indexing jobs:** a large PDF reindex can fail with OOM or "Too many open files" partway through, after indexing only part
-  of the tree. Pages that were not reached stay unindexed.
-- **Worker node disk:** temp copies of every PDF in the job sit in the container's writable layer until the JVM exits, and
-  for good after a kill, until the pod restarts.
+- **Worker node disk:** temp copies of every PDF in the job sit in the container's writable layer until the JVM exits
+  (`deleteOnExit` runs on a normal exit and on SIGTERM, not on SIGKILL such as an OOM kill). A model-wide reindex of
+  articles would need about 45 GB.
+- **Heap and file descriptors, not established:** the extractor is a local variable, so once it is dropped the GC can
+  collect the `PDDocument` and the JVM can release its file handle. Growth of heap or open files was not measured and is not
+  claimed.
 
 ## Fix
 

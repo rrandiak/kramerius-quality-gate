@@ -8,10 +8,10 @@ severity: high
 effort: XS               # replace IMG_THUMB in memory and save the object once instead of delete + ingest
 use_cases: [admin, storage]
 review_ref: [B20]
-upstream: null
-checked: [source]
-checked_how: "Read ItemsResource.setImgThumb at Kramerius 560676c and Akubra 51d821b; not seen at MZK; unit test described, not run"
-checked_on: 2026-10-28
+upstream: https://github.com/ceskaexpedice/kramerius/issues/1377
+checked: [source, test]
+checked_how: "Read ItemsResource.setImgThumb at Kramerius 560676c and Akubra 51d821b; not seen at MZK; Akubra test at 51d821b of the delete + ingest sequence (fixture repo, in-memory Hazelcast, mocked processing index)"
+checked_on: 2026-11-10
 mzk_programmer_check: null  # who confirmed it, when and how, once an MZK programmer has; null = not yet
 ---
 
@@ -42,8 +42,9 @@ Kramerius `origin/master` `560676c`, `rest/.../admin/v70/ItemsResource.java`, `s
 - Nothing makes the two steps one: if the JVM stops, the write fails, or the processing-index rebuild throws after the delete,
   the object is gone. A failed write is not even reported, because `AkubraDOManager.write` logs and swallows storage errors
   ([BUG-007](BUG-007-akubra-swallows-storage-errors.md)), so the endpoint returns 200 for an object that no longer exists.
-- Between the delete and the ingest, the processing index has no outgoing relations for the target, so a title root briefly
-  has no children for any concurrent reader or indexer.
+- `delete` commits the removal of the target's outgoing relations in the processing index before `ingest` runs, so between the
+  two a title root has no children for any reader or indexer, and if the rebuild in `ingest` fails, the relations stay deleted
+  while the object exists.
 
 ## Evidence and frequency
 
@@ -64,6 +65,17 @@ loaded `DigitalObject` and save it once (the same single-save update that [KB-00
 proposes for XML datastreams). The processing index does not change, since `IMG_THUMB` carries no relations.
 
 ## Test
+
+Run on 2026-11-10 at Akubra `51d821b`, set up like `DatastreamWriteTest` (fixture repository, in-memory Hazelcast, mocked
+processing index), on the fixture monograph with the same `delete(pid, false, false)` + `ingest` sequence; the test file is
+kept outside the repository:
+
+- Stopping after `delete`, before `ingest`: the object does not exist.
+- Order of processing-index calls: `deleteByRelationsForPid`, `commit`, then `rebuildProcessingIndex`.
+- `rebuildProcessingIndex` throwing in `ingest`: `ingest` throws, the object exists, and its relations were deleted and
+  committed but not rebuilt.
+
+Still to write, in Kramerius:
 
 - Unit test: with a repository mock whose `ingest` throws, `setImgThumb` must leave the target object in place, unchanged.
 - Unit test: after a successful call, the target has the source's `IMG_THUMB` and the processing index still lists its children

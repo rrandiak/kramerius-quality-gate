@@ -8,10 +8,10 @@ severity: low
 effort: XS               # return 404 in one branch of IiifServlet; align items/info with IIIF on the K4 cache marker
 use_cases: [image-open]
 review_ref: []
-upstream: null
+upstream: https://github.com/ceskaexpedice/kramerius/issues/1383
 checked: [source, production]
-checked_how: "Read the IIIF resource at Kramerius 560676c; 7 days of MZK public logs (100 lines, 69 objects) checked against items info"
-checked_on: 2026-10-28
+checked_how: "Read the IIIF resource at Kramerius 560676c and 3c8bacca (7.2.2.4, same on master); MZK public catalina logs 2026-10-12 to 2026-11-11 (1,582 lines, 740 objects) checked against items info"
+checked_on: 2026-11-11
 mzk_programmer_check: null  # who confirmed it, when and how, once an MZK programmer has; null = not yet
 ---
 
@@ -20,6 +20,13 @@ mzk_programmer_check: null  # who confirmed it, when and how, once an MZK progra
 > **In one sentence:** when a client asks `/search/iiif/{pid}/…` for an object without a `tiles-url` in RELS-EXT (a book,
 > an article, or a page that only has a JPEG), Kramerius logs `No iip url for <pid>` as SEVERE and answers 500, although
 > "this object has no IIIF image" is a normal 404.
+
+## Upstream issue
+
+[kramerius#1383](https://github.com/ceskaexpedice/kramerius/issues/1383) "IIIF vracia 500 pre objekty, ktoré IIIF obrázok nemajú, namiesto 404", opened by MZK on
+2026-11-11 from this entry: the `null` branch of `IiifServlet` at 7.2.2.4 (`3c8bacca`), the 30-day MZK numbers (1,582 answers,
+740 objects, 739 without an IIIF image), the difference from #1198, since when (`c183a57dd`, `v7.0.36`) and the fix (404,
+log at most at FINE). The K4-marker mismatch (fix item 2) is not in the issue.
 
 ## Symptom
 
@@ -40,7 +47,13 @@ Kramerius `origin/master` at `560676c`:
 
 ## Evidence and frequency
 
-MZK production, public pods' logs of the last 7 days to 2026-10-28: 100 `No iip url` lines for 69 distinct objects. Model and
+**30 days, 2026-10-12 to 2026-11-11** (Tomcat logs of both public pods, `catalina.*.log`): 1,582 `No iip url` lines for 740
+objects. `image.type` from `items/{pid}/info`: `image/jpeg` 628, `none` 111, `tiles` 1. So 739 of 740 were requests for
+objects without an IIIF image; all got 500. At 7.2.2.4 (`3c8bacca`) the branch is `IiifServlet.java:216–218`; the explicit
+500 came with `c183a57dd` (2024-07-29, `v7.0.36`), before that the same case was a `NullPointerException`, also 500.
+Not the same as kramerius#1198 (same log line, but there the object had a `tiles-url` and its parsing failed).
+
+Earlier sample, MZK production, public pods' logs of the last 7 days to 2026-10-28: 100 `No iip url` lines for 69 distinct objects. Model and
 `image.type` from the public API for each object (counts only):
 
 | Model | `image.type` from `items/{pid}/info` | Objects |

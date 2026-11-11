@@ -8,10 +8,10 @@ severity: medium
 effort: XS               # bind GeneratePDFServiceImpl as a singleton, or register fonts once at startup
 use_cases: [image-open]
 review_ref: []
-upstream: null
-checked: [source, production]
-checked_how: "Read the PDF service at Kramerius 560676c; 7 days of MZK public Tomcat logs (831 CME lines)"
-checked_on: 2026-10-28
+upstream: https://github.com/ceskaexpedice/kramerius/issues/1370
+checked: [source, production, test]
+checked_how: "Read the PDF service at Kramerius 560676c and 3c8bacca4, iText 2.1.7 FontFactoryImp bytecode; 7 days of MZK public Tomcat logs (831 CME lines); MZK NGINX and OTel traces 2026-11-02..09; per-request rescan seen on MZK dev; CME reproduced with two threads on the dev iText jar"
+checked_on: 2026-11-09
 mzk_programmer_check: null  # who confirmed it, when and how, once an MZK programmer has; null = not yet
 ---
 
@@ -21,6 +21,14 @@ mzk_programmer_check: null  # who confirmed it, when and how, once an MZK progra
 > constructor, and because it is not a singleton a new instance is built for every PDF request, so each request repeats the
 > scan while other requests read the same registry, and PDFs generated at the same time fail with
 > `ConcurrentModificationException`.
+
+## Upstream issue
+
+[kramerius#1370](https://github.com/ceskaexpedice/kramerius/issues/1370) "Sťahovanie PDF zlyháva s
+`ConcurrentModificationException`, lebo každý PDF request znova registruje všetky fonty", opened by MZK on 2026-11-09 from
+this entry: cause (including iText's `registerFamily` appending without a duplicate check), MZK numbers of 2026-11-02..09,
+the dev observation, a two-thread reproduction, since when (`e9d92ba99`/`a62215324`, `5.0.beta1`; v7 API `45a7e0e20`,
+`v7.0.3`) and the fix: register fonts once per JVM, which also covers the worker's PDF process.
 
 ## Symptom
 
@@ -67,6 +75,22 @@ Each scan also logs `registred fonts <n>` at INFO, so its frequency can be count
 ```sh
 grep -c 'registred fonts' /usr/local/tomcat/logs/catalina.<date>.log
 ```
+
+MZK, 2026-11-02 to 2026-11-09 (read-only, ClickHouse):
+
+- NGINX `GET /search/api/client/v7.0/pdf/selection`: 1,010 × 200 and 391 × 500, so 28 % of the PDFs that reached
+  rendering failed.
+- OTel traces: 551 requests with a `ConcurrentModificationException` in the stack trace (wrapped in
+  `javax.servlet.ServletException`), all through `PdfTextUnderImage`: 514 on `/client/v7.0/pdf/selection`, 37 on
+  `/cdk/v7.0/forward/pdf/selection`. No other source of the exception on the public pods.
+- `kramerius-public-0` alone logged 129–240 thousand `registred fonts` lines a day, far more than the PDF selections;
+  likely the PDF `info()` endpoint of the same resource (not yet confirmed).
+
+MZK dev (7.2.2), 2026-11-09: every PDF request logs a rescan, including ones rejected with 403 or with 409 by the PDF
+semaphore (the resource is built before either check). iText 2.1.7 `FontFactoryImp.registerFamily` appends to the
+family's `ArrayList` without a duplicate check, so each rescan modifies (and grows) the lists that `getFont` iterates. Two
+threads on the dev iText jar, one calling `registerDirectory` and one `getFont("arial ce", …)`, throw the exception within
+a second. Over HTTP on dev it did not show (1,247 rescans, 149 rendered PDFs).
 
 ## Impact
 

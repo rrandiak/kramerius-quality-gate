@@ -8,10 +8,10 @@ severity: medium
 effort: XS               # one import (or catch both classes) in SearchResource; one test
 use_cases: [search]
 review_ref: [B11]
-upstream: null
-checked: [source, production]
-checked_how: "Read the search resource at Kramerius 560676c; 7 days of MZK NGINX logs and public-pod Solr error templates"
-checked_on: 2026-10-28
+upstream: https://github.com/ceskaexpedice/kramerius/issues/1372
+checked: [source, production, test]
+checked_how: "Read the search resource at Kramerius 560676c; 7 days of MZK NGINX logs and public-pod Solr error templates; reproduced on MZK dev 2026-11-10 (q=neexistujuce_pole:x -> 500, body \"status code: 400\", InternalErrorException from SearchResource.java:190)"
+checked_on: 2026-11-10
 mzk_programmer_check: null  # who confirmed it, when and how, once an MZK programmer has; null = not yet
 ---
 
@@ -20,6 +20,13 @@ mzk_programmer_check: null  # who confirmed it, when and how, once an MZK progra
 > **In one sentence:** `SearchResource` catches the Apache HttpClient 4 `HttpResponseException`, but the Solr call throws
 > the HttpClient 5 class of the same name, so every query Solr rejects with 400 (bad syntax, unknown field) reaches the
 > client as a 500 server error, about 1,000 a day at MZK.
+
+## Upstream issue
+
+[kramerius#1372](https://github.com/ceskaexpedice/kramerius/issues/1372) "Search API vracia 500 namiesto 400, keď Solr odmietne dotaz", opened by MZK on 2026-11-10 from
+this entry: cause (HttpClient 4 catch, HttpClient 5 throw), MZK numbers of the 7 days to 2026-10-28, the dev reproduction, since
+when (`c1f05a6f9`, `v5.3.8`; dead since `a24d668a6`, `v7.0.40`) and the fix (change the import; other Solr statuses as
+502/503).
 
 ## Symptom
 

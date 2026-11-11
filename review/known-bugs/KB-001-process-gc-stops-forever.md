@@ -8,10 +8,10 @@ severity: high
 effort: XS               # GCTask and GCScheduler only
 use_cases: [indexing, ingest, admin]
 review_ref: []           # new; related to B8
-upstream: "ceskaexpedice/process-platform#15"
-checked: [source]
-checked_how: "Read GCTask at process-platform da88e6a; not observed (no telemetry before 2026-10-27)"
-checked_on: 2026-10-27
+upstream: https://github.com/ceskaexpedice/process-platform/issues/15#issuecomment-6804387715
+checked: [source, production, upstream-report]
+checked_how: "Read GCTask at process-platform da88e6a, v1.5 (4974929, deployed manager) and v1.5.2 (285f1e5); process-manager catalina logs 2026-10-12 to 2026-11-11; GCTask.run spans 2026-10-27 to 2026-11-11; process-db rows of the affected jobs"
+checked_on: 2026-11-11
 mzk_programmer_check: null  # who confirmed it, when and how, once an MZK programmer has; null = not yet
 ---
 
@@ -20,6 +20,14 @@ mzk_programmer_check: null  # who confirmed it, when and how, once an MZK progra
 > **In one sentence:** the background check that marks jobs of dead workers as FAILED cancels its own timer the first time
 > any exception escapes it, and nothing ever starts it again, so after one database hiccup or one deleted job every later
 > worker crash leaves its jobs in "Running" until the process manager is restarted.
+
+## Upstream issue
+
+Comment on [process-platform#15](https://github.com/ceskaexpedice/process-platform/issues/15) (opened by MZK on 2026-06-17),
+posted on 2026-11-11 ([comment](https://github.com/ceskaexpedice/process-platform/issues/15#issuecomment-6804387715)): the cause (one exception in `GCTask.run` calls `shutdown()`, the next round is only
+scheduled after a successful one, so a shorter interval does not help), an excerpt at v1.5.2 (`285f1e5`), the MZK case of
+2026-11-05 (log lines, 36 hours without GC, a job 11.5 hours in "Running"), a one-line repro and the fix (schedule the next
+round in `finally` without `shutdown()`; give the `updateState` in the per-job `catch` its own `try`).
 
 ## Symptom
 
@@ -58,20 +66,42 @@ and after that no GC activity at all.
 
 ## Evidence and frequency
 
-**Known from code only; not confirmed by an MZK programmer and not seen in production.**
+**Seen in production at MZK on 2026-11-05 and 2026-11-06: GC was dead for 36 hours, then once more for one hour.**
 
-Source only. Not yet observed directly: the process manager had no telemetry before 2026-10-27, and its container log does not
-survive a pod replacement.
+The MZK process manager ran process-platform v1.5 (`4974929`, image `ceskaexpedice/process-manager:1.5`) through these
+incidents; `GCTask` and `GCScheduler` are the same in v1.5, v1.5.2 (`285f1e5`) and `main` (`da88e6a`). v1.5 leaves the
+manager's Hikari pool at its defaults, so a connection wait ends after 30 s: the 30,001 ms of the last round below. The
+manager was upgraded to 1.5.2 (configurable pool, still the same `GCTask`) on 2026-11-11 at 19:42 UTC. The process manager's Tomcat log
+(`/usr/local/tomcat/logs/catalina.*.log`, kept about 30 days across pod restarts; times UTC):
 
-Since 2026-10-27 21:17 UTC the process manager sends traces with a method span on `GCTask.run` (chart 1.3.2,
-`observability.otel.processManager.includeMethods`). A running GC produces one `GCTask.run` span per interval; if the spans stop
-while the process manager keeps serving requests, GC has died:
+| Time (UTC) | Event |
+| --- | --- |
+| 2026-11-05 02:50:36 | last GC round; process-db unreachable (`Cannot get database connection from the pool` on the API threads too); the round waits 30,001 ms for a connection |
+| 2026-11-05 02:51:06 | `GCScheduler.shutdown Cancelling gcScheduler`, then `GCTask.run Cannot get database connection from the pool.` |
+| 2026-11-05 02:51 – 2026-11-06 14:50 | no GC round; the manager keeps serving requests (9,000–41,000 spans every 3 hours, 0 `GCTask.run`) |
+| 2026-11-06 14:50:15 | manager restarted together with the other pods |
+| 2026-11-06 14:50:19 | first GC round marks two RUNNING jobs FAILED: `eb655ded…` (below) and `9852d91f…`, which had started at 14:46 on a worker pod restarted since |
+| 2026-11-06 14:51:40 | database unreachable again for a moment: `Cancelling gcScheduler` a second time |
+| 2026-11-06 15:50:48 | manager restarted again; GC has run since |
+
+So trigger 1 above (`getProcesses` on a database outage) is what happens in practice: the trace of the last round has no
+child span (no connection was ever obtained) and no error status, because `catch (Throwable)` swallows the exception.
+
+Cost: job `eb655ded…` (`processing_rebuild_for_object` on `worker-default-2`) started 2026-11-06 03:14 UTC and stayed RUNNING
+until the first round after the restart marked it FAILED at 14:50:19, 11.5 hours later. Successful runs of that profile
+take 53 s on average and at most 50 minutes (30 days, 9,310 runs), so its JVM had been gone for hours. The same database
+outage at 02:50 also ended the polling loop of `worker-default-6`
+([KB-002](KB-002-worker-loop-stops-on-poll-error.md)).
+
+Detection since 2026-10-27: the process manager sends a method span on `GCTask.run` (chart 1.3.2,
+`observability.otel.processManager.includeMethods`). The collector keeps 1% of them (about 86 a day at a 10 s interval), so
+a gap of several hours while other process-manager spans continue means GC is dead. An error status does not show it:
 
 ```sql
-SELECT toStartOfHour(Timestamp) AS hour, countIf(SpanName = 'GCTask.run') AS gc_rounds, count() AS all_spans
+SELECT toStartOfInterval(Timestamp, INTERVAL 3 HOUR) AS h, countIf(SpanName = 'GCTask.run') AS gc_rounds, count() AS all_spans
 FROM default.otel_traces
 WHERE ServiceName = 'process-manager' AND Timestamp >= now() - INTERVAL 7 DAY
-GROUP BY hour ORDER BY hour
+GROUP BY h ORDER BY h
 ```
 
 ## Impact
@@ -100,22 +130,10 @@ GROUP BY hour ORDER BY hour
 - Staging: stop PostgreSQL for 30 s while a job runs, start it again, then kill the worker pod. The job must become FAILED
   within one interval.
 
-## Missing upstream
-
-[process-platform#15](https://github.com/ceskaexpedice/process-platform/issues/15) reports jobs stuck as running after a
-worker restart. It does not name a cause. Missing there:
-
-- **Cause:** `GCTask.run` (`GCTask.java:74–76`) calls `gcScheduler.shutdown()` on any exception, which cancels the
-  `Timer` for good, and the next run is scheduled only at the end of a successful run (line 73). One exception stops the GC
-  until the process manager restarts. Possible triggers: a database outage in `getProcesses` (line 48), or the unguarded
-  `updateState` in the `catch` block (lines 65–68), which also throws `BusinessLogicException(NOT_FOUND)` when the job was
-  deleted in the meantime.
-- **Fix:** `scheduleWithFixedDelay`, and in `run()` only log the exception, without `shutdown()`; wrap the `updateState`
-  in the `catch` block in its own `try`. A shorter interval does not help.
-
 ## Related
 
 - [QOL-004](../quality-of-life/QOL-004-worker-initiated-control.md): replaces probing GC with lease expiry; until then GC must at
   least keep running.
-- Review B8 (GC marks a still-running job FAILED when the worker probe fails): the opposite failure of the same `GCTask`.
+- [BUG-014](../bugs/BUG-014-gc-fails-running-job-on-one-probe-error.md) (GC marks a still-running job FAILED when the worker
+  probe fails): the opposite failure of the same `GCTask`.
 - [KB-002](KB-002-worker-loop-stops-on-poll-error.md): the worker's poll loop has the same "stop on first exception" pattern.

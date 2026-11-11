@@ -11,7 +11,7 @@ contracts: []
 data_migration: false
 use_cases: [image-open]
 review_ref: []
-upstream: null
+upstream: https://github.com/ceskaexpedice/kramerius/issues/1378
 checked: [source, production]
 checked_how: "Read StartupServlet, UsersConnectionProvider, AbstractImageServlet, IiifServlet at Kramerius 560676c; MZK 2026-10-29: Tomcat logs of both public pods (every start, lifecycle lines, 52,524 'Request execution cancelled'), NGINX tile status, traces of failing vs working tiles; Tomcat logs since 2026-09-29"
 checked_on: 2026-10-29
@@ -24,6 +24,15 @@ mzk_programmer_check: null  # who confirmed it, when and how, once an MZK progra
 > restarts pods and databases at the same time), `StartupServlet` fails before it starts the lifecycle services, but
 > Tomcat starts the application anyway; the pod is Ready and serves search, thumbnails and metadata, while every IIIF tile
 > fails with 500 because the image-server client was never started, until someone restarts the pod.
+
+## Upstream issue
+
+[kramerius#1378](https://github.com/ceskaexpedice/kramerius/issues/1378) "Po štarte bez dostupnej users DB padajú IIIF
+dlaždice na 500 až do reštartu (#1072 znova)", opened by MZK on 2026-11-11 from this entry: cause (exception from
+`StartupServlet.init()` does not stop the `/search` context, `startNotification()` never runs), why the #1072 fix
+(`c066c9052`, `v7.0.36`) did not help, the 2026-10-29 timeline, why an init container that waits for the database is too
+fragile, since when (`87fda9fc0`, `v7.2.0-rc2`) and the fix (move database init and `startNotification()` into a
+`ServletContextListener`; workaround `failCtxIfServletStartFails="true"`).
 
 ## Symptom
 
@@ -129,19 +138,6 @@ started; what that broke was not measured.
 - Start Kramerius with the users database unreachable. Before the fix: `/search` starts, `GET /search/iiif/<pid>/…/default.jpg`
   answers 500 with `Request execution cancelled`. After the fix: the context fails to start (or, with fix 2, tiles load).
 - Start with both databases up: the log has `Starting Http async client` and tiles load (no change).
-
-## Missing upstream
-
-Not reported. A new issue in `kramerius` should state:
-
-- `StartupServlet.init` (`StartupServlet.java:95–153` at `560676c`) opens the users database before it starts the
-  lifecycle services; when that fails it throws, Tomcat marks only that servlet unavailable and starts `/search` anyway, so
-  the image-server `HttpAsyncClient`, process schedulers and CDK hooks never start.
-- Result at MZK on 2026-10-29: two public pods started during a users-database restart and answered every IIIF tile with
-  500 (`CancellationException: Request execution cancelled`, `AbstractImageServlet.copyFromImageServer`) for 3–5 hours,
-  while staying Ready, until they were restarted by hand.
-- Fix: fail the context on a startup failure (or make the users DB truly optional and start the lifecycle services
-  regardless), and expose startup state to a health check.
 
 ## Related
 

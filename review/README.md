@@ -12,7 +12,7 @@ performance and quality-of-life proposals. Each entry is built from the evidence
 > has not been possible to confirm them other than in this agentic way:
 >
 > - **No entry is marked as confirmed by an MZK programmer yet** (`mzk_programmer_check` is empty on all of them).
-> - **No test has been run** for any defect; where a test is described, it is a proposal.
+> - **Tests have been run for only a few defects** (listed below); elsewhere, a described test is a proposal.
 > - **21 of them are known from code only**, and say so at the top of their evidence section. 30 were also looked for in
 >   production data, and 14 match an incident reported in an upstream issue.
 > - Line numbers refer to the named commits, which may differ from the deployed images.
@@ -62,8 +62,9 @@ Every defect entry (`BUG`, `KB`, `WC`, and the former bugs now under `PS` and `Q
 | `checked_on` | the date of the last check |
 | `mzk_programmer_check` | who confirmed the defect, when and how (read the code, reproduced it, saw it in production), once an MZK programmer has; `null` until then. Entries known only from code also say so at the top of their evidence section. |
 
-`production` means we looked, not that it was found: `checked_how` says what the look showed. As of 2026-10-28 no entry has
-`test`: the tests for BUG-002 and BUG-004 are written but not run.
+`production` means we looked, not that it was found: `checked_how` says what the look showed. As of 2026-11-11 only BUG-004
+(reproduced on MZK dev), BUG-015 (two-thread reproduction on the dev iText jar), BUG-017 (reproduced on MZK dev),
+BUG-001, BUG-002, BUG-016 and KB-004 (Akubra tests) have `test`; the in-memory test for BUG-004 is written but not run.
 
 ## Effort
 

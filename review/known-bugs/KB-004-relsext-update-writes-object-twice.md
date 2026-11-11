@@ -8,10 +8,10 @@ severity: high
 effort: S                # Akubra: replace the datastream in memory and save the object once
 use_cases: [admin, ingest, storage]
 review_ref: [B24]
-upstream: "ceskaexpedice/process-platform#14"
-checked: [source, upstream-report]
-checked_how: "Read RELS-EXT update at Kramerius 560676c and Akubra 51d821b; incident reported in process-platform#14"
-checked_on: 2026-10-27
+upstream: https://github.com/ceskaexpedice/kramerius/issues/1371  # symptom first in process-platform#14
+checked: [source, upstream-report, test]
+checked_how: "Read RELS-EXT update at Kramerius 560676c and Akubra 51d821b; incident reported in process-platform#14; Akubra test at 51d821b (fixture repo, in-memory Hazelcast, mocked processing index): deleteDatastream alone leaves 0 RELS-EXT, createXMLDatastream alone replaces it with exactly 1"
+checked_on: 2026-11-10
 mzk_programmer_check: null  # who confirmed it, when and how, once an MZK programmer has; null = not yet
 ---
 
@@ -20,6 +20,15 @@ mzk_programmer_check: null  # who confirmed it, when and how, once an MZK progra
 > **In one sentence:** Akubra updates an XML datastream by first saving the whole object without it and then saving the object
 > again with the new version, so if the JVM dies or the second save fails between the two, the object stays in storage with
 > no RELS-EXT, which is what happened at MZK when a worker restarted during a licence change.
+
+## Upstream issue
+
+[kramerius#1371](https://github.com/ceskaexpedice/kramerius/issues/1371) "Objekt natrvalo stratí stream (napr. RELS-EXT),
+keď proces spadne počas jeho úpravy", opened by MZK on 2026-11-10 from this entry. Filed in `kramerius` although the fix is
+in Akubra, because Akubra fixes are tracked through Kramerius issues. It covers all three `update*Datastream` methods, the
+June 2026 incident from [process-platform#14](https://github.com/ceskaexpedice/process-platform/issues/14) (symptom only,
+wrong repository), the Akubra test, since when (Kramerius `eb54993a4`, `v7.0.23`; Akubra `6709f63`, `v1.0-rc1`) and the fix
+below.
 
 ## Symptom
 
@@ -73,17 +82,29 @@ Kramerius callers that update RELS-EXT this way (`origin/master` `560676c`): `Se
 
 ## Fix
 
-Replace the datastream in memory and save the object once:
+`createXMLDatastream`, `createManagedDatastream` and `createExternalDatastream` already remove the old stream with the same
+ID from the in-memory object (`createDatastreamHeader`, `CoreRepositoryImpl.java:309–316@51d821b`) and then save once. So:
 
-1. In `AkubraRepositoryImpl.updateXMLDatastream`, read the `DigitalObject`, replace the content of the datastream's version (or
-   swap the `DatastreamType`), and call `manager.write` once. The single safe overwrite is then atomic: storage holds either the
-   old or the new RELS-EXT, never none.
-2. Apply the same to `updateManagedDatastream` and `updateExternalDatastream`. For managed datastreams, write the new file
-   under a new version ID, save the FOXML pointing to it, and only then delete the old file.
-3. Make the save throw on failure ([BUG-007](../bugs/BUG-007-akubra-swallows-storage-errors.md)), so a failed update is a failed job, not a
-   silent one.
+1. In all three `update*Datastream` methods (`AkubraRepositoryImpl.java:134–145`, `:166–176`, `:198–208`), drop the
+   `deleteDatastream` call. Storage then holds either the old or the new stream, never none.
+2. Managed streams: the new content is stored under the same key (`pid+dsId+dsId.0`, `convertManagedStream`), so the file
+   is overwritten in place. Files of older versions with another version ID should be removed only after the FOXML save.
+3. RELS-EXT: the processing index needs no `deleteByRelationsForPid` first; the rebuild in `createXMLDatastream`
+   (`CoreRepositoryImpl.java:228–242`) deletes relations that are no longer in the new RELS-EXT. This also removes the
+   window in which the relations are gone from the processing index ([BUG-010](../bugs/BUG-010-processing-index-submits-partial-rebuild.md)).
+4. Make the save throw on failure ([BUG-007](../bugs/BUG-007-akubra-swallows-storage-errors.md)).
 
 ## Test
+
+Run on 2026-11-10 at Akubra `51d821b`, set up like `DatastreamWriteTest` (fixture repository, in-memory Hazelcast,
+mocked processing index); the test file is kept outside the repository:
+
+- `deleteDatastream(PID_MONOGRAPH, "RELS-EXT")` alone: the stored object has 0 RELS-EXT streams (the state after a crash
+  between the two saves).
+- `createXMLDatastream(obj, "RELS-EXT", …)` alone on an object that has RELS-EXT: the stored object has exactly 1, the new
+  one. So `deleteDatastream` is not needed for the replacement.
+
+Still to write:
 
 - Unit test with a storage stub that throws on the second `addOrReplaceObject` call: after `updateXMLDatastream` fails, the stored
   object still has the **old** RELS-EXT.
@@ -93,17 +114,7 @@ Replace the datastream in memory and save the object once:
 
 ## Missing upstream
 
-[process-platform#14](https://github.com/ceskaexpedice/process-platform/issues/14) reports an object that lost RELS-EXT
-while a licence job ran during a worker restart. The defect is in Akubra, so it may also deserve an issue in
-`ceskaexpedice/akubra`. Missing there:
-
-- **Cause:** `AkubraRepositoryImpl.updateXMLDatastream` (`AkubraRepositoryImpl.java:134–145`), which every RELS-EXT change
-  goes through (`RelsExtHelperImpl.update`), saves the whole FOXML twice: `deleteDatastream` first saves the object
-  **without** RELS-EXT (`AkubraDOManager.java:208`), then `createXMLDatastream` saves it again with the new RELS-EXT
-  (`AkubraDOManager.java:253`). If the process dies in between, the object stays without RELS-EXT for good. If the second
-  save fails, `AkubraDOManager.write` only logs it and returns normally ([BUG-007](../bugs/BUG-007-akubra-swallows-storage-errors.md)).
-- **Fix:** replace the datastream content in memory in `updateXMLDatastream` and save the object once. One save is atomic
-  (safe overwrite), so storage always holds either the old or the new RELS-EXT. `write` should throw on failure.
+Reported (see Upstream issue). Still to do: a short comment on process-platform#14 pointing to kramerius#1371.
 
 ## Related
 
