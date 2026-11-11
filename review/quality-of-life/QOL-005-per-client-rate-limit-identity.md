@@ -150,6 +150,24 @@ No latency gain for admitted requests (one in-memory counter update per request)
      cleaner on Kubernetes, and the single container suits installations without it. Rule semantics must match in Lua
      and Java. The proxy runs with Kramerius's release cycle, which makes it effort XL (several components and the
      deployment).
+6. **Kramerius only stores and publishes the rules; the library's own proxy enforces them.** The lightest variant of 5:
+   Kramerius ships no proxy and counts nothing.
+   - **Store:** database tables in Kramerius for rate limits (who: IP, prefix, user, header value; which endpoints; how
+     many requests per period) and for bans (who, why, until when, who added it).
+   - **Admin API:** endpoints to create, read, update and delete limits and bans, so the admin client, a script or another
+     system can manage them. Bans are handled outside Kramerius today; they would move into the same store.
+   - **Export for proxies:** a read endpoint that returns the current rule set in formats a proxy can fetch and parse
+     without custom code, e.g. JSON for OpenResty/Lua, an NGINX `map` include, an HAProxy map file. Proxies poll it with
+     an ETag and keep the last good copy if Kramerius is down.
+   - **Enforcement** stays in the proxy each library already runs (the MZK gateway, NGINX, HAProxy). Kramerius holds the
+     information; the proxy does the counting and the blocking.
+   - **Other sources:** because bans go through the API, an external detector (for example of botnets or scrapers) can add
+     and expire bans automatically, and every proxy picks them up on its next poll.
+   - **For:** small Kramerius change (two tables, a CRUD API, an export); one place for the rules across all proxies and
+     pods; no new process to ship.
+   - **Against:** no per-user limits for logged-in or CDK users unless the proxy can resolve the user (see the internal
+     header in 5); each proxy format needs its own exporter; limits are only as good as the proxy that applies them.
+   - Not decided whether this will be done.
 
 ## Effort
 

@@ -201,6 +201,11 @@ come from `spanmetrics` or from sampling-weighted queries.
 | Deprecate `/admin/v7.0/monitor`, the `monitor` core and the admin-client screen | M | API removal across two repos, one release of overlap |
 | Basic level (collector with `spanmetrics` → Prometheus) and ClickStack examples (Compose, Helm), query cookbook | S | Docs and config; the MZK chart is the starting point |
 
+## Who does it
+
+MZK. Róbert Randiak (MZK) prepares the change from the setup that already runs at MZK (chart 1.3.2: agent, collector
+with tail sampling, ClickHouse, HyperDX), and it is then ported into Kramerius under the MZK service contract.
+
 ## How we would validate it
 
 1. Overhead: run the public app with the agent on and off under the same replayed load; accept if p50 changes < 5% and CPU
